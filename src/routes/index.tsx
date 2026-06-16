@@ -1,29 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { AppShell } from "@/components/app/AppShell";
-import { KpiCard } from "@/components/app/KpiCard";
-import { HealthRing } from "@/components/app/HealthRing";
-import { Sparkline } from "@/components/app/Sparkline";
-import { PROJECTS, ACTIVITY_FEED, getKpis, getHealthScore } from "@/lib/mock/seo";
-import { formatNumber } from "@/lib/format";
-import { ArrowDownRight, ArrowUpRight, AlertTriangle, Link2, Sparkles, TrendingUp, TrendingDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard — Verity" },
-      { name: "description", content: "Multi-project SEO overview with traffic deltas, ranking moves, audit warnings and AI visibility tracking." },
-    ],
-  }),
-  component: DashboardPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/dashboard" });
+  },
 });
-
-function DashboardPage() {
-  const mainDomain = PROJECTS[0]!.domain;
-  const kpis = getKpis(mainDomain);
-  const health = getHealthScore(mainDomain);
-
-  return (
     <AppShell title="Dashboard" subtitle="Cross-project overview · Last 30 days vs. previous period">
       {/* Hero KPIs */}
       <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
