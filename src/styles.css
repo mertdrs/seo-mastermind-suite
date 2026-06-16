@@ -140,6 +140,14 @@
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
   --sidebar-ring: var(--signal);
+  /* Legacy aurora vars (used by raw var() references in components) */
+  --aurora-cyan: var(--chart-5);
+  --aurora-violet: var(--violet);
+  --aurora-magenta: var(--rose);
+  --success: var(--signal);
+  --warning: var(--amber);
+  --danger: var(--destructive);
+  --surface-elevated: var(--surface-2);
 }
 
 /* ============= DARK ============= */
@@ -198,6 +206,14 @@
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
   --sidebar-ring: var(--signal);
+  /* Legacy aurora vars (used by raw var() references in components) */
+  --aurora-cyan: var(--chart-5);
+  --aurora-violet: var(--violet);
+  --aurora-magenta: var(--rose);
+  --success: var(--signal);
+  --warning: var(--amber);
+  --danger: var(--destructive);
+  --surface-elevated: var(--surface-2);
 }
 
 @layer base {
