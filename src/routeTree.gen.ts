@@ -20,6 +20,7 @@ import { Route as KeywordsRouteImport } from './routes/keywords'
 import { Route as ContentRouteImport } from './routes/content'
 import { Route as CompetitorsRouteImport } from './routes/competitors'
 import { Route as BrandRadarRouteImport } from './routes/brand-radar'
+import { Route as BrandGuideRouteImport } from './routes/brand-guide'
 import { Route as BacklinksRouteImport } from './routes/backlinks'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -78,6 +79,11 @@ const BrandRadarRoute = BrandRadarRouteImport.update({
   path: '/brand-radar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandGuideRoute = BrandGuideRouteImport.update({
+  id: '/brand-guide',
+  path: '/brand-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BacklinksRoute = BacklinksRouteImport.update({
   id: '/backlinks',
   path: '/backlinks',
@@ -92,6 +98,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/backlinks': typeof BacklinksRoute
+  '/brand-guide': typeof BrandGuideRoute
   '/brand-radar': typeof BrandRadarRoute
   '/competitors': typeof CompetitorsRoute
   '/content': typeof ContentRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/backlinks': typeof BacklinksRoute
+  '/brand-guide': typeof BrandGuideRoute
   '/brand-radar': typeof BrandRadarRoute
   '/competitors': typeof CompetitorsRoute
   '/content': typeof ContentRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/backlinks': typeof BacklinksRoute
+  '/brand-guide': typeof BrandGuideRoute
   '/brand-radar': typeof BrandRadarRoute
   '/competitors': typeof CompetitorsRoute
   '/content': typeof ContentRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/backlinks'
+    | '/brand-guide'
     | '/brand-radar'
     | '/competitors'
     | '/content'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/backlinks'
+    | '/brand-guide'
     | '/brand-radar'
     | '/competitors'
     | '/content'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/backlinks'
+    | '/brand-guide'
     | '/brand-radar'
     | '/competitors'
     | '/content'
@@ -186,6 +198,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BacklinksRoute: typeof BacklinksRoute
+  BrandGuideRoute: typeof BrandGuideRoute
   BrandRadarRoute: typeof BrandRadarRoute
   CompetitorsRoute: typeof CompetitorsRoute
   ContentRoute: typeof ContentRoute
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandRadarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand-guide': {
+      id: '/brand-guide'
+      path: '/brand-guide'
+      fullPath: '/brand-guide'
+      preLoaderRoute: typeof BrandGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/backlinks': {
       id: '/backlinks'
       path: '/backlinks'
@@ -298,6 +318,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BacklinksRoute: BacklinksRoute,
+  BrandGuideRoute: BrandGuideRoute,
   BrandRadarRoute: BrandRadarRoute,
   CompetitorsRoute: CompetitorsRoute,
   ContentRoute: ContentRoute,
