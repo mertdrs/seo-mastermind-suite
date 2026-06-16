@@ -16,7 +16,7 @@ import { ChartTooltip, Chip, Panel, Pill, ScoreBar, SegmentedControl, Td, Th } f
 import { HealthRing } from "@/components/app/HealthRing";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/site-audit")({
+export const Route = createFileRoute("/project/$projectId/site-audit")({
   head: () => ({
     meta: [
       { title: "Site Audit — Verity" },

@@ -43,7 +43,7 @@ import {
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/site-explorer")({
+export const Route = createFileRoute("/project/$projectId/site-explorer")({
   head: () => ({
     meta: [
       { title: "Site Explorer — Verity" },

@@ -19,7 +19,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, Panel, SegmentedControl, Td, Th } from "@/components/app/Atoms";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/web-analytics")({
+export const Route = createFileRoute("/project/$projectId/web-analytics")({
   head: () => ({
     meta: [
       { title: "Web Analytics — Verity" },

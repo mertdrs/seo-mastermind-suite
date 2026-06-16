@@ -21,7 +21,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { Chip, IconButton, Panel, Pill, SegmentedControl, Td, Th } from "@/components/app/Atoms";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/reports")({
+export const Route = createFileRoute("/project/$projectId/reports")({
   head: () => ({
     meta: [
       { title: "Report Builder — Verity" },

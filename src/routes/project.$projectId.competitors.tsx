@@ -22,7 +22,7 @@ import { ChartTooltip, DeltaPill, KdBar, Panel, Pill, Td, Th } from "@/component
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/competitors")({
+export const Route = createFileRoute("/project/$projectId/competitors")({
   head: () => ({
     meta: [
       { title: "Competitive Analysis — Verity" },
