@@ -34,7 +34,10 @@ import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project
 import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
 import { Route as ProjectProjectIdBacklinkCheckRouteImport } from './routes/project.$projectId.backlink-check'
 import { Route as ProjectProjectIdSiteAuditIndexRouteImport } from './routes/project.$projectId.site-audit.index'
+import { Route as ProjectProjectIdSiteAuditUnterseitenRouteImport } from './routes/project.$projectId.site-audit.unterseiten'
 import { Route as ProjectProjectIdSiteAuditUeberblickRouteImport } from './routes/project.$projectId.site-audit.ueberblick'
+import { Route as ProjectProjectIdSiteAuditStatistikenRouteImport } from './routes/project.$projectId.site-audit.statistiken'
+import { Route as ProjectProjectIdSiteAuditReportsRouteImport } from './routes/project.$projectId.site-audit.reports'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -177,10 +180,28 @@ const ProjectProjectIdSiteAuditIndexRoute =
     path: '/',
     getParentRoute: () => ProjectProjectIdSiteAuditRoute,
   } as any)
+const ProjectProjectIdSiteAuditUnterseitenRoute =
+  ProjectProjectIdSiteAuditUnterseitenRouteImport.update({
+    id: '/unterseiten',
+    path: '/unterseiten',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
 const ProjectProjectIdSiteAuditUeberblickRoute =
   ProjectProjectIdSiteAuditUeberblickRouteImport.update({
     id: '/ueberblick',
     path: '/ueberblick',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditStatistikenRoute =
+  ProjectProjectIdSiteAuditStatistikenRouteImport.update({
+    id: '/statistiken',
+    path: '/statistiken',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditReportsRoute =
+  ProjectProjectIdSiteAuditReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
     getParentRoute: () => ProjectProjectIdSiteAuditRoute,
   } as any)
 
@@ -209,7 +230,10 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesByTo {
@@ -236,7 +260,10 @@ export interface FileRoutesByTo {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesById {
@@ -265,7 +292,10 @@ export interface FileRoutesById {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRouteTypes {
@@ -295,7 +325,10 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
     | '/project/$projectId/site-audit/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -322,7 +355,10 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
     | '/project/$projectId/site-audit'
   id:
     | '__root__'
@@ -350,7 +386,10 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
     | '/project/$projectId/site-audit/'
   fileRoutesById: FileRoutesById
 }
@@ -539,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdSiteAuditIndexRouteImport
       parentRoute: typeof ProjectProjectIdSiteAuditRoute
     }
+    '/project/$projectId/site-audit/unterseiten': {
+      id: '/project/$projectId/site-audit/unterseiten'
+      path: '/unterseiten'
+      fullPath: '/project/$projectId/site-audit/unterseiten'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditUnterseitenRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
     '/project/$projectId/site-audit/ueberblick': {
       id: '/project/$projectId/site-audit/ueberblick'
       path: '/ueberblick'
@@ -546,18 +592,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdSiteAuditUeberblickRouteImport
       parentRoute: typeof ProjectProjectIdSiteAuditRoute
     }
+    '/project/$projectId/site-audit/statistiken': {
+      id: '/project/$projectId/site-audit/statistiken'
+      path: '/statistiken'
+      fullPath: '/project/$projectId/site-audit/statistiken'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditStatistikenRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
+    '/project/$projectId/site-audit/reports': {
+      id: '/project/$projectId/site-audit/reports'
+      path: '/reports'
+      fullPath: '/project/$projectId/site-audit/reports'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditReportsRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
   }
 }
 
 interface ProjectProjectIdSiteAuditRouteChildren {
+  ProjectProjectIdSiteAuditReportsRoute: typeof ProjectProjectIdSiteAuditReportsRoute
+  ProjectProjectIdSiteAuditStatistikenRoute: typeof ProjectProjectIdSiteAuditStatistikenRoute
   ProjectProjectIdSiteAuditUeberblickRoute: typeof ProjectProjectIdSiteAuditUeberblickRoute
+  ProjectProjectIdSiteAuditUnterseitenRoute: typeof ProjectProjectIdSiteAuditUnterseitenRoute
   ProjectProjectIdSiteAuditIndexRoute: typeof ProjectProjectIdSiteAuditIndexRoute
 }
 
 const ProjectProjectIdSiteAuditRouteChildren: ProjectProjectIdSiteAuditRouteChildren =
   {
+    ProjectProjectIdSiteAuditReportsRoute:
+      ProjectProjectIdSiteAuditReportsRoute,
+    ProjectProjectIdSiteAuditStatistikenRoute:
+      ProjectProjectIdSiteAuditStatistikenRoute,
     ProjectProjectIdSiteAuditUeberblickRoute:
       ProjectProjectIdSiteAuditUeberblickRoute,
+    ProjectProjectIdSiteAuditUnterseitenRoute:
+      ProjectProjectIdSiteAuditUnterseitenRoute,
     ProjectProjectIdSiteAuditIndexRoute: ProjectProjectIdSiteAuditIndexRoute,
   }
 
