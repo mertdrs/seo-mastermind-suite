@@ -9,8 +9,80 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebAnalyticsRouteImport } from './routes/web-analytics'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as SiteExplorerRouteImport } from './routes/site-explorer'
+import { Route as SiteAuditRouteImport } from './routes/site-audit'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RankTrackerRouteImport } from './routes/rank-tracker'
+import { Route as KeywordsRouteImport } from './routes/keywords'
+import { Route as ContentRouteImport } from './routes/content'
+import { Route as CompetitorsRouteImport } from './routes/competitors'
+import { Route as BrandRadarRouteImport } from './routes/brand-radar'
+import { Route as BacklinksRouteImport } from './routes/backlinks'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WebAnalyticsRoute = WebAnalyticsRouteImport.update({
+  id: '/web-analytics',
+  path: '/web-analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteExplorerRoute = SiteExplorerRouteImport.update({
+  id: '/site-explorer',
+  path: '/site-explorer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteAuditRoute = SiteAuditRouteImport.update({
+  id: '/site-audit',
+  path: '/site-audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankTrackerRoute = RankTrackerRouteImport.update({
+  id: '/rank-tracker',
+  path: '/rank-tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KeywordsRoute = KeywordsRouteImport.update({
+  id: '/keywords',
+  path: '/keywords',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentRoute = ContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompetitorsRoute = CompetitorsRouteImport.update({
+  id: '/competitors',
+  path: '/competitors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrandRadarRoute = BrandRadarRouteImport.update({
+  id: '/brand-radar',
+  path: '/brand-radar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BacklinksRoute = BacklinksRouteImport.update({
+  id: '/backlinks',
+  path: '/backlinks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +91,200 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/backlinks': typeof BacklinksRoute
+  '/brand-radar': typeof BrandRadarRoute
+  '/competitors': typeof CompetitorsRoute
+  '/content': typeof ContentRoute
+  '/keywords': typeof KeywordsRoute
+  '/rank-tracker': typeof RankTrackerRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/site-audit': typeof SiteAuditRoute
+  '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
+  '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/backlinks': typeof BacklinksRoute
+  '/brand-radar': typeof BrandRadarRoute
+  '/competitors': typeof CompetitorsRoute
+  '/content': typeof ContentRoute
+  '/keywords': typeof KeywordsRoute
+  '/rank-tracker': typeof RankTrackerRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/site-audit': typeof SiteAuditRoute
+  '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
+  '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/backlinks': typeof BacklinksRoute
+  '/brand-radar': typeof BrandRadarRoute
+  '/competitors': typeof CompetitorsRoute
+  '/content': typeof ContentRoute
+  '/keywords': typeof KeywordsRoute
+  '/rank-tracker': typeof RankTrackerRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/site-audit': typeof SiteAuditRoute
+  '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
+  '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/backlinks'
+    | '/brand-radar'
+    | '/competitors'
+    | '/content'
+    | '/keywords'
+    | '/rank-tracker'
+    | '/reports'
+    | '/settings'
+    | '/site-audit'
+    | '/site-explorer'
+    | '/tools'
+    | '/web-analytics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/backlinks'
+    | '/brand-radar'
+    | '/competitors'
+    | '/content'
+    | '/keywords'
+    | '/rank-tracker'
+    | '/reports'
+    | '/settings'
+    | '/site-audit'
+    | '/site-explorer'
+    | '/tools'
+    | '/web-analytics'
+  id:
+    | '__root__'
+    | '/'
+    | '/backlinks'
+    | '/brand-radar'
+    | '/competitors'
+    | '/content'
+    | '/keywords'
+    | '/rank-tracker'
+    | '/reports'
+    | '/settings'
+    | '/site-audit'
+    | '/site-explorer'
+    | '/tools'
+    | '/web-analytics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BacklinksRoute: typeof BacklinksRoute
+  BrandRadarRoute: typeof BrandRadarRoute
+  CompetitorsRoute: typeof CompetitorsRoute
+  ContentRoute: typeof ContentRoute
+  KeywordsRoute: typeof KeywordsRoute
+  RankTrackerRoute: typeof RankTrackerRoute
+  ReportsRoute: typeof ReportsRoute
+  SettingsRoute: typeof SettingsRoute
+  SiteAuditRoute: typeof SiteAuditRoute
+  SiteExplorerRoute: typeof SiteExplorerRoute
+  ToolsRoute: typeof ToolsRoute
+  WebAnalyticsRoute: typeof WebAnalyticsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-analytics': {
+      id: '/web-analytics'
+      path: '/web-analytics'
+      fullPath: '/web-analytics'
+      preLoaderRoute: typeof WebAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site-explorer': {
+      id: '/site-explorer'
+      path: '/site-explorer'
+      fullPath: '/site-explorer'
+      preLoaderRoute: typeof SiteExplorerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site-audit': {
+      id: '/site-audit'
+      path: '/site-audit'
+      fullPath: '/site-audit'
+      preLoaderRoute: typeof SiteAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rank-tracker': {
+      id: '/rank-tracker'
+      path: '/rank-tracker'
+      fullPath: '/rank-tracker'
+      preLoaderRoute: typeof RankTrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/keywords': {
+      id: '/keywords'
+      path: '/keywords'
+      fullPath: '/keywords'
+      preLoaderRoute: typeof KeywordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/content': {
+      id: '/content'
+      path: '/content'
+      fullPath: '/content'
+      preLoaderRoute: typeof ContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/competitors': {
+      id: '/competitors'
+      path: '/competitors'
+      fullPath: '/competitors'
+      preLoaderRoute: typeof CompetitorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brand-radar': {
+      id: '/brand-radar'
+      path: '/brand-radar'
+      fullPath: '/brand-radar'
+      preLoaderRoute: typeof BrandRadarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backlinks': {
+      id: '/backlinks'
+      path: '/backlinks'
+      fullPath: '/backlinks'
+      preLoaderRoute: typeof BacklinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +297,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BacklinksRoute: BacklinksRoute,
+  BrandRadarRoute: BrandRadarRoute,
+  CompetitorsRoute: CompetitorsRoute,
+  ContentRoute: ContentRoute,
+  KeywordsRoute: KeywordsRoute,
+  RankTrackerRoute: RankTrackerRoute,
+  ReportsRoute: ReportsRoute,
+  SettingsRoute: SettingsRoute,
+  SiteAuditRoute: SiteAuditRoute,
+  SiteExplorerRoute: SiteExplorerRoute,
+  ToolsRoute: ToolsRoute,
+  WebAnalyticsRoute: WebAnalyticsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
