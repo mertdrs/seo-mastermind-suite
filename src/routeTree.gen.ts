@@ -9,12 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SiteExplorerRouteImport } from './routes/site-explorer'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as BrandGuideRouteImport } from './routes/brand-guide'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectProjectIdWebAnalyticsRouteImport } from './routes/project.$projectId.web-analytics'
 import { Route as ProjectProjectIdToolsRouteImport } from './routes/project.$projectId.tools'
+import { Route as ProjectProjectIdSiteExplorerRouteImport } from './routes/project.$projectId.site-explorer'
 import { Route as ProjectProjectIdSiteAuditRouteImport } from './routes/project.$projectId.site-audit'
 import { Route as ProjectProjectIdReportsRouteImport } from './routes/project.$projectId.reports'
 import { Route as ProjectProjectIdRankTrackerRouteImport } from './routes/project.$projectId.rank-tracker'
@@ -24,11 +24,6 @@ import { Route as ProjectProjectIdCompetitorsRouteImport } from './routes/projec
 import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project.$projectId.brand-radar'
 import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
 
-const SiteExplorerRoute = SiteExplorerRouteImport.update({
-  id: '/site-explorer',
-  path: '/site-explorer',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -55,6 +50,12 @@ const ProjectProjectIdToolsRoute = ProjectProjectIdToolsRouteImport.update({
   path: '/project/$projectId/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectProjectIdSiteExplorerRoute =
+  ProjectProjectIdSiteExplorerRouteImport.update({
+    id: '/project/$projectId/site-explorer',
+    path: '/project/$projectId/site-explorer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProjectProjectIdSiteAuditRoute =
   ProjectProjectIdSiteAuditRouteImport.update({
     id: '/project/$projectId/site-audit',
@@ -106,7 +107,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
   '/settings': typeof SettingsRoute
-  '/site-explorer': typeof SiteExplorerRoute
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -115,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
   '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
@@ -122,7 +123,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
   '/settings': typeof SettingsRoute
-  '/site-explorer': typeof SiteExplorerRoute
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -131,6 +131,7 @@ export interface FileRoutesByTo {
   '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
   '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
@@ -139,7 +140,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
   '/settings': typeof SettingsRoute
-  '/site-explorer': typeof SiteExplorerRoute
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -148,6 +148,7 @@ export interface FileRoutesById {
   '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
   '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
@@ -157,7 +158,6 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-guide'
     | '/settings'
-    | '/site-explorer'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -166,6 +166,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/rank-tracker'
     | '/project/$projectId/reports'
     | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
     | '/project/$projectId/tools'
     | '/project/$projectId/web-analytics'
   fileRoutesByTo: FileRoutesByTo
@@ -173,7 +174,6 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-guide'
     | '/settings'
-    | '/site-explorer'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -182,6 +182,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/rank-tracker'
     | '/project/$projectId/reports'
     | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
     | '/project/$projectId/tools'
     | '/project/$projectId/web-analytics'
   id:
@@ -189,7 +190,6 @@ export interface FileRouteTypes {
     | '/'
     | '/brand-guide'
     | '/settings'
-    | '/site-explorer'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -198,6 +198,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/rank-tracker'
     | '/project/$projectId/reports'
     | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
     | '/project/$projectId/tools'
     | '/project/$projectId/web-analytics'
   fileRoutesById: FileRoutesById
@@ -206,7 +207,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BrandGuideRoute: typeof BrandGuideRoute
   SettingsRoute: typeof SettingsRoute
-  SiteExplorerRoute: typeof SiteExplorerRoute
   ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
   ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
   ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
@@ -215,19 +215,13 @@ export interface RootRouteChildren {
   ProjectProjectIdRankTrackerRoute: typeof ProjectProjectIdRankTrackerRoute
   ProjectProjectIdReportsRoute: typeof ProjectProjectIdReportsRoute
   ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRoute
+  ProjectProjectIdSiteExplorerRoute: typeof ProjectProjectIdSiteExplorerRoute
   ProjectProjectIdToolsRoute: typeof ProjectProjectIdToolsRoute
   ProjectProjectIdWebAnalyticsRoute: typeof ProjectProjectIdWebAnalyticsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/site-explorer': {
-      id: '/site-explorer'
-      path: '/site-explorer'
-      fullPath: '/site-explorer'
-      preLoaderRoute: typeof SiteExplorerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -261,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/project/$projectId/tools'
       fullPath: '/project/$projectId/tools'
       preLoaderRoute: typeof ProjectProjectIdToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/project/$projectId/site-explorer': {
+      id: '/project/$projectId/site-explorer'
+      path: '/project/$projectId/site-explorer'
+      fullPath: '/project/$projectId/site-explorer'
+      preLoaderRoute: typeof ProjectProjectIdSiteExplorerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/project/$projectId/site-audit': {
@@ -326,7 +327,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BrandGuideRoute: BrandGuideRoute,
   SettingsRoute: SettingsRoute,
-  SiteExplorerRoute: SiteExplorerRoute,
   ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRoute,
   ProjectProjectIdBrandRadarRoute: ProjectProjectIdBrandRadarRoute,
   ProjectProjectIdCompetitorsRoute: ProjectProjectIdCompetitorsRoute,
@@ -335,19 +335,10 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectProjectIdRankTrackerRoute: ProjectProjectIdRankTrackerRoute,
   ProjectProjectIdReportsRoute: ProjectProjectIdReportsRoute,
   ProjectProjectIdSiteAuditRoute: ProjectProjectIdSiteAuditRoute,
+  ProjectProjectIdSiteExplorerRoute: ProjectProjectIdSiteExplorerRoute,
   ProjectProjectIdToolsRoute: ProjectProjectIdToolsRoute,
   ProjectProjectIdWebAnalyticsRoute: ProjectProjectIdWebAnalyticsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
