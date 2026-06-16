@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/app/AppShell";
 import { Panel, Pill, StatusDot } from "@/components/app/Atoms";
 import { addProject, formatAgo, removeProject, useProjects } from "@/lib/project-store";
@@ -79,6 +79,8 @@ function DashboardPage() {
 
 function ProjectCard({ project: p }: { project: ReturnType<typeof useProjects>[number] }) {
   const isCrawling = p.status === "crawling";
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const statusCfg = {
     healthy: { tone: "ok" as const, label: "Fertig" },
     warning: { tone: "warn" as const, label: "Fertig" },
@@ -124,7 +126,9 @@ function ProjectCard({ project: p }: { project: ReturnType<typeof useProjects>[n
             <CheckCircle2 className="size-3" /> Fertig
           </span>
         )}
-        <span className="text-[11px] text-ink-subtle">· letztes Crawling {formatAgo(p.lastCrawl)}</span>
+        <span className="text-[11px] text-ink-subtle">
+          · letztes Crawling {mounted ? formatAgo(p.lastCrawl) : "…"}
+        </span>
       </div>
 
       <dl className="grid grid-cols-2 gap-3 text-xs">
