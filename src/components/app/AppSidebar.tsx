@@ -77,7 +77,7 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
         <div className="relative size-8 rounded-lg overflow-hidden grid place-items-center"
           style={{ background: "linear-gradient(135deg, var(--aurora-cyan), var(--aurora-violet))" }}>
           <span className="text-display font-bold text-[color:var(--background)] text-sm">V</span>
-          <div className="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-lg" />
+          <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-lg" />
         </div>
         <div className="flex flex-col leading-tight">
           <span className="text-display font-bold tracking-tight">Verity</span>
@@ -89,7 +89,7 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
       <div className="px-3 mb-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="w-full group flex items-center gap-2 rounded-xl border border-border bg-white/5 hover:bg-white/10 px-3 py-2.5 transition-colors">
+            <button className="w-full group flex items-center gap-2 rounded-xl border border-border bg-muted/50 hover:bg-muted px-3 py-2.5 transition-colors">
               <span className="text-lg">{project.countryFlag}</span>
               <div className="flex flex-col items-start min-w-0 flex-1">
                 <span className="text-[10px] text-muted-foreground text-mono uppercase tracking-widest">Project</span>
@@ -116,7 +116,7 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
       <div className="px-3 mb-4">
         <button
           onClick={onOpenCommandPalette}
-          className="w-full flex items-center gap-2 rounded-xl border border-border bg-white/[0.03] hover:bg-white/[0.07] px-3 py-2 transition-colors text-left"
+          className="w-full flex items-center gap-2 rounded-xl border border-border bg-muted/40 hover:bg-muted/70 px-3 py-2 transition-colors text-left"
         >
           <Search className="size-3.5 text-muted-foreground" />
           <span className="text-xs text-muted-foreground flex-1">Quick search…</span>
@@ -142,8 +142,8 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
                     className={cn(
                       "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-all",
                       active
-                        ? "bg-white/[0.08] text-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]",
+                        ? "bg-muted text-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                     )}
                   >
                     {active && (
@@ -176,7 +176,7 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
       <div className="px-3 py-4 border-t border-border">
         <Link
           to="/settings"
-          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <Settings className="size-4" />
           <span>Settings</span>
