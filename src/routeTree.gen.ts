@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebAnalyticsRouteImport } from './routes/web-analytics'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SiteExplorerRouteImport } from './routes/site-explorer'
 import { Route as SiteAuditRouteImport } from './routes/site-audit'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RankTrackerRouteImport } from './routes/rank-tracker'
 import { Route as KeywordsRouteImport } from './routes/keywords'
@@ -26,6 +28,11 @@ const WebAnalyticsRoute = WebAnalyticsRouteImport.update({
   path: '/web-analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SiteExplorerRoute = SiteExplorerRouteImport.update({
   id: '/site-explorer',
   path: '/site-explorer',
@@ -34,6 +41,11 @@ const SiteExplorerRoute = SiteExplorerRouteImport.update({
 const SiteAuditRoute = SiteAuditRouteImport.update({
   id: '/site-audit',
   path: '/site-audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsRoute = ReportsRouteImport.update({
@@ -86,8 +98,10 @@ export interface FileRoutesByFullPath {
   '/keywords': typeof KeywordsRoute
   '/rank-tracker': typeof RankTrackerRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/site-audit': typeof SiteAuditRoute
   '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
   '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRoutesByTo {
@@ -99,8 +113,10 @@ export interface FileRoutesByTo {
   '/keywords': typeof KeywordsRoute
   '/rank-tracker': typeof RankTrackerRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/site-audit': typeof SiteAuditRoute
   '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
   '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRoutesById {
@@ -113,8 +129,10 @@ export interface FileRoutesById {
   '/keywords': typeof KeywordsRoute
   '/rank-tracker': typeof RankTrackerRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/site-audit': typeof SiteAuditRoute
   '/site-explorer': typeof SiteExplorerRoute
+  '/tools': typeof ToolsRoute
   '/web-analytics': typeof WebAnalyticsRoute
 }
 export interface FileRouteTypes {
@@ -128,8 +146,10 @@ export interface FileRouteTypes {
     | '/keywords'
     | '/rank-tracker'
     | '/reports'
+    | '/settings'
     | '/site-audit'
     | '/site-explorer'
+    | '/tools'
     | '/web-analytics'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -141,8 +161,10 @@ export interface FileRouteTypes {
     | '/keywords'
     | '/rank-tracker'
     | '/reports'
+    | '/settings'
     | '/site-audit'
     | '/site-explorer'
+    | '/tools'
     | '/web-analytics'
   id:
     | '__root__'
@@ -154,8 +176,10 @@ export interface FileRouteTypes {
     | '/keywords'
     | '/rank-tracker'
     | '/reports'
+    | '/settings'
     | '/site-audit'
     | '/site-explorer'
+    | '/tools'
     | '/web-analytics'
   fileRoutesById: FileRoutesById
 }
@@ -168,8 +192,10 @@ export interface RootRouteChildren {
   KeywordsRoute: typeof KeywordsRoute
   RankTrackerRoute: typeof RankTrackerRoute
   ReportsRoute: typeof ReportsRoute
+  SettingsRoute: typeof SettingsRoute
   SiteAuditRoute: typeof SiteAuditRoute
   SiteExplorerRoute: typeof SiteExplorerRoute
+  ToolsRoute: typeof ToolsRoute
   WebAnalyticsRoute: typeof WebAnalyticsRoute
 }
 
@@ -180,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/web-analytics'
       fullPath: '/web-analytics'
       preLoaderRoute: typeof WebAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/site-explorer': {
@@ -194,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/site-audit'
       fullPath: '/site-audit'
       preLoaderRoute: typeof SiteAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports': {
@@ -264,20 +304,12 @@ const rootRouteChildren: RootRouteChildren = {
   KeywordsRoute: KeywordsRoute,
   RankTrackerRoute: RankTrackerRoute,
   ReportsRoute: ReportsRoute,
+  SettingsRoute: SettingsRoute,
   SiteAuditRoute: SiteAuditRoute,
   SiteExplorerRoute: SiteExplorerRoute,
+  ToolsRoute: ToolsRoute,
   WebAnalyticsRoute: WebAnalyticsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
