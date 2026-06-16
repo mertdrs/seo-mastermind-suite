@@ -13,6 +13,7 @@ import {
   FileBarChart,
   Settings,
   Wrench,
+  Palette,
   ChevronsUpDown,
   Check,
 } from "lucide-react";
@@ -59,6 +60,12 @@ const NAV_GROUPS = [
       { to: "/brand-radar", label: "AI Visibility", icon: Sparkles, badge: "NEW" },
       { to: "/reports", label: "Report Builder", icon: FileBarChart },
       { to: "/tools", label: "Free SEO Tools", icon: Wrench },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { to: "/brand-guide", label: "Brand Guide", icon: Palette },
     ],
   },
 ] as const;
