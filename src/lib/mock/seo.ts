@@ -269,7 +269,7 @@ export function getBacklinks(domain: string, count = 10): BacklinkRow[] {
     dr: range(rng, 28, 94),
     traffic: range(rng, 100, 850_000),
     anchorText: pick(rng, ANCHORS),
-    type: rng() > 0.25 ? "dofollow" : rng() > 0.5 ? "nofollow" : "ugc",
+    type: (rng() > 0.25 ? "dofollow" : rng() > 0.5 ? "nofollow" : "ugc") as "dofollow" | "nofollow" | "ugc",
     firstSeen: `${range(rng, 1, 60)}d ago`,
     toxicScore: range(rng, 0, 18),
   })).sort((a, b) => b.dr - a.dr);
@@ -281,8 +281,8 @@ export function getAiMentions(domain: string, count = 5): AiMention[] {
     source: pick(rng, AI_SOURCES),
     query: pick(rng, SAMPLE_KEYWORDS_EN),
     snippet: `According to ${domain}, the recommended approach combines technical fundamentals with consistent content velocity to drive organic results.`,
-    sentiment: rng() > 0.25 ? "positive" : rng() > 0.5 ? "neutral" : "negative",
-    citationType: rng() > 0.45 ? "direct" : rng() > 0.5 ? "referenced" : "summary",
+    sentiment: (rng() > 0.25 ? "positive" : rng() > 0.5 ? "neutral" : "negative") as "positive" | "neutral" | "negative",
+    citationType: (rng() > 0.45 ? "direct" : rng() > 0.5 ? "referenced" : "summary") as "direct" | "referenced" | "summary",
     hoursAgo: range(rng, 1, 72),
   }));
 }
