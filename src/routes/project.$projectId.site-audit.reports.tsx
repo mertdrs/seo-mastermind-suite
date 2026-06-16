@@ -151,7 +151,7 @@ function Page() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-display text-2xl font-semibold tabular-nums">{data.score}%</span>
-                <HealthRing score={data.score} size={42} stroke={5} hideLabel />
+                <HealthRing score={data.score} size={56} label="" />
               </div>
             </header>
 
