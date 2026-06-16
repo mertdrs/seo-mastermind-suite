@@ -33,6 +33,11 @@ import { Route as ProjectProjectIdCompetitorsRouteImport } from './routes/projec
 import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project.$projectId.brand-radar'
 import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
 import { Route as ProjectProjectIdBacklinkCheckRouteImport } from './routes/project.$projectId.backlink-check'
+import { Route as ProjectProjectIdSiteAuditIndexRouteImport } from './routes/project.$projectId.site-audit.index'
+import { Route as ProjectProjectIdSiteAuditUnterseitenRouteImport } from './routes/project.$projectId.site-audit.unterseiten'
+import { Route as ProjectProjectIdSiteAuditUeberblickRouteImport } from './routes/project.$projectId.site-audit.ueberblick'
+import { Route as ProjectProjectIdSiteAuditStatistikenRouteImport } from './routes/project.$projectId.site-audit.statistiken'
+import { Route as ProjectProjectIdSiteAuditReportsRouteImport } from './routes/project.$projectId.site-audit.reports'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -169,6 +174,36 @@ const ProjectProjectIdBacklinkCheckRoute =
     path: '/backlink-check',
     getParentRoute: () => ProjectProjectIdRoute,
   } as any)
+const ProjectProjectIdSiteAuditIndexRoute =
+  ProjectProjectIdSiteAuditIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditUnterseitenRoute =
+  ProjectProjectIdSiteAuditUnterseitenRouteImport.update({
+    id: '/unterseiten',
+    path: '/unterseiten',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditUeberblickRoute =
+  ProjectProjectIdSiteAuditUeberblickRouteImport.update({
+    id: '/ueberblick',
+    path: '/ueberblick',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditStatistikenRoute =
+  ProjectProjectIdSiteAuditStatistikenRouteImport.update({
+    id: '/statistiken',
+    path: '/statistiken',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
+const ProjectProjectIdSiteAuditReportsRoute =
+  ProjectProjectIdSiteAuditReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => ProjectProjectIdSiteAuditRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -190,11 +225,16 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
   '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
   '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
-  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRouteWithChildren
   '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
+  '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -216,11 +256,15 @@ export interface FileRoutesByTo {
   '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
   '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
   '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
-  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
   '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
+  '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -243,11 +287,16 @@ export interface FileRoutesById {
   '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
   '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
   '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
-  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRouteWithChildren
   '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
+  '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
+  '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
+  '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -276,6 +325,11 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
+    | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/site-audit/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -297,11 +351,15 @@ export interface FileRouteTypes {
     | '/project/$projectId/seo-check'
     | '/project/$projectId/seo-compare'
     | '/project/$projectId/serp-snippet'
-    | '/project/$projectId/site-audit'
     | '/project/$projectId/site-explorer'
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
+    | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/site-audit'
   id:
     | '__root__'
     | '/'
@@ -328,6 +386,11 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/site-audit/reports'
+    | '/project/$projectId/site-audit/statistiken'
+    | '/project/$projectId/site-audit/ueberblick'
+    | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/site-audit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -508,8 +571,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdBacklinkCheckRouteImport
       parentRoute: typeof ProjectProjectIdRoute
     }
+    '/project/$projectId/site-audit/': {
+      id: '/project/$projectId/site-audit/'
+      path: '/'
+      fullPath: '/project/$projectId/site-audit/'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditIndexRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
+    '/project/$projectId/site-audit/unterseiten': {
+      id: '/project/$projectId/site-audit/unterseiten'
+      path: '/unterseiten'
+      fullPath: '/project/$projectId/site-audit/unterseiten'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditUnterseitenRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
+    '/project/$projectId/site-audit/ueberblick': {
+      id: '/project/$projectId/site-audit/ueberblick'
+      path: '/ueberblick'
+      fullPath: '/project/$projectId/site-audit/ueberblick'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditUeberblickRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
+    '/project/$projectId/site-audit/statistiken': {
+      id: '/project/$projectId/site-audit/statistiken'
+      path: '/statistiken'
+      fullPath: '/project/$projectId/site-audit/statistiken'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditStatistikenRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
+    '/project/$projectId/site-audit/reports': {
+      id: '/project/$projectId/site-audit/reports'
+      path: '/reports'
+      fullPath: '/project/$projectId/site-audit/reports'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditReportsRouteImport
+      parentRoute: typeof ProjectProjectIdSiteAuditRoute
+    }
   }
 }
+
+interface ProjectProjectIdSiteAuditRouteChildren {
+  ProjectProjectIdSiteAuditReportsRoute: typeof ProjectProjectIdSiteAuditReportsRoute
+  ProjectProjectIdSiteAuditStatistikenRoute: typeof ProjectProjectIdSiteAuditStatistikenRoute
+  ProjectProjectIdSiteAuditUeberblickRoute: typeof ProjectProjectIdSiteAuditUeberblickRoute
+  ProjectProjectIdSiteAuditUnterseitenRoute: typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  ProjectProjectIdSiteAuditIndexRoute: typeof ProjectProjectIdSiteAuditIndexRoute
+}
+
+const ProjectProjectIdSiteAuditRouteChildren: ProjectProjectIdSiteAuditRouteChildren =
+  {
+    ProjectProjectIdSiteAuditReportsRoute:
+      ProjectProjectIdSiteAuditReportsRoute,
+    ProjectProjectIdSiteAuditStatistikenRoute:
+      ProjectProjectIdSiteAuditStatistikenRoute,
+    ProjectProjectIdSiteAuditUeberblickRoute:
+      ProjectProjectIdSiteAuditUeberblickRoute,
+    ProjectProjectIdSiteAuditUnterseitenRoute:
+      ProjectProjectIdSiteAuditUnterseitenRoute,
+    ProjectProjectIdSiteAuditIndexRoute: ProjectProjectIdSiteAuditIndexRoute,
+  }
+
+const ProjectProjectIdSiteAuditRouteWithChildren =
+  ProjectProjectIdSiteAuditRoute._addFileChildren(
+    ProjectProjectIdSiteAuditRouteChildren,
+  )
 
 interface ProjectProjectIdRouteChildren {
   ProjectProjectIdBacklinkCheckRoute: typeof ProjectProjectIdBacklinkCheckRoute
@@ -526,7 +650,7 @@ interface ProjectProjectIdRouteChildren {
   ProjectProjectIdSeoCheckRoute: typeof ProjectProjectIdSeoCheckRoute
   ProjectProjectIdSeoCompareRoute: typeof ProjectProjectIdSeoCompareRoute
   ProjectProjectIdSerpSnippetRoute: typeof ProjectProjectIdSerpSnippetRoute
-  ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRoute
+  ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRouteWithChildren
   ProjectProjectIdSiteExplorerRoute: typeof ProjectProjectIdSiteExplorerRoute
   ProjectProjectIdToolsRoute: typeof ProjectProjectIdToolsRoute
   ProjectProjectIdWdfIdfRoute: typeof ProjectProjectIdWdfIdfRoute
@@ -548,7 +672,7 @@ const ProjectProjectIdRouteChildren: ProjectProjectIdRouteChildren = {
   ProjectProjectIdSeoCheckRoute: ProjectProjectIdSeoCheckRoute,
   ProjectProjectIdSeoCompareRoute: ProjectProjectIdSeoCompareRoute,
   ProjectProjectIdSerpSnippetRoute: ProjectProjectIdSerpSnippetRoute,
-  ProjectProjectIdSiteAuditRoute: ProjectProjectIdSiteAuditRoute,
+  ProjectProjectIdSiteAuditRoute: ProjectProjectIdSiteAuditRouteWithChildren,
   ProjectProjectIdSiteExplorerRoute: ProjectProjectIdSiteExplorerRoute,
   ProjectProjectIdToolsRoute: ProjectProjectIdToolsRoute,
   ProjectProjectIdWdfIdfRoute: ProjectProjectIdWdfIdfRoute,
