@@ -56,7 +56,7 @@ function DashboardPage() {
                   <span className="text-muted-foreground">{b.label}</span>
                   <span className="text-mono tabular-nums">{b.score}</span>
                 </div>
-                <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-1 rounded-full bg-muted/60 overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-700"
                     style={{
@@ -96,10 +96,10 @@ function DashboardPage() {
                 <Link
                   key={p.id}
                   to="/site-explorer"
-                  className="group relative rounded-xl border border-border bg-white/[0.03] hover:bg-white/[0.06] p-4 transition-all hover:-translate-y-0.5"
+                  className="group relative rounded-xl border border-border bg-muted/40 hover:bg-muted/60 p-4 transition-all hover:-translate-y-0.5"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="size-9 shrink-0 rounded-lg grid place-items-center text-lg bg-white/5">{p.countryFlag}</div>
+                    <div className="size-9 shrink-0 rounded-lg grid place-items-center text-lg bg-muted/50">{p.countryFlag}</div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-sm truncate">{p.domain}</span>
@@ -143,7 +143,7 @@ function DashboardPage() {
               const cfg = activityConfig(a.kind);
               const Icon = cfg.icon;
               return (
-                <li key={i} className="group flex items-start gap-3 rounded-lg px-3 py-2.5 hover:bg-white/[0.04] transition-colors">
+                <li key={i} className="group flex items-start gap-3 rounded-lg px-3 py-2.5 hover:bg-muted/50 transition-colors">
                   <div className="size-8 shrink-0 rounded-lg grid place-items-center" style={{ background: cfg.bg }}>
                     <Icon className="size-4" style={{ color: cfg.color }} />
                   </div>
@@ -182,7 +182,7 @@ function DashboardPage() {
             ].map((s) => (
               <div key={s.source} className="flex items-center gap-3">
                 <span className="text-xs font-medium w-32 truncate">{s.source}</span>
-                <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="flex-1 h-1.5 rounded-full bg-muted/60 overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${s.score}%`, background: "linear-gradient(90deg, var(--aurora-cyan), var(--aurora-violet))" }} />
                 </div>
                 <span className="text-[11px] text-mono tabular-nums w-10 text-right">{s.score}</span>
