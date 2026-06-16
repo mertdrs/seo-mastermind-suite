@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BrandGuideRouteImport } from './routes/brand-guide'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
 import { Route as ProjectProjectIdWebAnalyticsRouteImport } from './routes/project.$projectId.web-analytics'
 import { Route as ProjectProjectIdToolsRouteImport } from './routes/project.$projectId.tools'
 import { Route as ProjectProjectIdSiteExplorerRouteImport } from './routes/project.$projectId.site-explorer'
@@ -29,6 +31,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BrandGuideRoute = BrandGuideRouteImport.update({
   id: '/brand-guide',
   path: '/brand-guide',
@@ -39,74 +46,81 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
+  id: '/project/$projectId',
+  path: '/project/$projectId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectProjectIdWebAnalyticsRoute =
   ProjectProjectIdWebAnalyticsRouteImport.update({
-    id: '/project/$projectId/web-analytics',
-    path: '/project/$projectId/web-analytics',
-    getParentRoute: () => rootRouteImport,
+    id: '/web-analytics',
+    path: '/web-analytics',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdToolsRoute = ProjectProjectIdToolsRouteImport.update({
-  id: '/project/$projectId/tools',
-  path: '/project/$projectId/tools',
-  getParentRoute: () => rootRouteImport,
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => ProjectProjectIdRoute,
 } as any)
 const ProjectProjectIdSiteExplorerRoute =
   ProjectProjectIdSiteExplorerRouteImport.update({
-    id: '/project/$projectId/site-explorer',
-    path: '/project/$projectId/site-explorer',
-    getParentRoute: () => rootRouteImport,
+    id: '/site-explorer',
+    path: '/site-explorer',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdSiteAuditRoute =
   ProjectProjectIdSiteAuditRouteImport.update({
-    id: '/project/$projectId/site-audit',
-    path: '/project/$projectId/site-audit',
-    getParentRoute: () => rootRouteImport,
+    id: '/site-audit',
+    path: '/site-audit',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdReportsRoute = ProjectProjectIdReportsRouteImport.update({
-  id: '/project/$projectId/reports',
-  path: '/project/$projectId/reports',
-  getParentRoute: () => rootRouteImport,
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => ProjectProjectIdRoute,
 } as any)
 const ProjectProjectIdRankTrackerRoute =
   ProjectProjectIdRankTrackerRouteImport.update({
-    id: '/project/$projectId/rank-tracker',
-    path: '/project/$projectId/rank-tracker',
-    getParentRoute: () => rootRouteImport,
+    id: '/rank-tracker',
+    path: '/rank-tracker',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdKeywordsRoute =
   ProjectProjectIdKeywordsRouteImport.update({
-    id: '/project/$projectId/keywords',
-    path: '/project/$projectId/keywords',
-    getParentRoute: () => rootRouteImport,
+    id: '/keywords',
+    path: '/keywords',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdContentRoute = ProjectProjectIdContentRouteImport.update({
-  id: '/project/$projectId/content',
-  path: '/project/$projectId/content',
-  getParentRoute: () => rootRouteImport,
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => ProjectProjectIdRoute,
 } as any)
 const ProjectProjectIdCompetitorsRoute =
   ProjectProjectIdCompetitorsRouteImport.update({
-    id: '/project/$projectId/competitors',
-    path: '/project/$projectId/competitors',
-    getParentRoute: () => rootRouteImport,
+    id: '/competitors',
+    path: '/competitors',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdBrandRadarRoute =
   ProjectProjectIdBrandRadarRouteImport.update({
-    id: '/project/$projectId/brand-radar',
-    path: '/project/$projectId/brand-radar',
-    getParentRoute: () => rootRouteImport,
+    id: '/brand-radar',
+    path: '/brand-radar',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 const ProjectProjectIdBacklinksRoute =
   ProjectProjectIdBacklinksRouteImport.update({
-    id: '/project/$projectId/backlinks',
-    path: '/project/$projectId/backlinks',
-    getParentRoute: () => rootRouteImport,
+    id: '/backlinks',
+    path: '/backlinks',
+    getParentRoute: () => ProjectProjectIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -122,7 +136,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -139,7 +155,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/brand-guide': typeof BrandGuideRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
@@ -157,7 +175,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/brand-guide'
+    | '/dashboard'
     | '/settings'
+    | '/project/$projectId'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -173,7 +193,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/brand-guide'
+    | '/dashboard'
     | '/settings'
+    | '/project/$projectId'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -189,7 +211,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/brand-guide'
+    | '/dashboard'
     | '/settings'
+    | '/project/$projectId'
     | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
@@ -206,18 +230,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BrandGuideRoute: typeof BrandGuideRoute
+  DashboardRoute: typeof DashboardRoute
   SettingsRoute: typeof SettingsRoute
-  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
-  ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
-  ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
-  ProjectProjectIdContentRoute: typeof ProjectProjectIdContentRoute
-  ProjectProjectIdKeywordsRoute: typeof ProjectProjectIdKeywordsRoute
-  ProjectProjectIdRankTrackerRoute: typeof ProjectProjectIdRankTrackerRoute
-  ProjectProjectIdReportsRoute: typeof ProjectProjectIdReportsRoute
-  ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRoute
-  ProjectProjectIdSiteExplorerRoute: typeof ProjectProjectIdSiteExplorerRoute
-  ProjectProjectIdToolsRoute: typeof ProjectProjectIdToolsRoute
-  ProjectProjectIdWebAnalyticsRoute: typeof ProjectProjectIdWebAnalyticsRoute
+  ProjectProjectIdRoute: typeof ProjectProjectIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -227,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/brand-guide': {
@@ -243,90 +265,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project/$projectId': {
+      id: '/project/$projectId'
+      path: '/project/$projectId'
+      fullPath: '/project/$projectId'
+      preLoaderRoute: typeof ProjectProjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/project/$projectId/web-analytics': {
       id: '/project/$projectId/web-analytics'
-      path: '/project/$projectId/web-analytics'
+      path: '/web-analytics'
       fullPath: '/project/$projectId/web-analytics'
       preLoaderRoute: typeof ProjectProjectIdWebAnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/tools': {
       id: '/project/$projectId/tools'
-      path: '/project/$projectId/tools'
+      path: '/tools'
       fullPath: '/project/$projectId/tools'
       preLoaderRoute: typeof ProjectProjectIdToolsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/site-explorer': {
       id: '/project/$projectId/site-explorer'
-      path: '/project/$projectId/site-explorer'
+      path: '/site-explorer'
       fullPath: '/project/$projectId/site-explorer'
       preLoaderRoute: typeof ProjectProjectIdSiteExplorerRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/site-audit': {
       id: '/project/$projectId/site-audit'
-      path: '/project/$projectId/site-audit'
+      path: '/site-audit'
       fullPath: '/project/$projectId/site-audit'
       preLoaderRoute: typeof ProjectProjectIdSiteAuditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/reports': {
       id: '/project/$projectId/reports'
-      path: '/project/$projectId/reports'
+      path: '/reports'
       fullPath: '/project/$projectId/reports'
       preLoaderRoute: typeof ProjectProjectIdReportsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/rank-tracker': {
       id: '/project/$projectId/rank-tracker'
-      path: '/project/$projectId/rank-tracker'
+      path: '/rank-tracker'
       fullPath: '/project/$projectId/rank-tracker'
       preLoaderRoute: typeof ProjectProjectIdRankTrackerRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/keywords': {
       id: '/project/$projectId/keywords'
-      path: '/project/$projectId/keywords'
+      path: '/keywords'
       fullPath: '/project/$projectId/keywords'
       preLoaderRoute: typeof ProjectProjectIdKeywordsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/content': {
       id: '/project/$projectId/content'
-      path: '/project/$projectId/content'
+      path: '/content'
       fullPath: '/project/$projectId/content'
       preLoaderRoute: typeof ProjectProjectIdContentRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/competitors': {
       id: '/project/$projectId/competitors'
-      path: '/project/$projectId/competitors'
+      path: '/competitors'
       fullPath: '/project/$projectId/competitors'
       preLoaderRoute: typeof ProjectProjectIdCompetitorsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/brand-radar': {
       id: '/project/$projectId/brand-radar'
-      path: '/project/$projectId/brand-radar'
+      path: '/brand-radar'
       fullPath: '/project/$projectId/brand-radar'
       preLoaderRoute: typeof ProjectProjectIdBrandRadarRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
     '/project/$projectId/backlinks': {
       id: '/project/$projectId/backlinks'
-      path: '/project/$projectId/backlinks'
+      path: '/backlinks'
       fullPath: '/project/$projectId/backlinks'
       preLoaderRoute: typeof ProjectProjectIdBacklinksRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  BrandGuideRoute: BrandGuideRoute,
-  SettingsRoute: SettingsRoute,
+interface ProjectProjectIdRouteChildren {
+  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
+  ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
+  ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
+  ProjectProjectIdContentRoute: typeof ProjectProjectIdContentRoute
+  ProjectProjectIdKeywordsRoute: typeof ProjectProjectIdKeywordsRoute
+  ProjectProjectIdRankTrackerRoute: typeof ProjectProjectIdRankTrackerRoute
+  ProjectProjectIdReportsRoute: typeof ProjectProjectIdReportsRoute
+  ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRoute
+  ProjectProjectIdSiteExplorerRoute: typeof ProjectProjectIdSiteExplorerRoute
+  ProjectProjectIdToolsRoute: typeof ProjectProjectIdToolsRoute
+  ProjectProjectIdWebAnalyticsRoute: typeof ProjectProjectIdWebAnalyticsRoute
+}
+
+const ProjectProjectIdRouteChildren: ProjectProjectIdRouteChildren = {
   ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRoute,
   ProjectProjectIdBrandRadarRoute: ProjectProjectIdBrandRadarRoute,
   ProjectProjectIdCompetitorsRoute: ProjectProjectIdCompetitorsRoute,
@@ -338,6 +378,17 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectProjectIdSiteExplorerRoute: ProjectProjectIdSiteExplorerRoute,
   ProjectProjectIdToolsRoute: ProjectProjectIdToolsRoute,
   ProjectProjectIdWebAnalyticsRoute: ProjectProjectIdWebAnalyticsRoute,
+}
+
+const ProjectProjectIdRouteWithChildren =
+  ProjectProjectIdRoute._addFileChildren(ProjectProjectIdRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  BrandGuideRoute: BrandGuideRoute,
+  DashboardRoute: DashboardRoute,
+  SettingsRoute: SettingsRoute,
+  ProjectProjectIdRoute: ProjectProjectIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
