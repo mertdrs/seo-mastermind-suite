@@ -31,7 +31,7 @@ import {
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/keywords")({
+export const Route = createFileRoute("/project/$projectId/keywords")({
   head: () => ({
     meta: [
       { title: "Keywords Explorer — Verity" },

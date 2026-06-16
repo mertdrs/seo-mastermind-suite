@@ -18,7 +18,7 @@ import { ChartTooltip, IconButton, Panel, Pill, Td, Th } from "@/components/app/
 import { getBacklinks, getReferringDomainsGrowth } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/backlinks")({
+export const Route = createFileRoute("/project/$projectId/backlinks")({
   head: () => ({
     meta: [
       { title: "Backlinks — Verity" },

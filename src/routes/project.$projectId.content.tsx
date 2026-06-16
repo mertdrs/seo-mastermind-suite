@@ -15,7 +15,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, Chip, IconButton, Panel, Pill, SegmentedControl, Td, Th } from "@/components/app/Atoms";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/content")({
+export const Route = createFileRoute("/project/$projectId/content")({
   head: () => ({
     meta: [
       { title: "Content Explorer — Verity" },

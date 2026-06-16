@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/app/AppShell";
 
-export const Route = createFileRoute("/tools")({
+export const Route = createFileRoute("/project/$projectId/tools")({
   head: () => ({ meta: [{ title: "Tools — Verity" }] }),
   component: Page,
 });

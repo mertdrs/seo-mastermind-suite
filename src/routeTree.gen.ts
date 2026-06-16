@@ -9,74 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WebAnalyticsRouteImport } from './routes/web-analytics'
-import { Route as ToolsRouteImport } from './routes/tools'
-import { Route as SiteExplorerRouteImport } from './routes/site-explorer'
-import { Route as SiteAuditRouteImport } from './routes/site-audit'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as ReportsRouteImport } from './routes/reports'
-import { Route as RankTrackerRouteImport } from './routes/rank-tracker'
-import { Route as KeywordsRouteImport } from './routes/keywords'
-import { Route as ContentRouteImport } from './routes/content'
-import { Route as CompetitorsRouteImport } from './routes/competitors'
-import { Route as BrandRadarRouteImport } from './routes/brand-radar'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BrandGuideRouteImport } from './routes/brand-guide'
-import { Route as BacklinksRouteImport } from './routes/backlinks'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
+import { Route as ProjectProjectIdWebAnalyticsRouteImport } from './routes/project.$projectId.web-analytics'
+import { Route as ProjectProjectIdWdfIdfRouteImport } from './routes/project.$projectId.wdf-idf'
+import { Route as ProjectProjectIdToolsRouteImport } from './routes/project.$projectId.tools'
+import { Route as ProjectProjectIdSiteExplorerRouteImport } from './routes/project.$projectId.site-explorer'
+import { Route as ProjectProjectIdSiteAuditRouteImport } from './routes/project.$projectId.site-audit'
+import { Route as ProjectProjectIdSerpSnippetRouteImport } from './routes/project.$projectId.serp-snippet'
+import { Route as ProjectProjectIdSeoCompareRouteImport } from './routes/project.$projectId.seo-compare'
+import { Route as ProjectProjectIdSeoCheckRouteImport } from './routes/project.$projectId.seo-check'
+import { Route as ProjectProjectIdReportsRouteImport } from './routes/project.$projectId.reports'
+import { Route as ProjectProjectIdRankingCheckRouteImport } from './routes/project.$projectId.ranking-check'
+import { Route as ProjectProjectIdRankTrackerRouteImport } from './routes/project.$projectId.rank-tracker'
+import { Route as ProjectProjectIdKeywordsRouteImport } from './routes/project.$projectId.keywords'
+import { Route as ProjectProjectIdKeywordRechercheRouteImport } from './routes/project.$projectId.keyword-recherche'
+import { Route as ProjectProjectIdKeywordCheckRouteImport } from './routes/project.$projectId.keyword-check'
+import { Route as ProjectProjectIdContentRouteImport } from './routes/project.$projectId.content'
+import { Route as ProjectProjectIdCompetitorsRouteImport } from './routes/project.$projectId.competitors'
+import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project.$projectId.brand-radar'
+import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
+import { Route as ProjectProjectIdBacklinkCheckRouteImport } from './routes/project.$projectId.backlink-check'
 
-const WebAnalyticsRoute = WebAnalyticsRouteImport.update({
-  id: '/web-analytics',
-  path: '/web-analytics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsRoute = ToolsRouteImport.update({
-  id: '/tools',
-  path: '/tools',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SiteExplorerRoute = SiteExplorerRouteImport.update({
-  id: '/site-explorer',
-  path: '/site-explorer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SiteAuditRoute = SiteAuditRouteImport.update({
-  id: '/site-audit',
-  path: '/site-audit',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReportsRoute = ReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RankTrackerRoute = RankTrackerRouteImport.update({
-  id: '/rank-tracker',
-  path: '/rank-tracker',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KeywordsRoute = KeywordsRouteImport.update({
-  id: '/keywords',
-  path: '/keywords',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContentRoute = ContentRouteImport.update({
-  id: '/content',
-  path: '/content',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompetitorsRoute = CompetitorsRouteImport.update({
-  id: '/competitors',
-  path: '/competitors',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BrandRadarRoute = BrandRadarRouteImport.update({
-  id: '/brand-radar',
-  path: '/brand-radar',
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BrandGuideRoute = BrandGuideRouteImport.update({
@@ -84,164 +49,297 @@ const BrandGuideRoute = BrandGuideRouteImport.update({
   path: '/brand-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BacklinksRoute = BacklinksRouteImport.update({
-  id: '/backlinks',
-  path: '/backlinks',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
+  id: '/project/$projectId',
+  path: '/project/$projectId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectProjectIdWebAnalyticsRoute =
+  ProjectProjectIdWebAnalyticsRouteImport.update({
+    id: '/web-analytics',
+    path: '/web-analytics',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdWdfIdfRoute = ProjectProjectIdWdfIdfRouteImport.update({
+  id: '/wdf-idf',
+  path: '/wdf-idf',
+  getParentRoute: () => ProjectProjectIdRoute,
+} as any)
+const ProjectProjectIdToolsRoute = ProjectProjectIdToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => ProjectProjectIdRoute,
+} as any)
+const ProjectProjectIdSiteExplorerRoute =
+  ProjectProjectIdSiteExplorerRouteImport.update({
+    id: '/site-explorer',
+    path: '/site-explorer',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdSiteAuditRoute =
+  ProjectProjectIdSiteAuditRouteImport.update({
+    id: '/site-audit',
+    path: '/site-audit',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdSerpSnippetRoute =
+  ProjectProjectIdSerpSnippetRouteImport.update({
+    id: '/serp-snippet',
+    path: '/serp-snippet',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdSeoCompareRoute =
+  ProjectProjectIdSeoCompareRouteImport.update({
+    id: '/seo-compare',
+    path: '/seo-compare',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdSeoCheckRoute =
+  ProjectProjectIdSeoCheckRouteImport.update({
+    id: '/seo-check',
+    path: '/seo-check',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdReportsRoute = ProjectProjectIdReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => ProjectProjectIdRoute,
+} as any)
+const ProjectProjectIdRankingCheckRoute =
+  ProjectProjectIdRankingCheckRouteImport.update({
+    id: '/ranking-check',
+    path: '/ranking-check',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdRankTrackerRoute =
+  ProjectProjectIdRankTrackerRouteImport.update({
+    id: '/rank-tracker',
+    path: '/rank-tracker',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdKeywordsRoute =
+  ProjectProjectIdKeywordsRouteImport.update({
+    id: '/keywords',
+    path: '/keywords',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdKeywordRechercheRoute =
+  ProjectProjectIdKeywordRechercheRouteImport.update({
+    id: '/keyword-recherche',
+    path: '/keyword-recherche',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdKeywordCheckRoute =
+  ProjectProjectIdKeywordCheckRouteImport.update({
+    id: '/keyword-check',
+    path: '/keyword-check',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdContentRoute = ProjectProjectIdContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => ProjectProjectIdRoute,
+} as any)
+const ProjectProjectIdCompetitorsRoute =
+  ProjectProjectIdCompetitorsRouteImport.update({
+    id: '/competitors',
+    path: '/competitors',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdBrandRadarRoute =
+  ProjectProjectIdBrandRadarRouteImport.update({
+    id: '/brand-radar',
+    path: '/brand-radar',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdBacklinksRoute =
+  ProjectProjectIdBacklinksRouteImport.update({
+    id: '/backlinks',
+    path: '/backlinks',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
+const ProjectProjectIdBacklinkCheckRoute =
+  ProjectProjectIdBacklinkCheckRouteImport.update({
+    id: '/backlink-check',
+    path: '/backlink-check',
+    getParentRoute: () => ProjectProjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/backlinks': typeof BacklinksRoute
   '/brand-guide': typeof BrandGuideRoute
-  '/brand-radar': typeof BrandRadarRoute
-  '/competitors': typeof CompetitorsRoute
-  '/content': typeof ContentRoute
-  '/keywords': typeof KeywordsRoute
-  '/rank-tracker': typeof RankTrackerRoute
-  '/reports': typeof ReportsRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
-  '/site-audit': typeof SiteAuditRoute
-  '/site-explorer': typeof SiteExplorerRoute
-  '/tools': typeof ToolsRoute
-  '/web-analytics': typeof WebAnalyticsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
+  '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
+  '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
+  '/project/$projectId/content': typeof ProjectProjectIdContentRoute
+  '/project/$projectId/keyword-check': typeof ProjectProjectIdKeywordCheckRoute
+  '/project/$projectId/keyword-recherche': typeof ProjectProjectIdKeywordRechercheRoute
+  '/project/$projectId/keywords': typeof ProjectProjectIdKeywordsRoute
+  '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
+  '/project/$projectId/ranking-check': typeof ProjectProjectIdRankingCheckRoute
+  '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
+  '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
+  '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
+  '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
+  '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
+  '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
+  '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/backlinks': typeof BacklinksRoute
   '/brand-guide': typeof BrandGuideRoute
-  '/brand-radar': typeof BrandRadarRoute
-  '/competitors': typeof CompetitorsRoute
-  '/content': typeof ContentRoute
-  '/keywords': typeof KeywordsRoute
-  '/rank-tracker': typeof RankTrackerRoute
-  '/reports': typeof ReportsRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
-  '/site-audit': typeof SiteAuditRoute
-  '/site-explorer': typeof SiteExplorerRoute
-  '/tools': typeof ToolsRoute
-  '/web-analytics': typeof WebAnalyticsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
+  '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
+  '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
+  '/project/$projectId/content': typeof ProjectProjectIdContentRoute
+  '/project/$projectId/keyword-check': typeof ProjectProjectIdKeywordCheckRoute
+  '/project/$projectId/keyword-recherche': typeof ProjectProjectIdKeywordRechercheRoute
+  '/project/$projectId/keywords': typeof ProjectProjectIdKeywordsRoute
+  '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
+  '/project/$projectId/ranking-check': typeof ProjectProjectIdRankingCheckRoute
+  '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
+  '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
+  '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
+  '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
+  '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
+  '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
+  '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/backlinks': typeof BacklinksRoute
   '/brand-guide': typeof BrandGuideRoute
-  '/brand-radar': typeof BrandRadarRoute
-  '/competitors': typeof CompetitorsRoute
-  '/content': typeof ContentRoute
-  '/keywords': typeof KeywordsRoute
-  '/rank-tracker': typeof RankTrackerRoute
-  '/reports': typeof ReportsRoute
+  '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
-  '/site-audit': typeof SiteAuditRoute
-  '/site-explorer': typeof SiteExplorerRoute
-  '/tools': typeof ToolsRoute
-  '/web-analytics': typeof WebAnalyticsRoute
+  '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
+  '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
+  '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
+  '/project/$projectId/content': typeof ProjectProjectIdContentRoute
+  '/project/$projectId/keyword-check': typeof ProjectProjectIdKeywordCheckRoute
+  '/project/$projectId/keyword-recherche': typeof ProjectProjectIdKeywordRechercheRoute
+  '/project/$projectId/keywords': typeof ProjectProjectIdKeywordsRoute
+  '/project/$projectId/rank-tracker': typeof ProjectProjectIdRankTrackerRoute
+  '/project/$projectId/ranking-check': typeof ProjectProjectIdRankingCheckRoute
+  '/project/$projectId/reports': typeof ProjectProjectIdReportsRoute
+  '/project/$projectId/seo-check': typeof ProjectProjectIdSeoCheckRoute
+  '/project/$projectId/seo-compare': typeof ProjectProjectIdSeoCompareRoute
+  '/project/$projectId/serp-snippet': typeof ProjectProjectIdSerpSnippetRoute
+  '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditRoute
+  '/project/$projectId/site-explorer': typeof ProjectProjectIdSiteExplorerRoute
+  '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
+  '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
+  '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/backlinks'
     | '/brand-guide'
-    | '/brand-radar'
-    | '/competitors'
-    | '/content'
-    | '/keywords'
-    | '/rank-tracker'
-    | '/reports'
+    | '/dashboard'
     | '/settings'
-    | '/site-audit'
-    | '/site-explorer'
-    | '/tools'
-    | '/web-analytics'
+    | '/project/$projectId'
+    | '/project/$projectId/backlink-check'
+    | '/project/$projectId/backlinks'
+    | '/project/$projectId/brand-radar'
+    | '/project/$projectId/competitors'
+    | '/project/$projectId/content'
+    | '/project/$projectId/keyword-check'
+    | '/project/$projectId/keyword-recherche'
+    | '/project/$projectId/keywords'
+    | '/project/$projectId/rank-tracker'
+    | '/project/$projectId/ranking-check'
+    | '/project/$projectId/reports'
+    | '/project/$projectId/seo-check'
+    | '/project/$projectId/seo-compare'
+    | '/project/$projectId/serp-snippet'
+    | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
+    | '/project/$projectId/tools'
+    | '/project/$projectId/wdf-idf'
+    | '/project/$projectId/web-analytics'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/backlinks'
     | '/brand-guide'
-    | '/brand-radar'
-    | '/competitors'
-    | '/content'
-    | '/keywords'
-    | '/rank-tracker'
-    | '/reports'
+    | '/dashboard'
     | '/settings'
-    | '/site-audit'
-    | '/site-explorer'
-    | '/tools'
-    | '/web-analytics'
+    | '/project/$projectId'
+    | '/project/$projectId/backlink-check'
+    | '/project/$projectId/backlinks'
+    | '/project/$projectId/brand-radar'
+    | '/project/$projectId/competitors'
+    | '/project/$projectId/content'
+    | '/project/$projectId/keyword-check'
+    | '/project/$projectId/keyword-recherche'
+    | '/project/$projectId/keywords'
+    | '/project/$projectId/rank-tracker'
+    | '/project/$projectId/ranking-check'
+    | '/project/$projectId/reports'
+    | '/project/$projectId/seo-check'
+    | '/project/$projectId/seo-compare'
+    | '/project/$projectId/serp-snippet'
+    | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
+    | '/project/$projectId/tools'
+    | '/project/$projectId/wdf-idf'
+    | '/project/$projectId/web-analytics'
   id:
     | '__root__'
     | '/'
-    | '/backlinks'
     | '/brand-guide'
-    | '/brand-radar'
-    | '/competitors'
-    | '/content'
-    | '/keywords'
-    | '/rank-tracker'
-    | '/reports'
+    | '/dashboard'
     | '/settings'
-    | '/site-audit'
-    | '/site-explorer'
-    | '/tools'
-    | '/web-analytics'
+    | '/project/$projectId'
+    | '/project/$projectId/backlink-check'
+    | '/project/$projectId/backlinks'
+    | '/project/$projectId/brand-radar'
+    | '/project/$projectId/competitors'
+    | '/project/$projectId/content'
+    | '/project/$projectId/keyword-check'
+    | '/project/$projectId/keyword-recherche'
+    | '/project/$projectId/keywords'
+    | '/project/$projectId/rank-tracker'
+    | '/project/$projectId/ranking-check'
+    | '/project/$projectId/reports'
+    | '/project/$projectId/seo-check'
+    | '/project/$projectId/seo-compare'
+    | '/project/$projectId/serp-snippet'
+    | '/project/$projectId/site-audit'
+    | '/project/$projectId/site-explorer'
+    | '/project/$projectId/tools'
+    | '/project/$projectId/wdf-idf'
+    | '/project/$projectId/web-analytics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BacklinksRoute: typeof BacklinksRoute
   BrandGuideRoute: typeof BrandGuideRoute
-  BrandRadarRoute: typeof BrandRadarRoute
-  CompetitorsRoute: typeof CompetitorsRoute
-  ContentRoute: typeof ContentRoute
-  KeywordsRoute: typeof KeywordsRoute
-  RankTrackerRoute: typeof RankTrackerRoute
-  ReportsRoute: typeof ReportsRoute
+  DashboardRoute: typeof DashboardRoute
   SettingsRoute: typeof SettingsRoute
-  SiteAuditRoute: typeof SiteAuditRoute
-  SiteExplorerRoute: typeof SiteExplorerRoute
-  ToolsRoute: typeof ToolsRoute
-  WebAnalyticsRoute: typeof WebAnalyticsRoute
+  ProjectProjectIdRoute: typeof ProjectProjectIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/web-analytics': {
-      id: '/web-analytics'
-      path: '/web-analytics'
-      fullPath: '/web-analytics'
-      preLoaderRoute: typeof WebAnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools': {
-      id: '/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof ToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/site-explorer': {
-      id: '/site-explorer'
-      path: '/site-explorer'
-      fullPath: '/site-explorer'
-      preLoaderRoute: typeof SiteExplorerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/site-audit': {
-      id: '/site-audit'
-      path: '/site-audit'
-      fullPath: '/site-audit'
-      preLoaderRoute: typeof SiteAuditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -249,46 +347,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reports': {
-      id: '/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof ReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rank-tracker': {
-      id: '/rank-tracker'
-      path: '/rank-tracker'
-      fullPath: '/rank-tracker'
-      preLoaderRoute: typeof RankTrackerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/keywords': {
-      id: '/keywords'
-      path: '/keywords'
-      fullPath: '/keywords'
-      preLoaderRoute: typeof KeywordsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/content': {
-      id: '/content'
-      path: '/content'
-      fullPath: '/content'
-      preLoaderRoute: typeof ContentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/competitors': {
-      id: '/competitors'
-      path: '/competitors'
-      fullPath: '/competitors'
-      preLoaderRoute: typeof CompetitorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/brand-radar': {
-      id: '/brand-radar'
-      path: '/brand-radar'
-      fullPath: '/brand-radar'
-      preLoaderRoute: typeof BrandRadarRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/brand-guide': {
@@ -298,13 +361,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/backlinks': {
-      id: '/backlinks'
-      path: '/backlinks'
-      fullPath: '/backlinks'
-      preLoaderRoute: typeof BacklinksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -312,24 +368,202 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project/$projectId': {
+      id: '/project/$projectId'
+      path: '/project/$projectId'
+      fullPath: '/project/$projectId'
+      preLoaderRoute: typeof ProjectProjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/project/$projectId/web-analytics': {
+      id: '/project/$projectId/web-analytics'
+      path: '/web-analytics'
+      fullPath: '/project/$projectId/web-analytics'
+      preLoaderRoute: typeof ProjectProjectIdWebAnalyticsRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/wdf-idf': {
+      id: '/project/$projectId/wdf-idf'
+      path: '/wdf-idf'
+      fullPath: '/project/$projectId/wdf-idf'
+      preLoaderRoute: typeof ProjectProjectIdWdfIdfRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/tools': {
+      id: '/project/$projectId/tools'
+      path: '/tools'
+      fullPath: '/project/$projectId/tools'
+      preLoaderRoute: typeof ProjectProjectIdToolsRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/site-explorer': {
+      id: '/project/$projectId/site-explorer'
+      path: '/site-explorer'
+      fullPath: '/project/$projectId/site-explorer'
+      preLoaderRoute: typeof ProjectProjectIdSiteExplorerRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/site-audit': {
+      id: '/project/$projectId/site-audit'
+      path: '/site-audit'
+      fullPath: '/project/$projectId/site-audit'
+      preLoaderRoute: typeof ProjectProjectIdSiteAuditRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/serp-snippet': {
+      id: '/project/$projectId/serp-snippet'
+      path: '/serp-snippet'
+      fullPath: '/project/$projectId/serp-snippet'
+      preLoaderRoute: typeof ProjectProjectIdSerpSnippetRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/seo-compare': {
+      id: '/project/$projectId/seo-compare'
+      path: '/seo-compare'
+      fullPath: '/project/$projectId/seo-compare'
+      preLoaderRoute: typeof ProjectProjectIdSeoCompareRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/seo-check': {
+      id: '/project/$projectId/seo-check'
+      path: '/seo-check'
+      fullPath: '/project/$projectId/seo-check'
+      preLoaderRoute: typeof ProjectProjectIdSeoCheckRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/reports': {
+      id: '/project/$projectId/reports'
+      path: '/reports'
+      fullPath: '/project/$projectId/reports'
+      preLoaderRoute: typeof ProjectProjectIdReportsRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/ranking-check': {
+      id: '/project/$projectId/ranking-check'
+      path: '/ranking-check'
+      fullPath: '/project/$projectId/ranking-check'
+      preLoaderRoute: typeof ProjectProjectIdRankingCheckRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/rank-tracker': {
+      id: '/project/$projectId/rank-tracker'
+      path: '/rank-tracker'
+      fullPath: '/project/$projectId/rank-tracker'
+      preLoaderRoute: typeof ProjectProjectIdRankTrackerRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/keywords': {
+      id: '/project/$projectId/keywords'
+      path: '/keywords'
+      fullPath: '/project/$projectId/keywords'
+      preLoaderRoute: typeof ProjectProjectIdKeywordsRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/keyword-recherche': {
+      id: '/project/$projectId/keyword-recherche'
+      path: '/keyword-recherche'
+      fullPath: '/project/$projectId/keyword-recherche'
+      preLoaderRoute: typeof ProjectProjectIdKeywordRechercheRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/keyword-check': {
+      id: '/project/$projectId/keyword-check'
+      path: '/keyword-check'
+      fullPath: '/project/$projectId/keyword-check'
+      preLoaderRoute: typeof ProjectProjectIdKeywordCheckRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/content': {
+      id: '/project/$projectId/content'
+      path: '/content'
+      fullPath: '/project/$projectId/content'
+      preLoaderRoute: typeof ProjectProjectIdContentRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/competitors': {
+      id: '/project/$projectId/competitors'
+      path: '/competitors'
+      fullPath: '/project/$projectId/competitors'
+      preLoaderRoute: typeof ProjectProjectIdCompetitorsRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/brand-radar': {
+      id: '/project/$projectId/brand-radar'
+      path: '/brand-radar'
+      fullPath: '/project/$projectId/brand-radar'
+      preLoaderRoute: typeof ProjectProjectIdBrandRadarRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/backlinks': {
+      id: '/project/$projectId/backlinks'
+      path: '/backlinks'
+      fullPath: '/project/$projectId/backlinks'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
+    '/project/$projectId/backlink-check': {
+      id: '/project/$projectId/backlink-check'
+      path: '/backlink-check'
+      fullPath: '/project/$projectId/backlink-check'
+      preLoaderRoute: typeof ProjectProjectIdBacklinkCheckRouteImport
+      parentRoute: typeof ProjectProjectIdRoute
+    }
   }
 }
 
+interface ProjectProjectIdRouteChildren {
+  ProjectProjectIdBacklinkCheckRoute: typeof ProjectProjectIdBacklinkCheckRoute
+  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
+  ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
+  ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
+  ProjectProjectIdContentRoute: typeof ProjectProjectIdContentRoute
+  ProjectProjectIdKeywordCheckRoute: typeof ProjectProjectIdKeywordCheckRoute
+  ProjectProjectIdKeywordRechercheRoute: typeof ProjectProjectIdKeywordRechercheRoute
+  ProjectProjectIdKeywordsRoute: typeof ProjectProjectIdKeywordsRoute
+  ProjectProjectIdRankTrackerRoute: typeof ProjectProjectIdRankTrackerRoute
+  ProjectProjectIdRankingCheckRoute: typeof ProjectProjectIdRankingCheckRoute
+  ProjectProjectIdReportsRoute: typeof ProjectProjectIdReportsRoute
+  ProjectProjectIdSeoCheckRoute: typeof ProjectProjectIdSeoCheckRoute
+  ProjectProjectIdSeoCompareRoute: typeof ProjectProjectIdSeoCompareRoute
+  ProjectProjectIdSerpSnippetRoute: typeof ProjectProjectIdSerpSnippetRoute
+  ProjectProjectIdSiteAuditRoute: typeof ProjectProjectIdSiteAuditRoute
+  ProjectProjectIdSiteExplorerRoute: typeof ProjectProjectIdSiteExplorerRoute
+  ProjectProjectIdToolsRoute: typeof ProjectProjectIdToolsRoute
+  ProjectProjectIdWdfIdfRoute: typeof ProjectProjectIdWdfIdfRoute
+  ProjectProjectIdWebAnalyticsRoute: typeof ProjectProjectIdWebAnalyticsRoute
+}
+
+const ProjectProjectIdRouteChildren: ProjectProjectIdRouteChildren = {
+  ProjectProjectIdBacklinkCheckRoute: ProjectProjectIdBacklinkCheckRoute,
+  ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRoute,
+  ProjectProjectIdBrandRadarRoute: ProjectProjectIdBrandRadarRoute,
+  ProjectProjectIdCompetitorsRoute: ProjectProjectIdCompetitorsRoute,
+  ProjectProjectIdContentRoute: ProjectProjectIdContentRoute,
+  ProjectProjectIdKeywordCheckRoute: ProjectProjectIdKeywordCheckRoute,
+  ProjectProjectIdKeywordRechercheRoute: ProjectProjectIdKeywordRechercheRoute,
+  ProjectProjectIdKeywordsRoute: ProjectProjectIdKeywordsRoute,
+  ProjectProjectIdRankTrackerRoute: ProjectProjectIdRankTrackerRoute,
+  ProjectProjectIdRankingCheckRoute: ProjectProjectIdRankingCheckRoute,
+  ProjectProjectIdReportsRoute: ProjectProjectIdReportsRoute,
+  ProjectProjectIdSeoCheckRoute: ProjectProjectIdSeoCheckRoute,
+  ProjectProjectIdSeoCompareRoute: ProjectProjectIdSeoCompareRoute,
+  ProjectProjectIdSerpSnippetRoute: ProjectProjectIdSerpSnippetRoute,
+  ProjectProjectIdSiteAuditRoute: ProjectProjectIdSiteAuditRoute,
+  ProjectProjectIdSiteExplorerRoute: ProjectProjectIdSiteExplorerRoute,
+  ProjectProjectIdToolsRoute: ProjectProjectIdToolsRoute,
+  ProjectProjectIdWdfIdfRoute: ProjectProjectIdWdfIdfRoute,
+  ProjectProjectIdWebAnalyticsRoute: ProjectProjectIdWebAnalyticsRoute,
+}
+
+const ProjectProjectIdRouteWithChildren =
+  ProjectProjectIdRoute._addFileChildren(ProjectProjectIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BacklinksRoute: BacklinksRoute,
   BrandGuideRoute: BrandGuideRoute,
-  BrandRadarRoute: BrandRadarRoute,
-  CompetitorsRoute: CompetitorsRoute,
-  ContentRoute: ContentRoute,
-  KeywordsRoute: KeywordsRoute,
-  RankTrackerRoute: RankTrackerRoute,
-  ReportsRoute: ReportsRoute,
+  DashboardRoute: DashboardRoute,
   SettingsRoute: SettingsRoute,
-  SiteAuditRoute: SiteAuditRoute,
-  SiteExplorerRoute: SiteExplorerRoute,
-  ToolsRoute: ToolsRoute,
-  WebAnalyticsRoute: WebAnalyticsRoute,
+  ProjectProjectIdRoute: ProjectProjectIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

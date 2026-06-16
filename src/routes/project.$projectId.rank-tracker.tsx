@@ -18,7 +18,7 @@ import { ChartTooltip, Chip, Panel, Pill, SegmentedControl, Td, Th } from "@/com
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/rank-tracker")({
+export const Route = createFileRoute("/project/$projectId/rank-tracker")({
   head: () => ({
     meta: [
       { title: "Rank Tracker — Verity" },

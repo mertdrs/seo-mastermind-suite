@@ -18,7 +18,7 @@ import { ChartTooltip, Panel, Pill, Td, Th } from "@/components/app/Atoms";
 import { getAiMentions } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/brand-radar")({
+export const Route = createFileRoute("/project/$projectId/brand-radar")({
   head: () => ({
     meta: [
       { title: "AI Visibility — Verity" },
