@@ -295,26 +295,27 @@
   --ai-accent:        #2DD4BF;
   --ai-accent-bg:     #0A2F2A;
 
-  --status-success:   #22C55E;  --status-success-bg: #14321F;
-  --status-warning:   #F59E0B;  --status-warning-bg: #3B2A07;
-  --status-error:     #EF4444;  --status-error-bg:   #3B1414;
-  --status-info:      #3B82F6;  --status-info-bg:    #112A4A;
-  --status-neutral:   #94A3B8;  --status-neutral-bg: #1E293B;
+  /* Softer, less neon palette (dark) */
+  --status-success:   oklch(0.78 0.14 150);  --status-success-bg: oklch(0.28 0.05 150);
+  --status-warning:   oklch(0.80 0.12 75);   --status-warning-bg: oklch(0.28 0.05 75);
+  --status-error:     oklch(0.72 0.15 25);   --status-error-bg:   oklch(0.28 0.06 25);
+  --status-info:      oklch(0.74 0.12 250);  --status-info-bg:    oklch(0.28 0.05 250);
+  --status-neutral:   oklch(0.72 0.02 260);  --status-neutral-bg: oklch(0.26 0.01 260);
 
-  --trend-up:   #22C55E;
-  --trend-down: #EF4444;
-  --trend-flat: #94A3B8;
+  --trend-up:   oklch(0.78 0.14 150);
+  --trend-down: oklch(0.72 0.15 25);
+  --trend-flat: oklch(0.72 0.02 260);
 
-  --score-low:  #EF4444;
-  --score-mid:  #F59E0B;
-  --score-high: #22C55E;
+  --score-low:  oklch(0.72 0.15 25);
+  --score-mid:  oklch(0.80 0.12 75);
+  --score-high: oklch(0.78 0.14 150);
 
-  --series-1: #818CF8;
-  --series-2: #A78BFA;
-  --series-3: #F472B6;
-  --series-4: #38BDF8;
-  --series-5: #94A3B8;
-  --series-6: #D97706;
+  --series-1: oklch(0.74 0.12 265);
+  --series-2: oklch(0.74 0.12 300);
+  --series-3: oklch(0.74 0.13 340);
+  --series-4: oklch(0.78 0.11 220);
+  --series-5: oklch(0.72 0.02 260);
+  --series-6: oklch(0.75 0.11 70);
 }
 
 @layer base {
