@@ -15,7 +15,7 @@ export const Route = createFileRoute("/project/$projectId/backlinks")({
   component: Layout,
 });
 
-const TABS = [
+const TABS: { to: string; label: string; exact?: boolean }[] = [
   { to: "/project/$projectId/backlinks", label: "Übersicht", exact: true },
   { to: "/project/$projectId/backlinks/verweisende-domains", label: "Verweisende Domains" },
   { to: "/project/$projectId/backlinks/neu", label: "Neu" },
@@ -23,7 +23,7 @@ const TABS = [
   { to: "/project/$projectId/backlinks/anchors", label: "Anchors" },
   { to: "/project/$projectId/backlinks/defekte", label: "Defekte" },
   { to: "/project/$projectId/backlinks/disavow", label: "Disavow" },
-] as const;
+];
 
 function Layout() {
   const { projectId } = useParams({ from: "/project/$projectId/backlinks" });
@@ -45,7 +45,7 @@ function Layout() {
               return (
                 <Link
                   key={t.to}
-                  to={t.to}
+                  to={t.to as any}
                   params={{ projectId }}
                   role="tab"
                   aria-selected={active}
