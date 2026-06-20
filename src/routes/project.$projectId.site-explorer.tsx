@@ -203,7 +203,10 @@ function Page() {
                 <span className="flex items-center gap-2">
                   {t.label}
                   {t.badge && (
-                    <span className="rounded-md bg-[color:var(--signal)]/15 text-[10px] tracking-wide px-1.5 py-0.5 font-mono text-[color:var(--signal-foreground)]/80">
+                    <span
+                      className="rounded-md text-[10px] tracking-wide px-1.5 py-0.5 font-mono"
+                      style={{ background: "var(--ai-accent-bg)", color: "var(--ai-accent)" }}
+                    >
                       {t.badge}
                     </span>
                   )}
