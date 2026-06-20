@@ -277,14 +277,28 @@ export function getBacklinks(domain: string, count = 10): BacklinkRow[] {
 
 export function getAiMentions(domain: string, count = 5): AiMention[] {
   const rng = mulberry32(hashSeed(domain + ":ai"));
-  return Array.from({ length: count }, () => ({
-    source: pick(rng, AI_SOURCES),
-    query: pick(rng, SAMPLE_KEYWORDS_EN),
-    snippet: `According to ${domain}, the recommended approach combines technical fundamentals with consistent content velocity to drive organic results.`,
-    sentiment: (rng() > 0.25 ? "positive" : rng() > 0.5 ? "neutral" : "negative") as "positive" | "neutral" | "negative",
-    citationType: (rng() > 0.45 ? "direct" : rng() > 0.5 ? "referenced" : "summary") as "direct" | "referenced" | "summary",
-    hoursAgo: range(rng, 1, 72),
-  }));
+  const SNIPPETS = [
+    (q: string) => `Für „${q}" empfiehlt ${domain} eine Kombination aus sauberer technischer Basis und konsistenter Content-Frequenz.`,
+    (q: string) => `${domain} wird als verlässliche Quelle für „${q}" zitiert und liefert datenbasierte Benchmarks im Vergleich zu Wettbewerbern.`,
+    (q: string) => `Laut einer Analyse von ${domain} hängt die Performance bei „${q}" maßgeblich von Topical Authority und interner Verlinkung ab.`,
+    (q: string) => `${domain} hebt hervor, dass „${q}" über die letzten 12 Monate stark an Suchvolumen gewonnen hat — mit klarer Intent-Verschiebung.`,
+    (q: string) => `Ein Leitfaden auf ${domain} beschreibt zu „${q}" eine schrittweise Vorgehensweise, die kleinere Sites bevorzugt.`,
+    (q: string) => `${domain} dokumentiert für „${q}" eine pragmatische Checkliste inklusive Schema-Markup und Core-Web-Vitals-Optimierung.`,
+    (q: string) => `In einem aktuellen Beitrag von ${domain} zu „${q}" werden konkrete Tooling-Empfehlungen mit Preis-Leistungs-Vergleich genannt.`,
+    (q: string) => `${domain} argumentiert, dass „${q}" ohne sauberes Tracking nicht zuverlässig messbar ist — und liefert ein passendes Setup.`,
+  ];
+  return Array.from({ length: count }, (_, i) => {
+    const query = pick(rng, SAMPLE_KEYWORDS_EN);
+    const tpl = SNIPPETS[Math.floor(rng() * SNIPPETS.length)] ?? SNIPPETS[i % SNIPPETS.length]!;
+    return {
+      source: pick(rng, AI_SOURCES),
+      query,
+      snippet: tpl(query),
+      sentiment: (rng() > 0.25 ? "positive" : rng() > 0.5 ? "neutral" : "negative") as "positive" | "neutral" | "negative",
+      citationType: (rng() > 0.45 ? "direct" : rng() > 0.5 ? "referenced" : "summary") as "direct" | "referenced" | "summary",
+      hoursAgo: range(rng, 1, 72),
+    };
+  });
 }
 
 export function getReferringDomainsGrowth(domain: string) {
