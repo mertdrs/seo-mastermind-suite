@@ -1,10 +1,11 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import { AppShell } from "@/components/app/AppShell";
 import { Panel, Pill } from "@/components/app/Atoms";
 import { Input } from "@/components/ui/input";
 import { getProject } from "@/lib/project-store";
-import { Globe, Smartphone } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Copy, Globe, Smartphone } from "lucide-react";
 
 export const Route = createFileRoute("/project/$projectId/serp-snippet")({
   head: () => ({
@@ -25,11 +26,23 @@ function SerpSnippetPage() {
     "Bringe Deine Seiten in die Top-Rankings — bei Google und in den neuen KI-Antworten. Tracking, Audits & Optimierung in einem Tool.",
   );
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
+  const [copied, setCopied] = useState<"title" | "desc" | null>(null);
 
   const titleLen = title.length;
   const descLen = desc.length;
-  const titleTone = titleLen <= 30 ? "fail" : titleLen <= 60 ? "pass" : "warn";
-  const descTone = descLen <= 80 ? "fail" : descLen <= 160 ? "pass" : "warn";
+  // Pixel-Schätzung: ~7px pro Zeichen Title (Arial Bold 18px), ~6px Description.
+  const titlePx = useMemo(() => Math.round(title.length * 7.1), [title]);
+  const descPx = useMemo(() => Math.round(desc.length * 6.2), [desc]);
+  const titleMaxPx = device === "mobile" ? 480 : 580;
+  const descMaxPx = device === "mobile" ? 760 : 920;
+  const titleTone = titlePx > titleMaxPx ? "warn" : titleLen < 30 ? "fail" : "pass";
+  const descTone = descPx > descMaxPx ? "warn" : descLen < 80 ? "fail" : "pass";
+
+  function copy(kind: "title" | "desc") {
+    navigator.clipboard?.writeText(kind === "title" ? title : desc);
+    setCopied(kind);
+    setTimeout(() => setCopied(null), 1500);
+  }
 
   return (
     <AppShell title="SERP Snippet Generator" subtitle="Optimiere Title und Description und sieh die Google-Vorschau live.">
@@ -51,18 +64,34 @@ function SerpSnippetPage() {
             <FieldLabel label="URL">
               <Input value={url} onChange={(e) => setUrl(e.target.value)} />
             </FieldLabel>
-            <FieldLabel label={`Title · ${titleLen} Zeichen`}>
+            <FieldLabel
+              label={`Title · ${titleLen} Zeichen · ~${titlePx}px (Limit ${titleMaxPx}px)`}
+              action={
+                <button type="button" onClick={() => copy("title")} className="text-[11px] inline-flex items-center gap-1 text-ink-subtle hover:text-foreground">
+                  {copied === "title" ? <CheckCircle2 className="size-3" /> : <Copy className="size-3" />}
+                  {copied === "title" ? "Kopiert" : "Kopieren"}
+                </button>
+              }
+            >
               <Input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} />
-              <Counter value={titleLen} max={60} tone={titleTone} />
+              <Counter value={titlePx} max={titleMaxPx} tone={titleTone} />
             </FieldLabel>
-            <FieldLabel label={`Description · ${descLen} Zeichen`}>
+            <FieldLabel
+              label={`Description · ${descLen} Zeichen · ~${descPx}px (Limit ${descMaxPx}px)`}
+              action={
+                <button type="button" onClick={() => copy("desc")} className="text-[11px] inline-flex items-center gap-1 text-ink-subtle hover:text-foreground">
+                  {copied === "desc" ? <CheckCircle2 className="size-3" /> : <Copy className="size-3" />}
+                  {copied === "desc" ? "Kopiert" : "Kopieren"}
+                </button>
+              }
+            >
               <textarea
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 rows={3}
                 className="rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
-              <Counter value={descLen} max={160} tone={descTone} />
+              <Counter value={descPx} max={descMaxPx} tone={descTone} />
             </FieldLabel>
           </div>
         </Panel>
@@ -77,23 +106,34 @@ function SerpSnippetPage() {
             <div className="text-[18px] leading-snug text-[#1a0dab] font-medium mt-1 line-clamp-2">{title}</div>
             <div className="text-[13px] text-ink-muted mt-1 line-clamp-3">{desc}</div>
           </div>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+            <Link to="/project/$projectId/seo-check" params={{ projectId }} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface-2 px-3 py-1.5 hover:bg-muted/60">
+              Vollen SEO Check ausführen <ArrowUpRight className="size-3.5" />
+            </Link>
+            <Link to="/project/$projectId/site-audit" params={{ projectId }} className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface-2 px-3 py-1.5 hover:bg-muted/60">
+              Im Site Audit verfolgen <ArrowUpRight className="size-3.5" />
+            </Link>
+          </div>
         </Panel>
       </div>
     </AppShell>
   );
 }
 
-function FieldLabel({ label, children }: { label: string; children: React.ReactNode }) {
+function FieldLabel({ label, action, children }: { label: string; action?: React.ReactNode; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-[11px] uppercase tracking-wider text-mono text-ink-subtle">{label}</span>
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-[11px] uppercase tracking-wider text-mono text-ink-subtle truncate">{label}</span>
+        {action}
+      </span>
       {children}
     </label>
   );
 }
 
 function Counter({ value, max, tone }: { value: number; max: number; tone: "pass" | "warn" | "fail" }) {
-  const color = tone === "pass" ? "var(--signal)" : tone === "warn" ? "var(--amber)" : "var(--rose)";
+  const color = tone === "pass" ? "var(--status-success)" : tone === "warn" ? "var(--status-warning)" : "var(--status-danger)";
   return (
     <div className="h-1 rounded-full bg-muted overflow-hidden">
       <div className="h-full" style={{ width: `${Math.min(100, (value / max) * 100)}%`, background: color }} />
