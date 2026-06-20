@@ -311,3 +311,103 @@ function SentBadge({ tone }: { tone: "positive" | "neutral" | "negative" }) {
     </span>
   );
 }
+
+/* ---------- Citation Gap ---------- */
+
+const GAP_QUERIES = [
+  "best seo tools 2026",
+  "ahrefs alternative",
+  "ai content optimization",
+  "rank tracker for agencies",
+  "core web vitals tools",
+  "what is topical authority",
+] as const;
+
+const GAP_COMPETITORS = [
+  { name: "verity.app", you: true },
+  { name: "ahrefs.com", you: false },
+  { name: "semrush.com", you: false },
+  { name: "moz.com", you: false },
+] as const;
+
+function gapHash(q: string, c: string): number {
+  let h = 2166136261;
+  const s = q + ":" + c;
+  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return Math.abs(h % 100);
+}
+
+function cellTone(pct: number): string {
+  if (pct >= 60) return "var(--score-high)";
+  if (pct >= 30) return "var(--score-mid)";
+  return "var(--score-low)";
+}
+
+function CitationGap() {
+  return (
+    <Panel
+      title="Citation Gap"
+      subtitle="Wo dich KI-Engines im Vergleich zu Wettbewerbern zitieren — Lücken identifizieren"
+      badge="AEO"
+    >
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="px-3 py-2 text-left text-[10px] uppercase tracking-[0.14em] text-ink-subtle font-mono">Query</th>
+              {GAP_COMPETITORS.map((c) => (
+                <th
+                  key={c.name}
+                  className="px-3 py-2 text-center text-[10px] uppercase tracking-[0.14em] font-mono"
+                  style={{ color: c.you ? "var(--brand)" : "var(--status-neutral)" }}
+                >
+                  {c.name}
+                </th>
+              ))}
+              <th className="px-3 py-2 text-right text-[10px] uppercase tracking-[0.14em] text-ink-subtle font-mono">Gap</th>
+            </tr>
+          </thead>
+          <tbody>
+            {GAP_QUERIES.map((q) => {
+              const cells = GAP_COMPETITORS.map((c) => ({ name: c.name, you: c.you, pct: gapHash(q, c.name) }));
+              const you = cells.find((c) => c.you)!.pct;
+              const bestRival = Math.max(...cells.filter((c) => !c.you).map((c) => c.pct));
+              const gap = you - bestRival;
+              return (
+                <tr key={q} className="border-b border-border/60 hover:bg-muted/40">
+                  <td className="px-3 py-2.5 font-medium">{q}</td>
+                  {cells.map((c) => (
+                    <td key={c.name} className="px-3 py-2.5 text-center">
+                      <span
+                        className="inline-flex items-center justify-center min-w-[44px] rounded-md font-mono tabular-nums text-xs px-2 py-0.5"
+                        style={{
+                          background: `color-mix(in oklab, ${cellTone(c.pct)} ${c.you ? 28 : 16}%, transparent)`,
+                          color: cellTone(c.pct),
+                          outline: c.you ? `1px solid color-mix(in oklab, ${cellTone(c.pct)} 60%, transparent)` : undefined,
+                        }}
+                      >
+                        {c.pct}%
+                      </span>
+                    </td>
+                  ))}
+                  <td className="px-3 py-2.5 text-right">
+                    <span
+                      className="font-mono tabular-nums text-xs"
+                      style={{ color: gap >= 0 ? "var(--trend-up)" : "var(--trend-down)" }}
+                      aria-label={`Gap zu bestem Rival: ${gap}%`}
+                    >
+                      {gap > 0 ? "+" : ""}{gap}%
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-[11px] text-ink-subtle mt-3">
+        Zelle = Anteil an KI-Antworten, in denen die Domain für die Query zitiert wird. Umrahmt = du. Gap = deine Quote minus stärkster Wettbewerber.
+      </p>
+    </Panel>
+  );
+}
