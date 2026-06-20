@@ -196,11 +196,7 @@ function Page() {
                     <XAxis dataKey="name" tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={24} />
                     <Tooltip content={<ChartTooltip />} />
-                    <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                      {d.ageBuckets.map((_, i) => (
-                        <Cell key={i} fill={i < 2 ? "var(--signal)" : i < 4 ? "var(--violet)" : "var(--amber)"} />
-                      ))}
-                    </Bar>
+                    <Bar dataKey="count" radius={[6, 6, 0, 0]} fill="var(--series-5)" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -216,7 +212,7 @@ function Page() {
                   "Failure modes & honest critique",
                 ].map((s) => (
                   <li key={s} className="flex items-center gap-2 rounded-lg border border-border bg-surface-2 px-3 py-2">
-                    <span className="size-1.5 rounded-full bg-[color:var(--violet)]" />
+                    <span className="size-1.5 rounded-full" style={{ background: "var(--status-info)" }} />
                     <span className="flex-1">{s}</span>
                     <Chip>+</Chip>
                   </li>
