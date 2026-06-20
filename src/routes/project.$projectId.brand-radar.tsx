@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -14,7 +14,9 @@ import {
 } from "recharts";
 import { Sparkles, TrendingUp, Minus, TrendingDown } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
-import { ChartTooltip, Panel, Pill, Td, Th } from "@/components/app/Atoms";
+import { ChartTooltip, Panel } from "@/components/app/Atoms";
+import { MetricCard } from "@/components/app/V2";
+import { PageTabs, FilterBar, EmptyState } from "@/components/app/V2Shared";
 import { getAiMentions } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
@@ -108,16 +110,34 @@ function Page() {
   const sentSum = lastSent.positive + lastSent.neutral + lastSent.negative;
   const positivePct = Math.round((lastSent.positive / sentSum) * 100);
 
+  const [tab, setTab] = useState<"overview" | "queries" | "engines" | "mentions">("overview");
+  const [search, setSearch] = useState("");
+  const filteredMentions = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return mentions.filter((m) => !q || m.query.toLowerCase().includes(q) || m.snippet.toLowerCase().includes(q) || m.source.toLowerCase().includes(q));
+  }, [mentions, search]);
+
   return (
     <AppShell title="AI Visibility" subtitle={`Wie KI-Engines ${domain} zitieren · letzte 30 Tage`}>
       <div className="flex flex-col gap-6">
+        <PageTabs
+          value={tab}
+          onChange={(id) => setTab(id as typeof tab)}
+          tabs={[
+            { id: "overview", label: "Übersicht", to: "" },
+            { id: "queries", label: "Queries", to: "" },
+            { id: "engines", label: "Engines", to: "" },
+            { id: "mentions", label: "Erwähnungen", to: "" },
+          ]}
+        />
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Kpi label="Erwähnungen" value={formatNumber(totalMentions)} delta={+24.6} hint="letzte 30 Tage, alle Engines" />
-          <Kpi label="AI Share of Voice" value={`${lastSov}%`} delta={+5.2} highlight />
-          <Kpi label="Überwachte Engines" value="6" hint="LLMs im Tracking" />
-          <Kpi label="Sentiment positiv" value={`${positivePct}%`} hint="letzte Woche" delta={+3.1} />
+          <MetricCard label="Erwähnungen" value={formatNumber(totalMentions)} delta={{ value: 24.6 }} accent="ai" />
+          <MetricCard label="AI Share of Voice" value={`${lastSov}%`} metricKey="shareOfVoice" delta={{ value: 5.2 }} accent="ai" />
+          <MetricCard label="Überwachte Engines" value="6" />
+          <MetricCard label="Sentiment positiv" value={`${positivePct}%`} delta={{ value: 3.1 }} />
         </section>
 
+        {(tab === "overview" || tab === "engines") && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Panel
             className="xl:col-span-2"
@@ -171,7 +191,9 @@ function Page() {
             </ul>
           </Panel>
         </div>
+        )}
 
+        {(tab === "overview" || tab === "queries") && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Panel className="xl:col-span-2" title="Sentiment im Zeitverlauf" subtitle="Wöchentliche Klassifikation der Zitate">
             <div className="h-56 -mx-2">
@@ -223,10 +245,16 @@ function Page() {
             </ul>
           </Panel>
         </div>
+        )}
 
+        {(tab === "overview" || tab === "mentions") && (
         <Panel title="Letzte Erwähnungen" subtitle="Live-Feed der KI-Zitate">
-          <ul className="flex flex-col divide-y divide-border/60">
-            {mentions.map((m, i) => (
+          <FilterBar search={search} onSearch={setSearch} placeholder="Query, Snippet oder Engine durchsuchen…" />
+          {filteredMentions.length === 0 ? (
+            <EmptyState title="Keine Erwähnungen" description="Passe Suche oder Filter an." />
+          ) : (
+          <ul className="flex flex-col divide-y divide-border/60 mt-3">
+            {filteredMentions.map((m, i) => (
               <li key={i} className="py-3 grid grid-cols-[auto_1fr_auto] gap-3 items-start">
                 <span
                   className="text-[10px] font-mono uppercase tracking-wider rounded px-1.5 py-0.5 self-center whitespace-nowrap"
@@ -251,26 +279,11 @@ function Page() {
               </li>
             ))}
           </ul>
+          )}
         </Panel>
-      </div>
-    </AppShell>
-  );
-}
-
-function Kpi({ label, value, delta, hint, highlight }: { label: string; value: string; delta?: number; hint?: string; highlight?: boolean }) {
-  return (
-    <div className={`glass ring-aurora rounded-2xl p-4 ${highlight ? "ring-1 ring-[color:var(--aurora-cyan)]/30" : ""}`}>
-      <p className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</p>
-      <div className="flex items-baseline gap-2 mt-1">
-        <span className="text-display text-2xl font-semibold tabular-nums">{value}</span>
-        {delta !== undefined && (
-          <span className="text-[11px] font-mono" style={{ color: delta > 0 ? "var(--signal)" : "var(--rose)" }}>
-            {delta > 0 ? "+" : ""}{delta}%
-          </span>
         )}
       </div>
-      {hint && <p className="text-[11px] text-ink-subtle mt-0.5">{hint}</p>}
-    </div>
+    </AppShell>
   );
 }
 

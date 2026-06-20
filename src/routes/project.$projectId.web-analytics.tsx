@@ -17,6 +17,9 @@ import {
 import { Globe2, Smartphone, Monitor, Tablet } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, Panel, SegmentedControl, Td, Th } from "@/components/app/Atoms";
+import { MetricCard } from "@/components/app/V2";
+import { PageTabs, RealtimeCard } from "@/components/app/V2Shared";
+import { seriesColor } from "@/lib/tokens";
 import { formatNumber } from "@/lib/format";
 
 export const Route = createFileRoute("/project/$projectId/web-analytics")({
@@ -55,12 +58,12 @@ function generate() {
     };
   });
   const channels = [
-    { name: "Organic Search", value: 48, color: "var(--signal)" },
-    { name: "Direct", value: 22, color: "var(--violet)" },
-    { name: "Social", value: 14, color: "var(--chart-5)" },
-    { name: "Referral", value: 9, color: "var(--amber)" },
-    { name: "Email", value: 5, color: "var(--rose)" },
-    { name: "Paid", value: 2, color: "var(--ink-subtle)" },
+    { name: "Organic Search", value: 48, color: seriesColor(0) },
+    { name: "Direct", value: 22, color: seriesColor(1) },
+    { name: "Social", value: 14, color: seriesColor(2) },
+    { name: "Referral", value: 9, color: seriesColor(3) },
+    { name: "Email", value: 5, color: seriesColor(4) },
+    { name: "Paid", value: 2, color: seriesColor(5) },
   ];
   const countries = [
     { code: "🇺🇸", name: "United States", sessions: 48_220, share: 38.2 },
@@ -90,6 +93,7 @@ function generate() {
 
 function Page() {
   const [metric, setMetric] = useState<"sessions" | "users" | "newUsers">("sessions");
+  const [tab, setTab] = useState<"overview" | "sources" | "geo" | "devices" | "pages">("overview");
   const d = useMemo(() => generate(), []);
 
   const totals = useMemo(() => {
@@ -104,17 +108,29 @@ function Page() {
   }, [d]);
 
   return (
-    <AppShell title="Web Analytics" subtitle="verity.app · last 30 days · cookieless">
+    <AppShell title="Web Analytics" subtitle="verity.app · letzte 30 Tage · cookieless">
       <div className="flex flex-col gap-6">
+        <PageTabs
+          value={tab}
+          onChange={(id) => setTab(id as typeof tab)}
+          tabs={[
+            { id: "overview", label: "Übersicht", to: "" },
+            { id: "sources", label: "Quellen", to: "" },
+            { id: "geo", label: "Geo", to: "" },
+            { id: "devices", label: "Geräte", to: "" },
+            { id: "pages", label: "Seiten", to: "" },
+          ]}
+        />
         <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
-          <Kpi label="Sessions" value={formatNumber(totals.sessions)} delta={+8.4} />
-          <Kpi label="Users" value={formatNumber(totals.users)} delta={+6.1} />
-          <Kpi label="New Users" value={formatNumber(totals.newUsers)} delta={+11.2} highlight />
-          <Kpi label="Bounce Rate" value={`${totals.bounce}%`} delta={-1.8} inverse />
-          <Kpi label="Avg. Duration" value={totals.avg} delta={+0.6} />
-          <Kpi label="Conversion" value={`${totals.conv}%`} delta={+0.8} />
+          <MetricCard label="Sitzungen" value={formatNumber(totals.sessions)} delta={{ value: 8.4 }} />
+          <MetricCard label="Nutzer" value={formatNumber(totals.users)} delta={{ value: 6.1 }} />
+          <MetricCard label="Neue Nutzer" value={formatNumber(totals.newUsers)} delta={{ value: 11.2 }} />
+          <MetricCard label="Bounce Rate" value={`${totals.bounce}%`} metricKey="keywordDifficulty" delta={{ value: -1.8 }} />
+          <MetricCard label="Ø Verweildauer" value={totals.avg} delta={{ value: 0.6 }} />
+          <MetricCard label="Conversion" value={`${totals.conv}%`} delta={{ value: 0.8 }} />
         </section>
 
+        {(tab === "overview" || tab === "sources") && (
         <Panel
           title="Traffic Over Time"
           subtitle="Daily aggregated traffic"
@@ -135,22 +151,25 @@ function Page() {
               <AreaChart data={d.series}>
                 <defs>
                   <linearGradient id="wa-cur" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--signal)" stopOpacity={0.45} />
-                    <stop offset="100%" stopColor="var(--signal)" stopOpacity={0} />
+                    <stop offset="0%" stopColor="var(--series-1)" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="var(--series-1)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="color-mix(in oklab, var(--ink) 6%, transparent)" vertical={false} />
                 <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={42} tickFormatter={(v) => formatNumber(v)} />
                 <Tooltip content={<ChartTooltip />} />
-                <Area type="monotone" dataKey={metric} stroke="var(--signal)" strokeWidth={2.5} fill="url(#wa-cur)" />
+                <Area type="monotone" dataKey={metric} stroke="var(--series-1)" strokeWidth={2.5} fill="url(#wa-cur)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </Panel>
+        )}
 
+        {(tab === "overview" || tab === "sources" || tab === "geo" || tab === "devices") && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-          <Panel title="Traffic Channels" subtitle="Share by source">
+          {(tab === "overview" || tab === "sources") && (
+          <Panel title="Traffic-Kanäle" subtitle="Anteil nach Quelle">
             <div className="h-44">
               <ResponsiveContainer>
                 <PieChart>
@@ -173,23 +192,27 @@ function Page() {
               ))}
             </ul>
           </Panel>
+          )}
 
-          <Panel title="Top Countries" subtitle="Sessions by geography">
+          {(tab === "overview" || tab === "geo") && (
+          <Panel title="Top-Länder" subtitle="Sitzungen nach Geografie">
             <ul className="flex flex-col gap-3 text-sm">
               {d.countries.map((c) => (
                 <li key={c.code} className="flex items-center gap-3">
                   <span className="text-lg leading-none w-6">{c.code}</span>
                   <span className="flex-1 text-ink-muted truncate">{c.name}</span>
                   <div className="w-24 h-1.5 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${c.share * 2.5}%`, background: "var(--violet)" }} />
+                    <div className="h-full rounded-full" style={{ width: `${c.share * 2.5}%`, background: "var(--series-2)" }} />
                   </div>
                   <span className="font-mono tabular-nums text-xs w-14 text-right">{formatNumber(c.sessions)}</span>
                 </li>
               ))}
             </ul>
           </Panel>
+          )}
 
-          <Panel title="Devices" subtitle="Sessions split">
+          {(tab === "overview" || tab === "devices") && (
+          <Panel title="Geräte" subtitle="Anteil je Gerätetyp">
             <div className="flex flex-col gap-3 mt-4">
               {d.devices.map((dev) => {
                 const Icon = dev.icon;
@@ -198,29 +221,34 @@ function Page() {
                     <Icon className="size-4 text-ink-muted" />
                     <span className="flex-1 text-sm">{dev.name}</span>
                     <div className="w-32 h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${dev.value}%`, background: "var(--signal)" }} />
+                      <div className="h-full rounded-full" style={{ width: `${dev.value}%`, background: "var(--series-1)" }} />
                     </div>
                     <span className="font-mono tabular-nums text-xs w-10 text-right">{dev.value}%</span>
                   </div>
                 );
               })}
             </div>
-            <div className="mt-6 pt-4 border-t border-border text-[11px] text-mono text-ink-subtle space-y-1">
-              <p>Realtime · <span className="text-foreground font-semibold">142</span> visitors right now</p>
-              <p>Top page · <span className="text-foreground">/blog/seo-guide</span></p>
-              <p>Top referrer · <span className="text-foreground">google.com</span></p>
+            <div className="mt-6">
+              <RealtimeCard
+                label="Realtime"
+                value={<span>142 <span className="text-base text-ink-muted font-normal">aktiv</span></span>}
+                hint="Top-Seite /blog/seo-guide · Referrer google.com"
+              />
             </div>
           </Panel>
+          )}
         </div>
+        )}
 
-        <Panel title="Top Landing Pages" subtitle="Highest-traffic entry pages">
+        {(tab === "overview" || tab === "pages") && (
+        <Panel title="Top Landing-Pages" subtitle="Einstiegsseiten mit dem meisten Traffic">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
                 <Th>URL</Th>
-                <Th align="right">Sessions</Th>
+                <Th align="right">Sitzungen</Th>
                 <Th align="right">Bounce</Th>
-                <Th align="right">Avg. Duration</Th>
+                <Th align="right">Ø Dauer</Th>
                 <Th align="right">Conversion</Th>
               </tr>
             </thead>
@@ -230,13 +258,13 @@ function Page() {
                   <Td className="font-mono text-xs">{p.url}</Td>
                   <Td align="right" className="font-mono tabular-nums">{formatNumber(p.sessions)}</Td>
                   <Td align="right">
-                    <span className="font-mono tabular-nums text-xs" style={{ color: p.bounce < 30 ? "var(--signal)" : p.bounce < 45 ? "var(--amber)" : "var(--rose)" }}>
+                    <span className="font-mono tabular-nums text-xs" style={{ color: p.bounce < 30 ? "var(--status-success)" : p.bounce < 45 ? "var(--status-warning)" : "var(--status-error)" }}>
                       {p.bounce}%
                     </span>
                   </Td>
                   <Td align="right" className="font-mono tabular-nums">{p.avg}</Td>
                   <Td align="right">
-                    <span className="font-mono tabular-nums text-xs font-semibold" style={{ color: "var(--signal)" }}>
+                    <span className="font-mono tabular-nums text-xs font-semibold" style={{ color: "var(--status-success)" }}>
                       {p.conv}%
                     </span>
                   </Td>
@@ -245,23 +273,9 @@ function Page() {
             </tbody>
           </table>
         </Panel>
+        )}
       </div>
     </AppShell>
   );
 }
 
-function Kpi({ label, value, delta, inverse, highlight }: { label: string; value: string; delta: number; inverse?: boolean; highlight?: boolean }) {
-  const good = inverse ? delta < 0 : delta > 0;
-  return (
-    <div className={`glass ring-aurora rounded-2xl p-4 ${highlight ? "ring-1 ring-[color:var(--aurora-cyan)]/30" : ""}`}>
-      <p className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</p>
-      <div className="flex items-baseline gap-2 mt-1">
-        <span className="text-display text-2xl font-semibold tabular-nums">{value}</span>
-        <span className="text-[11px] font-mono" style={{ color: good ? "var(--signal)" : "var(--rose)" }}>
-          {delta > 0 ? "+" : ""}
-          {delta}%
-        </span>
-      </div>
-    </div>
-  );
-}
