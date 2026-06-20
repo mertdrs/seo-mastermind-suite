@@ -282,6 +282,10 @@ function Page() {
           )}
         </Panel>
         )}
+
+        {(tab === "overview" || tab === "engines" || tab === "queries") && (
+          <CitationGap />
+        )}
       </div>
     </AppShell>
   );
