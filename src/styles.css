@@ -80,6 +80,50 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ============================================================
+     NEW Strict Token System (Spur A/B/C) — siehe Abschnitt 1 Spec.
+     Diese Tokens sind die EINZIG erlaubte Quelle für Status-, Score-
+     und Datenserien-Farben in neuen Komponenten.
+     ============================================================ */
+
+  /* Marke */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+
+  /* AI / AEO Akzent */
+  --color-ai-accent: var(--ai-accent);
+  --color-ai-accent-bg: var(--ai-accent-bg);
+
+  /* Spur A — Status */
+  --color-status-success: var(--status-success);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-error: var(--status-error);
+  --color-status-error-bg: var(--status-error-bg);
+  --color-status-info: var(--status-info);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+
+  /* Trend */
+  --color-trend-up: var(--trend-up);
+  --color-trend-down: var(--trend-down);
+  --color-trend-flat: var(--trend-flat);
+
+  /* Spur B — Score */
+  --color-score-low: var(--score-low);
+  --color-score-mid: var(--score-mid);
+  --color-score-high: var(--score-high);
+
+  /* Spur C — Datenserien */
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
+  --color-series-4: var(--series-4);
+  --color-series-5: var(--series-5);
+  --color-series-6: var(--series-6);
 }
 
 /* ============= LIGHT (default) ============= */
@@ -148,6 +192,34 @@
   --warning: var(--amber);
   --danger: var(--destructive);
   --surface-elevated: var(--surface-2);
+
+  /* ===== NEW Strict tokens (Light) ===== */
+  --brand:            #16A34A;
+  --brand-foreground: #FFFFFF;
+
+  --ai-accent:        #0D9488;
+  --ai-accent-bg:     #CCFBF1;
+
+  --status-success:   #16A34A;  --status-success-bg: #DCFCE7;
+  --status-warning:   #D97706;  --status-warning-bg: #FEF3C7;
+  --status-error:     #DC2626;  --status-error-bg:   #FEE2E2;
+  --status-info:      #2563EB;  --status-info-bg:    #DBEAFE;
+  --status-neutral:   #64748B;  --status-neutral-bg: #F1F5F9;
+
+  --trend-up:   #16A34A;
+  --trend-down: #DC2626;
+  --trend-flat: #64748B;
+
+  --score-low:  #DC2626;
+  --score-mid:  #D97706;
+  --score-high: #16A34A;
+
+  --series-1: #6366F1;
+  --series-2: #8B5CF6;
+  --series-3: #DB2777;
+  --series-4: #0EA5E9;
+  --series-5: #475569;
+  --series-6: #A16207;
 }
 
 /* ============= DARK ============= */
@@ -214,6 +286,34 @@
   --warning: var(--amber);
   --danger: var(--destructive);
   --surface-elevated: var(--surface-2);
+
+  /* ===== NEW Strict tokens (Dark) — Hues bleiben, BGs gedämpft ===== */
+  --brand:            #22C55E;
+  --brand-foreground: #052E14;
+
+  --ai-accent:        #2DD4BF;
+  --ai-accent-bg:     #0A2F2A;
+
+  --status-success:   #22C55E;  --status-success-bg: #14321F;
+  --status-warning:   #F59E0B;  --status-warning-bg: #3B2A07;
+  --status-error:     #EF4444;  --status-error-bg:   #3B1414;
+  --status-info:      #3B82F6;  --status-info-bg:    #112A4A;
+  --status-neutral:   #94A3B8;  --status-neutral-bg: #1E293B;
+
+  --trend-up:   #22C55E;
+  --trend-down: #EF4444;
+  --trend-flat: #94A3B8;
+
+  --score-low:  #EF4444;
+  --score-mid:  #F59E0B;
+  --score-high: #22C55E;
+
+  --series-1: #818CF8;
+  --series-2: #A78BFA;
+  --series-3: #F472B6;
+  --series-4: #38BDF8;
+  --series-5: #94A3B8;
+  --series-6: #D97706;
 }
 
 @layer base {
