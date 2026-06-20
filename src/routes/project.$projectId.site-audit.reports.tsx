@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
+  Line,
+  LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -115,27 +116,28 @@ function Page() {
   return (
     <div className="flex flex-col gap-6">
       <Panel
-        title="Onpage Score"
-        subtitle="Tech. & Meta · Struktur · Inhalt — letzte 30 Tage"
+        title="Onpage Score · 30 Tage"
+        subtitle="Pro Bereich getrennt. Linien unter 80 = Handlungsbedarf."
         action={
-          <div className="flex items-center gap-4 text-[11px] text-ink-muted">
-            <LegendDot color="var(--signal)" label="Tech. & Meta" />
-            <LegendDot color="var(--chart-2)" label="Struktur" />
-            <LegendDot color="var(--amber)" label="Inhalt" />
+          <div className="flex flex-wrap items-center gap-3 text-[11px] text-ink-muted">
+            <LegendDot color="var(--series-1)" label="Tech. & Meta" />
+            <LegendDot color="var(--series-2)" label="Struktur" />
+            <LegendDot color="var(--series-4)" label="Inhalt" />
           </div>
         }
       >
-        <div className="h-56">
+        <div className="h-64">
           <ResponsiveContainer>
-            <BarChart data={TREND} barCategoryGap={2}>
+            <LineChart data={TREND} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke="color-mix(in oklab, var(--ink) 6%, transparent)" vertical={false} />
               <XAxis dataKey="d" tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} domain={[0, 100]} />
+              <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} domain={[60, 100]} />
               <Tooltip content={<ChartTooltip />} />
-              <Bar dataKey="tech" stackId="a" fill="var(--signal)" radius={[0, 0, 0, 0]} />
-              <Bar dataKey="struct" stackId="a" fill="var(--chart-2)" />
-              <Bar dataKey="inhalt" stackId="a" fill="var(--amber)" radius={[6, 6, 0, 0]} />
-            </BarChart>
+              <ReferenceLine y={80} stroke="var(--status-warning)" strokeDasharray="3 3" strokeOpacity={0.5} />
+              <Line type="monotone" dataKey="tech" name="Tech. & Meta" stroke="var(--series-1)" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="struct" name="Struktur" stroke="var(--series-2)" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="inhalt" name="Inhalt" stroke="var(--series-4)" strokeWidth={2} dot={false} />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </Panel>
@@ -143,14 +145,13 @@ function Page() {
       {Object.entries(REPORTS).map(([category, data]) => {
         const Icon = data.icon;
         return (
-          <section key={category} className="glass ring-aurora rounded-2xl p-5 flex flex-col gap-4">
-            <header className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <Icon className="size-4 text-ink-muted" />
-                <h3 className="text-display text-base font-semibold uppercase tracking-wide">{category}</h3>
+          <section key={category} className="glass ring-aurora rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+            <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <Icon className="size-4 shrink-0 text-ink-muted" />
+                <h3 className="truncate text-display text-sm sm:text-base font-semibold uppercase tracking-wide">{category}</h3>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-display text-2xl font-semibold tabular-nums">{data.score}%</span>
+              <div className="shrink-0">
                 <HealthRing score={data.score} size={56} label="" />
               </div>
             </header>
@@ -161,6 +162,7 @@ function Page() {
                   <div className="px-4 py-2.5 border-b border-border text-[11px] text-mono uppercase tracking-wider text-ink-muted flex items-center gap-2">
                     <Paperclip className="size-3" /> {g.title}
                   </div>
+                  <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="text-[10px] text-mono uppercase tracking-wider text-ink-subtle">
@@ -176,9 +178,9 @@ function Page() {
                           className={
                             "border-t border-border/60 " +
                             (it.danger
-                              ? "bg-[color:color-mix(in_oklab,var(--rose)_10%,transparent)]"
+                              ? "bg-[color:color-mix(in_oklab,var(--status-error)_10%,transparent)]"
                               : it.highlight
-                              ? "bg-[color:color-mix(in_oklab,var(--amber)_8%,transparent)]"
+                              ? "bg-[color:color-mix(in_oklab,var(--status-warning)_8%,transparent)]"
                               : "")
                           }
                         >
@@ -191,14 +193,15 @@ function Page() {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <footer className="flex items-center gap-4 text-[10px] text-mono uppercase tracking-wider text-ink-subtle">
-              <LegendDot color="var(--rose)" label=">= 10 Probleme" />
-              <LegendDot color="var(--amber)" label="<10 Probleme" />
-              <LegendDot color="var(--signal)" label="Keine Probleme" />
+            <footer className="flex flex-wrap items-center gap-3 sm:gap-4 text-[10px] text-mono uppercase tracking-wider text-ink-subtle">
+              <LegendDot color="var(--status-error)" label=">= 10 Probleme" />
+              <LegendDot color="var(--status-warning)" label="<10 Probleme" />
+              <LegendDot color="var(--status-success)" label="Keine Probleme" />
             </footer>
           </section>
         );
@@ -222,8 +225,8 @@ function DeltaPill({ v }: { v: number }) {
     <span
       className="inline-block rounded px-1.5 py-0.5 text-[10px] font-mono tabular-nums"
       style={{
-        background: `color-mix(in oklab, ${positive ? "var(--rose)" : "var(--signal)"} 16%, transparent)`,
-        color: positive ? "var(--rose)" : "var(--signal)",
+        background: `color-mix(in oklab, ${positive ? "var(--trend-down)" : "var(--trend-up)"} 16%, transparent)`,
+        color: positive ? "var(--trend-down)" : "var(--trend-up)",
       }}
     >
       {positive ? "+" : ""}
