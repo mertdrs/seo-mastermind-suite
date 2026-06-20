@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -14,7 +14,9 @@ import {
 } from "recharts";
 import { Sparkles, TrendingUp, Minus, TrendingDown } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
-import { ChartTooltip, Panel, Pill, Td, Th } from "@/components/app/Atoms";
+import { ChartTooltip, Panel } from "@/components/app/Atoms";
+import { MetricCard } from "@/components/app/V2";
+import { PageTabs, FilterBar, EmptyState } from "@/components/app/V2Shared";
 import { getAiMentions } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
