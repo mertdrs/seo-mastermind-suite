@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -15,6 +15,8 @@ import {
 import { ExternalLink, Info } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, IconButton, Panel, Pill, Td, Th } from "@/components/app/Atoms";
+import { MetricCard } from "@/components/app/V2";
+import { PageTabs, FilterBar, Paginator, EmptyState } from "@/components/app/V2Shared";
 import { getBacklinks, getReferringDomainsGrowth } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
@@ -37,6 +39,17 @@ function Page() {
   const refDomains = growth[growth.length - 1]!.total;
   const dofollow = rows.filter((r) => r.type === "dofollow").length;
   const dofollowPct = Math.round((dofollow / rows.length) * 100);
+
+  const [tab, setTab] = useState<"overview" | "new" | "lost" | "anchors">("overview");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 12;
+
+  const filteredRows = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return rows.filter((r) => !q || r.domain.includes(q) || r.anchorText.toLowerCase().includes(q));
+  }, [rows, search]);
+  const pagedRows = filteredRows.slice((page - 1) * pageSize, page * pageSize);
 
   // Link-Attribut-Verteilung — Attribute können sich überschneiden
   // (z. B. ein Link kann nofollow UND ugc sein). Wir zeigen je Attribut
@@ -85,17 +98,21 @@ function Page() {
   return (
     <AppShell title="Backlinks" subtitle={`${domain} · ${formatNumber(refDomains)} referring domains · ${formatNumber(totalLinks)} live links`}>
       <div className="flex flex-col gap-6">
+        <PageTabs
+          value={tab}
+          onChange={(id) => { setTab(id as typeof tab); setPage(1); }}
+          tabs={[
+            { id: "overview", label: "Übersicht", to: "" },
+            { id: "new", label: "Neu", to: "", badge: "+128" },
+            { id: "lost", label: "Verloren", to: "", badge: 42 },
+            { id: "anchors", label: "Anchors", to: "" },
+          ]}
+        />
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Kpi label="Verweisende Domains" value={formatNumber(refDomains)} delta={+2.1} />
-          <Kpi label="Backlinks gesamt" value={formatNumber(totalLinks)} delta={+4.6} />
-          <Kpi label="Dofollow-Anteil" value={`${dofollowPct}%`} delta={+0.8} />
-          <Kpi
-            label="Toxische Links"
-            value="2,1%"
-            delta={-0.4}
-            inverse
-            hint="Anteil toxischer Links am Gesamt­profil"
-          />
+          <MetricCard label="Verweisende Domains" value={formatNumber(refDomains)} metricKey="referringDomains" delta={{ value: 2.1 }} />
+          <MetricCard label="Backlinks gesamt" value={formatNumber(totalLinks)} metricKey="backlinks" delta={{ value: 4.6 }} />
+          <MetricCard label="Dofollow-Anteil" value={`${dofollowPct}%`} delta={{ value: 0.8 }} />
+          <MetricCard label="Toxische Links" value="2,1%" metricKey="affectedUrls" delta={{ value: -0.4 }} />
         </section>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
@@ -188,7 +205,7 @@ function Page() {
 
         <Panel
           title="Live-Backlinks"
-          subtitle={`${rows.length} aktuellste Links`}
+          subtitle={`${filteredRows.length} Links${search ? ` (gefiltert von ${rows.length})` : ""}`}
           action={
             <div className="flex items-center gap-2">
               <ToxicLegend />
@@ -196,7 +213,16 @@ function Page() {
             </div>
           }
         >
-          <table className="w-full text-sm">
+          <FilterBar
+            search={search}
+            onSearch={(v) => { setSearch(v); setPage(1); }}
+            placeholder="Domain oder Anchor suchen…"
+            chips={tab !== "overview" ? [{ id: "tab", label: `Ansicht: ${({ new: "Neu", lost: "Verloren", anchors: "Anchors" } as Record<string,string>)[tab]}`, onRemove: () => setTab("overview") }] : undefined}
+          />
+          {pagedRows.length === 0 ? (
+            <EmptyState title="Keine Treffer" description="Passe Suche oder Filter an." />
+          ) : (
+          <table className="w-full text-sm mt-3">
             <thead>
               <tr className="border-b border-border">
                 <Th>Quell-Domain</Th>
@@ -210,7 +236,7 @@ function Page() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((r, i) => (
+              {pagedRows.map((r, i) => (
                 <tr key={i} className="border-b border-border/60 hover:bg-muted/40">
                   <Td className="font-medium">{r.domain}</Td>
                   <Td align="right" className="font-mono tabular-nums">{r.dr}</Td>
@@ -230,26 +256,11 @@ function Page() {
               ))}
             </tbody>
           </table>
+          )}
+          <Paginator page={page} pageSize={pageSize} total={filteredRows.length} onPageChange={setPage} />
         </Panel>
       </div>
     </AppShell>
-  );
-}
-
-function Kpi({ label, value, delta, inverse, hint }: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
-  const good = inverse ? delta < 0 : delta > 0;
-  return (
-    <div className="glass ring-aurora rounded-2xl p-4">
-      <p className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</p>
-      <div className="flex items-baseline gap-2 mt-1">
-        <span className="text-display text-2xl font-semibold tabular-nums">{value}</span>
-        <span className="text-[11px] font-mono" style={{ color: good ? "var(--status-success)" : "var(--status-error)" }}>
-          {delta > 0 ? "+" : ""}
-          {delta}%
-        </span>
-      </div>
-      {hint && <p className="text-[10px] text-ink-subtle mt-1 leading-tight">{hint}</p>}
-    </div>
   );
 }
 
