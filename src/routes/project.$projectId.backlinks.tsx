@@ -46,7 +46,7 @@ function Layout() {
                 <Link
                   key={t.to}
                   to={t.to as any}
-                  params={{ projectId }}
+                  params={{ projectId } as any}
                   role="tab"
                   aria-selected={active}
                   className={cn(

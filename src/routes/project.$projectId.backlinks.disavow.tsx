@@ -76,7 +76,9 @@ function Page() {
                   </Td>
                   <Td className="text-xs text-ink-muted font-mono">{r.scope === "domain" ? "domain:" : "URL"}</Td>
                   <Td className="text-ink-muted">{r.reason}</Td>
-                  <Td align="right" className="font-mono tabular-nums" style={{ color: "var(--status-error)" }}>{r.toxicity}</Td>
+                  <Td align="right" className="font-mono tabular-nums">
+                    <span style={{ color: "var(--status-error)" }}>{r.toxicity}</span>
+                  </Td>
                   <Td><StatusBadge severity={STATUS_TONE[r.status]} label={STATUS_LABEL[r.status]} size="sm" /></Td>
                   <Td align="right" className="text-ink-subtle text-xs font-mono">{r.addedAt}</Td>
                   <Td align="right"><IconButton title="Entfernen"><Trash2 className="size-3.5" /></IconButton></Td>

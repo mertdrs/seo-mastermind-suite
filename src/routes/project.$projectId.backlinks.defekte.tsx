@@ -63,7 +63,9 @@ function Page() {
               {paged.map((r, i) => (
                 <tr key={i} className="border-b border-border/60 hover:bg-muted/40">
                   <Td className="font-mono text-xs text-ink-muted max-w-[240px] truncate">{r.sourceUrl}</Td>
-                  <Td className="font-mono text-xs max-w-[240px] truncate" style={{ color: "var(--status-error)" }}>{r.targetUrl}</Td>
+                  <Td className="font-mono text-xs max-w-[240px] truncate">
+                    <span style={{ color: "var(--status-error)" }}>{r.targetUrl}</span>
+                  </Td>
                   <Td className="text-ink-muted italic max-w-[140px] truncate">"{r.anchorText}"</Td>
                   <Td><StatusBadge severity={statusTone(r.status)} label={String(r.status)} size="sm" /></Td>
                   <Td align="right" className="text-ink-subtle text-xs font-mono">{r.lastChecked}</Td>
