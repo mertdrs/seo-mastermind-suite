@@ -149,7 +149,7 @@ function Page() {
                 <Download className="size-4" />
               </IconButton>
               <button className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-2 hover:bg-muted/70 px-3 py-1.5 text-xs font-medium transition">
-                <Sparkles className="size-3.5 text-[color:var(--violet)]" /> AI Summary
+                <Sparkles className="size-3.5" style={{ color: "var(--ai-accent)" }} /> KI-Zusammenfassung
               </button>
             </div>
           </form>
@@ -203,7 +203,10 @@ function Page() {
                 <span className="flex items-center gap-2">
                   {t.label}
                   {t.badge && (
-                    <span className="rounded-md bg-[color:var(--signal)]/15 text-[10px] tracking-wide px-1.5 py-0.5 font-mono text-[color:var(--signal-foreground)]/80">
+                    <span
+                      className="rounded-md text-[10px] tracking-wide px-1.5 py-0.5 font-mono"
+                      style={{ background: "var(--ai-accent-bg)", color: "var(--ai-accent)" }}
+                    >
                       {t.badge}
                     </span>
                   )}

@@ -14,12 +14,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ExternalLink, HelpCircle, Search, Sparkles, TrendingUp } from "lucide-react";
+import { ExternalLink, HelpCircle, Search, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
 import {
   ChartTooltip,
   Chip,
-  DeltaPill,
   IconButton,
   KdBar,
   Panel,
@@ -28,6 +27,8 @@ import {
   Td,
   Th,
 } from "@/components/app/Atoms";
+import { MetricCard, TrackKeywordButton } from "@/components/app/V2";
+import { seriesColor } from "@/lib/tokens";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -111,12 +112,21 @@ function generate(keyword: string) {
     traffic: Math.round(80 + r() * 8_000),
     backlinks: Math.round(20 + r() * 4_000),
   }));
-  const intentDist = [
-    { name: "Informational", value: Math.round(40 + r() * 40), color: "var(--chart-5)" },
-    { name: "Commercial", value: Math.round(15 + r() * 30), color: "var(--violet)" },
-    { name: "Transactional", value: Math.round(5 + r() * 15), color: "var(--signal)" },
-    { name: "Navigational", value: Math.round(3 + r() * 10), color: "var(--amber)" },
+  const intentRaw = [
+    { name: "Informational", value: Math.round(40 + r() * 40) },
+    { name: "Commercial", value: Math.round(15 + r() * 30) },
+    { name: "Transactional", value: Math.round(5 + r() * 15) },
+    { name: "Navigational", value: Math.round(3 + r() * 10) },
   ];
+  const intentSum = intentRaw.reduce((s, x) => s + x.value, 0);
+  const intentDist = intentRaw.map((x, i) => ({
+    name: x.name,
+    value: Math.round((x.value / intentSum) * 100),
+    color: seriesColor(i),
+  }));
+  // Rundungs-Korrektur, damit Summe = 100
+  const intentRounded = intentDist.reduce((s, x) => s + x.value, 0);
+  if (intentDist[0] && intentRounded !== 100) intentDist[0].value += 100 - intentRounded;
   const serpFeatures = [
     { name: "AI Overview", value: Math.round(20 + r() * 70) },
     { name: "Snippet", value: Math.round(10 + r() * 60) },
@@ -193,14 +203,21 @@ function Page() {
           </form>
         </section>
 
-        {/* KPI strip */}
+        {/* KPI strip — alle Karten über zentrale MetricCard */}
         <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
-          <MetricCard label="Volume" value={formatNumber(d.volume)} delta={d.delta} hint="searches / mo" />
-          <MetricCard label="Keyword Difficulty" value={String(d.kd)} suffix="/100" tone={d.kd < 30 ? "ok" : d.kd < 60 ? "warn" : "bad"} />
-          <MetricCard label="CPC" value={formatCurrency(d.cpc)} hint="paid avg." />
-          <MetricCard label="Competition" value={d.competition.toFixed(2)} hint="paid density" />
-          <MetricCard label="Global Volume" value={formatNumber(d.globalVolume)} hint="all markets" />
-          <MetricCard label="Traffic Potential" value={formatNumber(d.trafficPotential)} hint="if rank 1" highlight />
+          <MetricCard label="Volumen" value={formatNumber(d.volume)} unit="Suchen / Monat" metricKey="searchVolume" delta={{ value: d.delta }} />
+          <MetricCard label="Keyword Difficulty" value={`${d.kd}/100`} metricKey="keywordDifficulty" />
+          <MetricCard label="CPC" value={formatCurrency(d.cpc)} unit="Ø Paid" metricKey="cpc" />
+          <MetricCard label="Competition" value={d.competition.toFixed(2)} unit="Paid-Dichte" metricKey="competition" />
+          <MetricCard label="Global Volume" value={formatNumber(d.globalVolume)} unit="alle Märkte" metricKey="globalVolume" />
+          <MetricCard label="Traffic-Potenzial" value={formatNumber(d.trafficPotential)} unit="bei Rang 1" metricKey="trafficPotential" />
+        </section>
+
+        {/* Track action für aktuelles Keyword */}
+        <section className="-mt-2 flex items-center gap-3 text-xs text-ink-muted">
+          <span>Aktuelles Keyword:</span>
+          <span className="font-medium text-foreground">„{keyword}"</span>
+          <TrackKeywordButton keyword={keyword} source="keywordsExplorer" size="md" />
         </section>
 
         {/* Tabs */}
@@ -277,7 +294,7 @@ function Page() {
                     <XAxis dataKey="name" tick={{ fontSize: 11, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 11, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={36} tickFormatter={(v) => `${v}%`} />
                     <Tooltip content={<ChartTooltip />} />
-                    <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="var(--violet)" />
+                    <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="var(--series-1)" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -375,42 +392,6 @@ function Page() {
   );
 }
 
-function MetricCard({
-  label,
-  value,
-  delta,
-  hint,
-  suffix,
-  tone,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  delta?: number;
-  hint?: string;
-  suffix?: string;
-  tone?: "ok" | "warn" | "bad";
-  highlight?: boolean;
-}) {
-  const toneColor =
-    tone === "ok" ? "var(--signal)" : tone === "warn" ? "var(--amber)" : tone === "bad" ? "var(--rose)" : undefined;
-  return (
-    <div className={cn("glass ring-aurora rounded-2xl p-4 flex flex-col gap-2", highlight && "ring-1 ring-[color:var(--aurora-cyan)]/30")}>
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</span>
-        {delta !== undefined && <DeltaPill value={delta} />}
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-display text-2xl font-semibold tabular-nums" style={toneColor ? { color: toneColor } : undefined}>
-          {value}
-        </span>
-        {suffix && <span className="text-xs text-ink-subtle font-mono">{suffix}</span>}
-      </div>
-      {hint && <span className="text-[11px] text-ink-subtle">{hint}</span>}
-    </div>
-  );
-}
-
 function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number; cpc: number; intent: string }[] }) {
   return (
     <table className="w-full text-sm">
@@ -421,6 +402,7 @@ function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number
           <Th align="right">Volume</Th>
           <Th align="right">KD</Th>
           <Th align="right">CPC</Th>
+          <Th></Th>
         </tr>
       </thead>
       <tbody>
@@ -431,6 +413,9 @@ function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number
             <Td align="right" className="font-mono tabular-nums">{formatNumber(r.volume)}</Td>
             <Td align="right"><KdBar value={r.kd} /></Td>
             <Td align="right" className="font-mono tabular-nums">{formatCurrency(r.cpc)}</Td>
+            <Td align="right">
+              <TrackKeywordButton keyword={r.keyword} source="keywordsExplorer" />
+            </Td>
           </tr>
         ))}
       </tbody>

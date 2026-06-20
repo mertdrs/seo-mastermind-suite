@@ -17,11 +17,6 @@ import {
   ChevronsUpDown,
   Check,
   ArrowLeft,
-  GaugeCircle,
-  Globe,
-  Target,
-  ListChecks,
-  FileSearch,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProjects, type StoredProject } from "@/lib/project-store";
@@ -36,7 +31,7 @@ import {
 
 const PROJECT_NAV = [
   {
-    label: "Projekt",
+    label: "Analyse",
     items: [
       { to: "/project/$projectId/site-audit", label: "Site Audit", icon: Stethoscope },
       { to: "/project/$projectId/site-explorer", label: "Site Explorer", icon: Compass },
@@ -54,24 +49,11 @@ const PROJECT_NAV = [
     ],
   },
   {
-    label: "AI & Reporting",
+    label: "KI & Reports",
     items: [
-      { to: "/project/$projectId/brand-radar", label: "AI Visibility", icon: Sparkles, badge: "NEW" },
+      { to: "/project/$projectId/brand-radar", label: "AI Visibility", icon: Sparkles, badge: "NEU" },
       { to: "/project/$projectId/reports", label: "Report Builder", icon: FileBarChart },
       { to: "/project/$projectId/tools", label: "Free SEO Tools", icon: Wrench },
-    ],
-  },
-  {
-    label: "Onpage-Analyse",
-    items: [
-      { to: "/project/$projectId/seo-check", label: "SEO Check", icon: GaugeCircle },
-      { to: "/project/$projectId/keyword-check", label: "Keyword Check", icon: Target },
-      { to: "/project/$projectId/keyword-recherche", label: "Keyword Recherche", icon: ListChecks },
-      { to: "/project/$projectId/seo-compare", label: "SEO Compare", icon: FileSearch },
-      { to: "/project/$projectId/ranking-check", label: "Ranking Check", icon: Activity },
-      { to: "/project/$projectId/wdf-idf", label: "WDF*IDF Tool", icon: BarChart3 },
-      { to: "/project/$projectId/backlink-check", label: "Backlink Check", icon: Link2 },
-      { to: "/project/$projectId/serp-snippet", label: "SERP Snippet Generator", icon: Globe },
     ],
   },
 ] as const;
@@ -215,8 +197,8 @@ export function AppSidebar({ onOpenCommandPalette }: { onOpenCommandPalette: () 
                       <span
                         className="text-[9px] text-mono px-1.5 py-0.5 rounded font-bold tracking-wider"
                         style={{
-                          background: "color-mix(in oklab, var(--violet) 18%, transparent)",
-                          color: "var(--violet)",
+                          background: "var(--ai-accent-bg)",
+                          color: "var(--ai-accent)",
                         }}
                       >
                         {item.badge}

@@ -2,12 +2,12 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/app/AppShell";
 import { Panel, Pill, StatusDot } from "@/components/app/Atoms";
+import { ScoreGauge, StatusBadge } from "@/components/app/V2";
 import { addProject, formatAgo, removeProject, useProjects } from "@/lib/project-store";
 import { formatNumber } from "@/lib/format";
 import {
   Activity,
   ArrowRight,
-  CheckCircle2,
   Globe,
   Heart,
   Layers,
@@ -16,7 +16,6 @@ import {
   Plus,
   Search,
   Trash2,
-  TrendingUp,
 } from "lucide-react";
 import {
   Dialog,
@@ -73,7 +72,36 @@ function DashboardPage() {
           </Panel>
         )}
       </div>
+
+      {projects.length > 0 && <WorkspaceSummary />}
     </AppShell>
+  );
+}
+
+function WorkspaceSummary() {
+  const projects = useProjects();
+  const totalProjects = projects.length;
+  const totalBacklinks = projects.reduce((s, p) => s + p.backlinks, 0);
+  const totalRankings = projects.reduce((s, p) => s + p.rankings, 0);
+  const monitoring = projects.filter((p) => p.healthEnabled).length;
+  const crawling = projects.filter((p) => p.status === "crawling").length;
+  return (
+    <section className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+      <SumTile label="Projekte" value={String(totalProjects)} hint={`${monitoring} mit Monitoring`} />
+      <SumTile label="Backlinks" value={formatNumber(totalBacklinks)} hint="Summe aller Projekte" />
+      <SumTile label="Rankings" value={formatNumber(totalRankings)} hint="getrackte Keywords" />
+      <SumTile label="Aktive Crawls" value={String(crawling)} hint="laufen gerade" />
+    </section>
+  );
+}
+
+function SumTile({ label, value, hint }: { label: string; value: string; hint: string }) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-4">
+      <p className="text-[10px] uppercase tracking-[0.14em] text-mono" style={{ color: "var(--status-neutral)" }}>{label}</p>
+      <p className="text-display text-2xl font-semibold tabular-nums mt-1">{value}</p>
+      <p className="text-[11px] text-ink-subtle">{hint}</p>
+    </div>
   );
 }
 
@@ -118,39 +146,44 @@ function ProjectCard({ project: p }: { project: ReturnType<typeof useProjects>[n
 
       <div className="flex items-center gap-2 mb-4">
         {isCrawling ? (
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded-md bg-[color:var(--violet)]/12 text-[color:var(--violet)]">
+          <span
+            className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded"
+            style={{ background: "var(--status-warning-bg)", color: "var(--status-warning)" }}
+          >
             <Loader2 className="size-3 animate-spin" /> In Arbeit
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded-md bg-[color:var(--signal)]/12 text-[color:var(--signal-foreground)]">
-            <CheckCircle2 className="size-3" /> Fertig
-          </span>
+          <StatusBadge severity="success" label="Fertig" size="sm" />
         )}
         <span className="text-[11px] text-ink-subtle">
           · letztes Crawling {mounted ? formatAgo(p.lastCrawl) : "…"}
         </span>
       </div>
 
-      <dl className="grid grid-cols-2 gap-3 text-xs">
-        <Metric icon={Layers} label="Seiten" value={formatNumber(p.pages)} />
-        <Metric
-          icon={TrendingUp}
-          label="Onpage Score"
-          value={`${p.onpageScore}%`}
-          tone={p.onpageScore >= 80 ? "ok" : p.onpageScore >= 60 ? "warn" : "bad"}
-        />
-        <Metric
-          icon={Heart}
-          label="Website Health"
-          value={p.healthEnabled ? "Aktiviert" : "Deaktiviert"}
-          tone={p.healthEnabled ? "ok" : "neutral"}
-        />
-        <Metric icon={Link2} label="Backlinks" value={formatNumber(p.backlinks)} />
-        <Metric icon={Activity} label="Rankings" value={formatNumber(p.rankings)} />
-        <div className="flex items-center justify-end gap-1 text-[11px] font-mono uppercase tracking-wider text-[color:var(--signal-foreground)] self-end">
-          Öffnen <ArrowRight className="size-3" />
+      <div className="grid grid-cols-[1fr_auto] gap-4">
+        <dl className="grid grid-cols-2 gap-3 text-xs">
+          <Metric icon={Layers} label="Seiten" value={formatNumber(p.pages)} />
+          <Metric
+            icon={Heart}
+            label="Monitoring"
+            value={p.healthEnabled ? "An" : "Aus"}
+            tone={p.healthEnabled ? "ok" : "neutral"}
+          />
+          <Metric icon={Link2} label="Backlinks" value={formatNumber(p.backlinks)} />
+          <Metric icon={Activity} label="Rankings" value={formatNumber(p.rankings)} />
+        </dl>
+        <div className="flex flex-col items-center justify-between gap-2">
+          <div className="flex flex-col items-center">
+            <ScoreGauge score={p.onpageScore} label="" size="sm" />
+            <span className="mt-1 text-[9px] uppercase tracking-[0.16em] text-mono" style={{ color: "var(--status-neutral)" }}>
+              Onpage
+            </span>
+          </div>
+          <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-ink-subtle">
+            Öffnen <ArrowRight className="size-3" />
+          </span>
         </div>
-      </dl>
+      </div>
 
       {/* Required for unused-import linter if it kicks in */}
       <span hidden><StatusDot tone={statusCfg.tone} /></span>
@@ -170,7 +203,13 @@ function Metric({
   tone?: "ok" | "warn" | "bad" | "neutral";
 }) {
   const color =
-    tone === "ok" ? "var(--signal-foreground)" : tone === "warn" ? "var(--amber)" : tone === "bad" ? "var(--rose)" : "var(--foreground)";
+    tone === "ok"
+      ? "var(--status-success)"
+      : tone === "warn"
+        ? "var(--status-warning)"
+        : tone === "bad"
+          ? "var(--status-error)"
+          : "var(--foreground)";
   return (
     <div className="flex items-center gap-2 min-w-0">
       <Icon className="size-3.5 text-ink-subtle shrink-0" />

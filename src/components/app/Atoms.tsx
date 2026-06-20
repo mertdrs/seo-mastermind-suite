@@ -2,6 +2,7 @@ import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { formatNumber } from "@/lib/format";
+import { deltaToneColor, getDeltaTone, scoreColor } from "@/lib/tokens";
 
 export function Panel({
   title,
@@ -114,22 +115,40 @@ export function SegmentedControl<T extends string>({
   );
 }
 
-export function DeltaPill({ value, inverse, suffix = "%" }: { value: number; inverse?: boolean; suffix?: string }) {
+export function DeltaPill({
+  value,
+  inverse,
+  suffix = "%",
+  metricKey,
+}: {
+  value: number;
+  inverse?: boolean;
+  suffix?: string;
+  /** Bevorzugt vor `inverse`: nutzt globale METRIC_DIRECTION-Tabelle. */
+  metricKey?: string;
+}) {
   if (!Math.round(value * 10)) {
     return (
-      <span className="inline-flex items-center text-[11px] font-mono text-ink-subtle">
+      <span className="inline-flex items-center text-[11px] font-mono" style={{ color: "var(--trend-flat)" }}>
         <Minus className="size-3 mr-0.5" /> 0{suffix}
       </span>
     );
   }
-  const isGood = inverse ? value < 0 : value > 0;
+  let tone: "up" | "down" | "flat";
+  if (metricKey) {
+    tone = getDeltaTone(value, metricKey);
+  } else {
+    const isGood = inverse ? value < 0 : value > 0;
+    tone = isGood ? "up" : "down";
+  }
+  const color = deltaToneColor(tone);
   const Icon = value > 0 ? ArrowUpRight : ArrowDownRight;
   return (
     <span
       className="inline-flex items-center gap-0.5 text-[11px] font-mono px-1.5 py-0.5 rounded"
       style={{
-        background: `color-mix(in oklab, ${isGood ? "var(--signal)" : "var(--rose)"} 15%, transparent)`,
-        color: isGood ? "var(--signal-foreground)" : "var(--rose)",
+        background: `color-mix(in oklab, ${color} 14%, transparent)`,
+        color,
       }}
     >
       <Icon className="size-3" />
@@ -140,11 +159,11 @@ export function DeltaPill({ value, inverse, suffix = "%" }: { value: number; inv
 
 export function ScoreBar({ label, value, max = 100 }: { label: string; value: number; max?: number }) {
   const pct = (value / max) * 100;
-  const color = pct >= 85 ? "var(--signal)" : pct >= 65 ? "var(--violet)" : pct >= 50 ? "var(--amber)" : "var(--rose)";
+  const color = scoreColor(pct);
   return (
     <div className="flex items-center gap-3">
       <span className="text-xs text-ink-muted w-28 truncate">{label}</span>
-      <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--status-neutral-bg)" }}>
         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: color }} />
       </div>
       <span className="font-mono tabular-nums text-xs w-10 text-right">{value}</span>
@@ -153,10 +172,11 @@ export function ScoreBar({ label, value, max = 100 }: { label: string; value: nu
 }
 
 export function KdBar({ value }: { value: number }) {
-  const color = value < 30 ? "var(--signal)" : value < 60 ? "var(--amber)" : "var(--rose)";
+  // KD: höher = schwerer. <50 leicht (grün), 50–79 mittel (amber), 80+ hart (rot)
+  const color = scoreColor(100 - value);
   return (
     <div className="inline-flex items-center gap-2">
-      <div className="w-14 h-1.5 rounded-full bg-muted overflow-hidden">
+      <div className="w-14 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--status-neutral-bg)" }}>
         <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       </div>
       <span className="font-mono tabular-nums text-xs w-6 text-right">{value}</span>
@@ -231,7 +251,13 @@ export function Legend({ color, label, dashed }: { color: string; label: string;
 
 export function StatusDot({ tone }: { tone: "ok" | "warn" | "bad" | "neutral" }) {
   const c =
-    tone === "ok" ? "var(--signal)" : tone === "warn" ? "var(--amber)" : tone === "bad" ? "var(--rose)" : "var(--ink-subtle)";
+    tone === "ok"
+      ? "var(--status-success)"
+      : tone === "warn"
+        ? "var(--status-warning)"
+        : tone === "bad"
+          ? "var(--status-error)"
+          : "var(--status-neutral)";
   return (
     <span
       className="inline-block size-2 rounded-full"

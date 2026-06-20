@@ -18,7 +18,9 @@ import {
 } from "recharts";
 import { Plus, Swords, X } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
-import { ChartTooltip, DeltaPill, KdBar, Panel, Pill, Td, Th } from "@/components/app/Atoms";
+import { ChartTooltip, KdBar, Panel, Pill, Td, Th } from "@/components/app/Atoms";
+import { StatusBadge, TrackKeywordButton } from "@/components/app/V2";
+import { competitorColor } from "@/lib/tokens";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +34,10 @@ export const Route = createFileRoute("/project/$projectId/competitors")({
   component: Page,
 });
 
-const PALETTE = ["var(--signal)", "var(--violet)", "var(--chart-5)", "var(--amber)", "var(--rose)"];
+/** Wettbewerber-Farbzuordnung — wird domain-spezifisch aufgelöst. */
+function colorFor(domain: string, idx: number) {
+  return competitorColor(domain, Math.max(0, idx - 1));
+}
 
 function seed(s: string) {
   let h = 2166136261;
@@ -117,7 +122,10 @@ function Page() {
         <section className="glass ring-aurora rounded-2xl p-4 flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle mr-1">You</span>
-            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border border-foreground/20 bg-foreground text-background">
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium border"
+              style={{ background: "var(--brand)", color: "var(--brand-foreground)", borderColor: "var(--brand)" }}
+            >
               {you}
             </span>
             <span className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle ml-3 mr-1">vs.</span>
@@ -125,7 +133,7 @@ function Page() {
               <span
                 key={c}
                 className="inline-flex items-center gap-1.5 rounded-full pl-2.5 pr-1.5 py-1 text-[11px] font-medium border border-border bg-surface-2"
-                style={{ boxShadow: `inset 3px 0 0 ${PALETTE[i + 1]}` }}
+                style={{ boxShadow: `inset 3px 0 0 ${colorFor(c, i + 1)}` }}
               >
                 {c}
                 <button onClick={() => setComps(comps.filter((x) => x !== c))} className="size-4 grid place-items-center rounded-full hover:bg-muted">
@@ -167,7 +175,7 @@ function Page() {
                   <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={32} tickFormatter={(v) => `${v}%`} />
                   <Tooltip content={<ChartTooltip />} />
                   {[you, ...comps].map((d, i) => (
-                    <Line key={d} type="monotone" dataKey={d} stroke={PALETTE[i]} strokeWidth={i === 0 ? 2.5 : 1.5} dot={false} />
+                    <Line key={d} type="monotone" dataKey={d} stroke={colorFor(d, i)} strokeWidth={i === 0 ? 2.5 : 1.5} dot={false} />
                   ))}
                 </LineChart>
               </ResponsiveContainer>
@@ -175,7 +183,7 @@ function Page() {
             <div className="flex flex-wrap items-center gap-4 pt-3 text-[11px] text-mono text-ink-subtle">
               {[you, ...comps].map((d, i) => (
                 <span key={d} className="inline-flex items-center gap-1.5">
-                  <span className="inline-block w-4 h-0.5" style={{ background: PALETTE[i] }} />
+                  <span className="inline-block w-4 h-0.5" style={{ background: colorFor(d, i) }} />
                   {d}
                 </span>
               ))}
@@ -189,7 +197,7 @@ function Page() {
                   <PolarGrid stroke="color-mix(in oklab, var(--ink) 10%, transparent)" />
                   <PolarAngleAxis dataKey="axis" tick={{ fontSize: 11, fill: "var(--ink-muted)" }} />
                   {[you, ...comps].map((d, i) => (
-                    <Radar key={d} dataKey={d} stroke={PALETTE[i]} fill={PALETTE[i]} fillOpacity={i === 0 ? 0.25 : 0.08} strokeWidth={i === 0 ? 2 : 1.25} />
+                    <Radar key={d} dataKey={d} stroke={colorFor(d, i)} fill={colorFor(d, i)} fillOpacity={i === 0 ? 0.25 : 0.08} strokeWidth={i === 0 ? 2 : 1.25} />
                   ))}
                 </RadarChart>
               </ResponsiveContainer>
@@ -216,7 +224,7 @@ function Page() {
                 <tr key={c.domain} className={cn("border-b border-border/60", i === 0 && "bg-muted/40")}>
                   <Td>
                     <span className="inline-flex items-center gap-2">
-                      <span className="size-2 rounded-full" style={{ background: PALETTE[i] }} />
+                      <span className="size-2 rounded-full" style={{ background: colorFor(c.domain, i) }} />
                       <span className="font-medium">{c.domain}</span>
                       {i === 0 && <span className="text-[9px] text-mono uppercase tracking-widest text-ink-subtle">you</span>}
                     </span>
@@ -236,7 +244,7 @@ function Page() {
         {/* Gap keywords */}
         <Panel
           title="Keyword Gap"
-          subtitle="Where competitors rank and you don't (or could overtake)"
+          subtitle="Wo Wettbewerber ranken und du (noch) nicht — Position: niedriger = besser"
           action={<Pill>Export CSV</Pill>}
         >
           <div className="h-44 -mx-2 mb-4">
@@ -244,11 +252,18 @@ function Page() {
               <BarChart data={gap.slice(0, 8)}>
                 <CartesianGrid stroke="color-mix(in oklab, var(--ink) 6%, transparent)" vertical={false} />
                 <XAxis dataKey="keyword" tick={{ fontSize: 9, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} interval={0} />
-                <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={32} reversed />
+                <YAxis
+                  tick={{ fontSize: 10, fill: "var(--ink-subtle)" }}
+                  axisLine={false}
+                  tickLine={false}
+                  width={64}
+                  reversed
+                  label={{ value: "Position (besser ↑)", angle: -90, position: "insideLeft", fontSize: 10, fill: "var(--ink-subtle)" }}
+                />
                 <Tooltip content={<ChartTooltip />} />
-                <Bar dataKey="you" fill={PALETTE[0]} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="you" fill={colorFor(you, 0)} radius={[4, 4, 0, 0]} />
                 {comps.map((c, i) => (
-                  <Bar key={c} dataKey={c} fill={PALETTE[i + 1]} radius={[4, 4, 0, 0]} />
+                  <Bar key={c} dataKey={c} fill={colorFor(c, i + 1)} radius={[4, 4, 0, 0]} />
                 ))}
                 <RLegend wrapperStyle={{ fontSize: 10, color: "var(--ink-subtle)" }} />
               </BarChart>
@@ -265,6 +280,7 @@ function Page() {
                   <Th key={c} align="right">{c.split(".")[0]}</Th>
                 ))}
                 <Th>Opportunity</Th>
+                <Th></Th>
               </tr>
             </thead>
             <tbody>
@@ -272,9 +288,10 @@ function Page() {
                 const compRanks = comps.map((c) => g[c] as number);
                 const minComp = Math.min(...compRanks);
                 const youRank = g.you as number;
-                const opp = !youRank ? "Untapped" : youRank > minComp + 5 ? "Behind" : "Competitive";
-                const oppColor =
-                  opp === "Untapped" ? "var(--violet)" : opp === "Behind" ? "var(--amber)" : "var(--signal)";
+                const opp: "Untapped" | "Behind" | "Competitive" =
+                  !youRank ? "Untapped" : youRank > minComp + 5 ? "Behind" : "Competitive";
+                const sev = opp === "Untapped" ? "success" : opp === "Behind" ? "warning" : "info";
+                const label = opp === "Untapped" ? "Untapped" : opp === "Behind" ? "Behind" : "Competitive";
                 return (
                   <tr key={g.keyword} className="border-b border-border/60 hover:bg-muted/40">
                     <Td className="font-medium">{g.keyword}</Td>
@@ -285,12 +302,10 @@ function Page() {
                       <Td key={c} align="right" className="font-mono tabular-nums text-ink-muted">{g[c] as number}</Td>
                     ))}
                     <Td>
-                      <span
-                        className="text-[10px] font-mono uppercase tracking-wider rounded px-1.5 py-0.5"
-                        style={{ background: `color-mix(in oklab, ${oppColor} 16%, transparent)`, color: oppColor }}
-                      >
-                        {opp}
-                      </span>
+                      <StatusBadge severity={sev} label={label} size="sm" withIcon={false} />
+                    </Td>
+                    <Td align="right">
+                      <TrackKeywordButton keyword={g.keyword} source="competitiveGap" />
                     </Td>
                   </tr>
                 );
