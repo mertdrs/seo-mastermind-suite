@@ -236,10 +236,7 @@ function Page() {
   );
 }
 
-function Kpi({ label, value, delta, inverse }: { label: string; value: string; delta: number; inverse?: boolean }) {
-  return _KpiImpl({ label, value, delta, inverse });
-}
-function _KpiImpl({ label, value, delta, inverse, hint }: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
+function Kpi({ label, value, delta, inverse, hint }: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
   const good = inverse ? delta < 0 : delta > 0;
   return (
     <div className="glass ring-aurora rounded-2xl p-4">
@@ -255,10 +252,6 @@ function _KpiImpl({ label, value, delta, inverse, hint }: { label: string; value
     </div>
   );
 }
-// Overload entry point that supports hint
-(Kpi as any) = function KpiWithHint(props: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
-  return _KpiImpl(props);
-};
 
 function LinkType({ type }: { type: "dofollow" | "nofollow" | "ugc" }) {
   const map = {
