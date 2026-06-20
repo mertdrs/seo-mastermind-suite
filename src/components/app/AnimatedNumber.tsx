@@ -5,9 +5,10 @@ interface Props {
   format?: (n: number) => string;
   duration?: number;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function AnimatedNumber({ value, format, duration = 900, className }: Props) {
+export function AnimatedNumber({ value, format, duration = 900, className, style }: Props) {
   const [display, setDisplay] = useState(0);
   const startRef = useRef<number | null>(null);
   const fromRef = useRef(0);
@@ -32,5 +33,5 @@ export function AnimatedNumber({ value, format, duration = 900, className }: Pro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  return <span className={className}>{format ? format(display) : Math.round(display).toLocaleString()}</span>;
+  return <span className={className} style={style}>{format ? format(display) : Math.round(display).toLocaleString()}</span>;
 }
