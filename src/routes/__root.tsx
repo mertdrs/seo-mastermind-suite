@@ -81,10 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Modern SEO suite with keyword research, rank tracking, site audit, backlinks, and AI visibility tracking — built for clarity and speed." },
       { name: "author", content: "Verity" },
       { property: "og:title", content: "Verity — SEO & AI Search Suite" },
-      { property: "og:description", content: "Modern SEO suite with keyword research, rank tracking, site audit, backlinks, and AI visibility tracking." },
+      { property: "og:description", content: "Modern SEO suite with keyword research, rank tracking, site audit, backlinks, and AI visibility tracking — built for clarity and speed." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Verity — SEO & AI Search Suite" },
+      { name: "twitter:description", content: "Modern SEO suite with keyword research, rank tracking, site audit, backlinks, and AI visibility tracking — built for clarity and speed." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/faa70574-374e-432d-96eb-51f193c6f342/id-preview-da5af945--7f9f2b16-97bf-47a1-8848-d5dc45573f1a.lovable.app-1781623571599.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/faa70574-374e-432d-96eb-51f193c6f342/id-preview-da5af945--7f9f2b16-97bf-47a1-8848-d5dc45573f1a.lovable.app-1781623571599.png" },
     ],
     links: [
       {
