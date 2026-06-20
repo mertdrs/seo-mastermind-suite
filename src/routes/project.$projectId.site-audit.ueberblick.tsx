@@ -4,22 +4,25 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { AlertCircle, AlertTriangle, Info } from "lucide-react";
+import { AlertCircle, AlertTriangle, ChevronRight, Info } from "lucide-react";
 import { ChartTooltip, Panel, ScoreBar, SegmentedControl, Td, Th } from "@/components/app/Atoms";
 import { HealthRing } from "@/components/app/HealthRing";
+import { StatusBadge, TrendDelta } from "@/components/app/V2";
 import { formatNumber } from "@/lib/format";
+import { SEVERITY_TOKEN, type Severity as TokenSeverity } from "@/lib/tokens";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/project/$projectId/site-audit/ueberblick")({
   component: Page,
 });
 
 type Sev = "error" | "warning" | "notice";
+const SEV_TO_TOKEN: Record<Sev, TokenSeverity> = { error: "error", warning: "warning", notice: "info" };
 
 const ISSUES: { title: string; category: string; sev: Sev; affected: number; change: number }[] = [
   { title: "Pages with 4xx status code", category: "Crawlability", sev: "error", affected: 14, change: +3 },
@@ -38,6 +41,7 @@ const ISSUES: { title: string; category: string; sev: Sev; affected: number; cha
 
 function Page() {
   const [sev, setSev] = useState<"all" | Sev>("all");
+  const [drill, setDrill] = useState<typeof ISSUES[number] | null>(null);
   const filtered = ISSUES.filter((i) => sev === "all" || i.sev === sev);
 
   const counts = {
@@ -124,47 +128,52 @@ function Page() {
               <Th>Schwere</Th>
               <Th align="right">Betroffene URLs</Th>
               <Th align="right">Δ seit letztem Crawl</Th>
+              <Th></Th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((i) => (
-              <tr key={i.title} className="border-b border-border/60 hover:bg-muted/40">
+              <tr
+                key={i.title}
+                onClick={() => setDrill(i)}
+                className="border-b border-border/60 hover:bg-muted/40 cursor-pointer"
+              >
                 <Td className="font-medium">{i.title}</Td>
                 <Td className="text-ink-muted">{i.category}</Td>
                 <Td><SevBadge sev={i.sev} /></Td>
                 <Td align="right" className="font-mono tabular-nums">{formatNumber(i.affected)}</Td>
                 <Td align="right">
-                  <span
-                    className="text-[11px] font-mono tabular-nums"
-                    style={{ color: i.change > 0 ? "var(--rose)" : i.change < 0 ? "var(--signal)" : "var(--ink-subtle)" }}
-                  >
-                    {i.change > 0 ? "+" : ""}
-                    {i.change || "—"}
-                  </span>
+                  <TrendDelta value={i.change} format="absolute" metricKey="affectedUrls" />
+                </Td>
+                <Td align="right">
+                  <ChevronRight className="size-3.5 text-ink-subtle inline" />
                 </Td>
               </tr>
             ))}
           </tbody>
         </table>
       </Panel>
+
+      <IssueDrillDown issue={drill} onOpenChange={(o) => !o && setDrill(null)} />
     </div>
   );
 }
 
 function SevTile({ sev, count, total }: { sev: Sev; count: number; total: number }) {
-  const cfg = {
-    error: { color: "var(--rose)", Icon: AlertCircle, label: "Fehler" },
-    warning: { color: "var(--amber)", Icon: AlertTriangle, label: "Warnungen" },
-    notice: { color: "var(--violet)", Icon: Info, label: "Hinweise" },
-  }[sev];
+  const cfgMap = {
+    error: { token: SEVERITY_TOKEN.error, Icon: AlertCircle, label: "Fehler" },
+    warning: { token: SEVERITY_TOKEN.warning, Icon: AlertTriangle, label: "Warnungen" },
+    notice: { token: SEVERITY_TOKEN.info, Icon: Info, label: "Hinweise" },
+  } as const;
+  const cfg = cfgMap[sev];
   const Icon = cfg.Icon;
   return (
-    <div className="glass ring-aurora rounded-2xl p-4" style={{ boxShadow: `inset 3px 0 0 ${cfg.color}` }}>
+    <div className="glass ring-aurora rounded-2xl p-4" style={{ boxShadow: `inset 3px 0 0 ${cfg.token.fg}` }}>
       <div className="flex items-center justify-between">
         <span className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{cfg.label}</span>
-        <Icon className="size-4" style={{ color: cfg.color }} />
+        <Icon className="size-4" style={{ color: cfg.token.fg }} />
       </div>
-      <p className="text-display text-2xl font-semibold tabular-nums mt-1" style={{ color: cfg.color }}>
+      <p className="text-display text-2xl font-semibold tabular-nums mt-1" style={{ color: cfg.token.fg }}>
         {count}
       </p>
       <p className="text-[11px] text-ink-subtle">{formatNumber(total)} URLs betroffen</p>
@@ -173,19 +182,100 @@ function SevTile({ sev, count, total }: { sev: Sev; count: number; total: number
 }
 
 function SevBadge({ sev }: { sev: Sev }) {
-  const cfg = {
-    error: { c: "var(--rose)", label: "Fehler", Icon: AlertCircle },
-    warning: { c: "var(--amber)", label: "Warnung", Icon: AlertTriangle },
-    notice: { c: "var(--violet)", label: "Hinweis", Icon: Info },
-  }[sev];
-  const Icon = cfg.Icon;
+  const labelMap = { error: "Fehler", warning: "Warnung", notice: "Hinweis" } as const;
+  return <StatusBadge severity={SEV_TO_TOKEN[sev]} label={labelMap[sev]} size="sm" />;
+}
+
+/* ---- Drill-down: betroffene URLs ---- */
+
+function IssueDrillDown({
+  issue,
+  onOpenChange,
+}: {
+  issue: typeof ISSUES[number] | null;
+  onOpenChange: (o: boolean) => void;
+}) {
+  const urls = useMemo(() => {
+    if (!issue) return [];
+    // Mock-Daten — deterministisch nach Issue-Titel
+    const seed = issue.title.length;
+    const slugs = [
+      "/", "/pricing", "/blog/seo-ai", "/blog/ranking-2026", "/features/audit",
+      "/integrations/slack", "/docs/getting-started", "/about", "/contact",
+      "/changelog/v3", "/legal/imprint", "/de/preise", "/de/blog/ranking",
+    ];
+    return Array.from({ length: Math.min(issue.affected, 12) }, (_, i) => {
+      const path = slugs[(i + seed) % slugs.length]!;
+      return {
+        url: `https://verity.app${path}`,
+        problem: issue.title,
+        hint: hintFor(issue),
+      };
+    });
+  }, [issue]);
   return (
-    <span
-      className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-mono rounded px-1.5 py-0.5"
-      style={{ background: `color-mix(in oklab, ${cfg.c} 14%, transparent)`, color: cfg.c }}
-    >
-      <Icon className="size-3" />
-      {cfg.label}
-    </span>
+    <Dialog open={!!issue} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl">
+        {issue && (
+          <>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3">
+                <SevBadge sev={issue.sev} />
+                <span>{issue.title}</span>
+              </DialogTitle>
+              <p className="text-xs text-ink-muted mt-1">
+                {issue.category} · {formatNumber(issue.affected)} betroffene URLs · zeigt erste {urls.length}
+              </p>
+            </DialogHeader>
+            <div className="max-h-[60vh] overflow-y-auto">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-background">
+                  <tr className="border-b border-border">
+                    <Th>URL</Th>
+                    <Th>Problem</Th>
+                    <Th>Quick-Fix</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {urls.map((r) => (
+                    <tr key={r.url} className="border-b border-border/60">
+                      <Td>
+                        <a
+                          href={r.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[12px] font-mono hover:underline"
+                          style={{ color: "var(--status-info)" }}
+                        >
+                          {r.url.replace("https://", "")}
+                        </a>
+                      </Td>
+                      <Td className="text-ink-muted text-xs">{r.problem}</Td>
+                      <Td className="text-xs">{r.hint}</Td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
+}
+
+function hintFor(issue: typeof ISSUES[number]): string {
+  if (issue.title.includes("4xx")) return "Redirect (301) auf passende URL setzen.";
+  if (issue.title.includes("Broken internal")) return "Link entfernen oder Ziel reparieren.";
+  if (issue.title.includes("canonical")) return "<link rel=canonical> auf Self-URL ergänzen.";
+  if (issue.title.includes("LCP")) return "Hero-Image als WebP & preload, Render-Blocker entfernen.";
+  if (issue.title.includes("Duplicate title")) return "Eindeutigen <title> je Seite vergeben.";
+  if (issue.title.includes("alt text")) return "Beschreibende alt-Texte oder alt=\"\" für deko Bilder.";
+  if (issue.title.includes("H1")) return "Genau ein eindeutiges <h1> pro Seite.";
+  if (issue.title.includes("Thin")) return "Content auf ≥ 300 Wörter ausbauen oder noindex.";
+  if (issue.title.includes("meta descriptions")) return "Meta Description auf ≤ 155 Zeichen kürzen.";
+  if (issue.title.includes("robots.txt")) return "Disallow-Regel prüfen, ggf. Allow setzen.";
+  if (issue.title.includes("Mixed content")) return "Assets auf HTTPS umstellen.";
+  if (issue.title.includes("structured data")) return "JSON-LD Schema ergänzen (Article, FAQ, Product).";
+  return "Detail-Empfehlung folgt nach erneuter Analyse.";
 }
