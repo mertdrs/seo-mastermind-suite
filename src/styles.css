@@ -144,13 +144,13 @@
   --hairline:        oklch(0 0 0 / 0.08);
   --hairline-strong: oklch(0 0 0 / 0.14);
 
-  --signal:            oklch(0.78 0.21 134);
-  --signal-foreground: oklch(0.16 0.05 134);
-  --signal-glow:       oklch(0.78 0.21 134 / 0.45);
+  --signal:            oklch(0.66 0.14 150);
+  --signal-foreground: oklch(0.98 0.02 150);
+  --signal-glow:       oklch(0.66 0.14 150 / 0.35);
 
-  --amber:  oklch(0.74 0.17 75);
-  --violet: oklch(0.58 0.22 295);
-  --rose:   oklch(0.62 0.19 18);
+  --amber:  oklch(0.72 0.13 75);
+  --violet: oklch(0.60 0.15 290);
+  --rose:   oklch(0.62 0.15 18);
 
   --card: var(--surface);
   --card-foreground: var(--ink);
@@ -170,11 +170,11 @@
   --input: var(--hairline-strong);
   --ring: var(--signal);
 
-  --chart-1: oklch(0.78 0.21 134);
-  --chart-2: oklch(0.58 0.22 295);
-  --chart-3: oklch(0.74 0.17 75);
-  --chart-4: oklch(0.62 0.19 18);
-  --chart-5: oklch(0.62 0.15 200);
+  --chart-1: oklch(0.66 0.14 150);
+  --chart-2: oklch(0.60 0.15 290);
+  --chart-3: oklch(0.72 0.13 75);
+  --chart-4: oklch(0.62 0.15 18);
+  --chart-5: oklch(0.62 0.12 220);
 
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
@@ -239,13 +239,13 @@
   --hairline:        oklch(1 0 0 / 0.08);
   --hairline-strong: oklch(1 0 0 / 0.14);
 
-  --signal:            oklch(0.88 0.22 134);
-  --signal-foreground: oklch(0.18 0.04 134);
-  --signal-glow:       oklch(0.88 0.22 134 / 0.5);
+  --signal:            oklch(0.78 0.14 150);
+  --signal-foreground: oklch(0.18 0.04 150);
+  --signal-glow:       oklch(0.78 0.14 150 / 0.4);
 
-  --amber:  oklch(0.82 0.18 75);
-  --violet: oklch(0.72 0.22 295);
-  --rose:   oklch(0.72 0.19 18);
+  --amber:  oklch(0.80 0.12 75);
+  --violet: oklch(0.72 0.14 290);
+  --rose:   oklch(0.72 0.14 18);
 
   --card: var(--surface);
   --card-foreground: var(--ink);
@@ -265,11 +265,11 @@
   --input: var(--hairline-strong);
   --ring: var(--signal);
 
-  --chart-1: oklch(0.88 0.22 134);
-  --chart-2: oklch(0.72 0.22 295);
-  --chart-3: oklch(0.82 0.18 75);
-  --chart-4: oklch(0.72 0.19 18);
-  --chart-5: oklch(0.78 0.15 200);
+  --chart-1: oklch(0.78 0.14 150);
+  --chart-2: oklch(0.72 0.14 290);
+  --chart-3: oklch(0.80 0.12 75);
+  --chart-4: oklch(0.72 0.14 18);
+  --chart-5: oklch(0.78 0.12 220);
 
   --sidebar: var(--surface);
   --sidebar-foreground: var(--ink);
