@@ -92,11 +92,7 @@ function Page() {
                   <XAxis type="number" tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                   <YAxis type="category" dataKey="category" tick={{ fontSize: 11, fill: "var(--ink-muted)" }} axisLine={false} tickLine={false} width={108} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Bar dataKey="value" radius={[0, 6, 6, 0]}>
-                    {byCategory.map((_, i) => (
-                      <Cell key={i} fill={i < 2 ? "var(--rose)" : i < 4 ? "var(--amber)" : "var(--violet)"} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="value" radius={[0, 6, 6, 0]} fill="var(--series-5)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
