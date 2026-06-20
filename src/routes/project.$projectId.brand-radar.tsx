@@ -110,14 +110,31 @@ function Page() {
   const sentSum = lastSent.positive + lastSent.neutral + lastSent.negative;
   const positivePct = Math.round((lastSent.positive / sentSum) * 100);
 
+  const [tab, setTab] = useState<"overview" | "queries" | "engines" | "mentions">("overview");
+  const [search, setSearch] = useState("");
+  const filteredMentions = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return mentions.filter((m) => !q || m.query.toLowerCase().includes(q) || m.snippet.toLowerCase().includes(q) || m.source.toLowerCase().includes(q));
+  }, [mentions, search]);
+
   return (
     <AppShell title="AI Visibility" subtitle={`Wie KI-Engines ${domain} zitieren · letzte 30 Tage`}>
       <div className="flex flex-col gap-6">
+        <PageTabs
+          value={tab}
+          onChange={(id) => setTab(id as typeof tab)}
+          tabs={[
+            { id: "overview", label: "Übersicht", to: "" },
+            { id: "queries", label: "Queries", to: "" },
+            { id: "engines", label: "Engines", to: "" },
+            { id: "mentions", label: "Erwähnungen", to: "" },
+          ]}
+        />
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Kpi label="Erwähnungen" value={formatNumber(totalMentions)} delta={+24.6} hint="letzte 30 Tage, alle Engines" />
-          <Kpi label="AI Share of Voice" value={`${lastSov}%`} delta={+5.2} highlight />
-          <Kpi label="Überwachte Engines" value="6" hint="LLMs im Tracking" />
-          <Kpi label="Sentiment positiv" value={`${positivePct}%`} hint="letzte Woche" delta={+3.1} />
+          <MetricCard label="Erwähnungen" value={formatNumber(totalMentions)} delta={{ value: 24.6 }} accent="ai" />
+          <MetricCard label="AI Share of Voice" value={`${lastSov}%`} metricKey="shareOfVoice" delta={{ value: 5.2 }} accent="ai" />
+          <MetricCard label="Überwachte Engines" value="6" />
+          <MetricCard label="Sentiment positiv" value={`${positivePct}%`} delta={{ value: 3.1 }} />
         </section>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
