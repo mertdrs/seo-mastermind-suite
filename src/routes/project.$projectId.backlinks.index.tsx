@@ -20,7 +20,7 @@ import { PageTabs, FilterBar, Paginator, EmptyState } from "@/components/app/V2S
 import { getBacklinks, getReferringDomainsGrowth } from "@/lib/mock/seo";
 import { formatNumber } from "@/lib/format";
 
-export const Route = createFileRoute("/project/$projectId/backlinks")({
+export const Route = createFileRoute("/project/$projectId/backlinks/")({
   head: () => ({
     meta: [
       { title: "Backlinks — Verity" },

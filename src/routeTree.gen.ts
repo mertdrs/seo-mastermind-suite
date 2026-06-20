@@ -34,6 +34,7 @@ import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project
 import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
 import { Route as ProjectProjectIdBacklinkCheckRouteImport } from './routes/project.$projectId.backlink-check'
 import { Route as ProjectProjectIdSiteAuditIndexRouteImport } from './routes/project.$projectId.site-audit.index'
+import { Route as ProjectProjectIdBacklinksIndexRouteImport } from './routes/project.$projectId.backlinks.index'
 import { Route as ProjectProjectIdSiteAuditUnterseitenRouteImport } from './routes/project.$projectId.site-audit.unterseiten'
 import { Route as ProjectProjectIdSiteAuditUeberblickRouteImport } from './routes/project.$projectId.site-audit.ueberblick'
 import { Route as ProjectProjectIdSiteAuditStatistikenRouteImport } from './routes/project.$projectId.site-audit.statistiken'
@@ -180,6 +181,12 @@ const ProjectProjectIdSiteAuditIndexRoute =
     path: '/',
     getParentRoute: () => ProjectProjectIdSiteAuditRoute,
   } as any)
+const ProjectProjectIdBacklinksIndexRoute =
+  ProjectProjectIdBacklinksIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
 const ProjectProjectIdSiteAuditUnterseitenRoute =
   ProjectProjectIdSiteAuditUnterseitenRouteImport.update({
     id: '/unterseiten',
@@ -212,7 +219,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRouteWithChildren
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -234,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks/': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesByTo {
@@ -243,7 +251,6 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -264,6 +271,7 @@ export interface FileRoutesByTo {
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesById {
@@ -274,7 +282,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRouteWithChildren
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks/': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRouteTypes {
@@ -329,6 +338,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks/'
     | '/project/$projectId/site-audit/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -338,7 +348,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/project/$projectId'
     | '/project/$projectId/backlink-check'
-    | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
     | '/project/$projectId/content'
@@ -359,6 +368,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks'
     | '/project/$projectId/site-audit'
   id:
     | '__root__'
@@ -390,6 +400,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks/'
     | '/project/$projectId/site-audit/'
   fileRoutesById: FileRoutesById
 }
@@ -578,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdSiteAuditIndexRouteImport
       parentRoute: typeof ProjectProjectIdSiteAuditRoute
     }
+    '/project/$projectId/backlinks/': {
+      id: '/project/$projectId/backlinks/'
+      path: '/'
+      fullPath: '/project/$projectId/backlinks/'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksIndexRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
     '/project/$projectId/site-audit/unterseiten': {
       id: '/project/$projectId/site-audit/unterseiten'
       path: '/unterseiten'
@@ -609,6 +627,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ProjectProjectIdBacklinksRouteChildren {
+  ProjectProjectIdBacklinksIndexRoute: typeof ProjectProjectIdBacklinksIndexRoute
+}
+
+const ProjectProjectIdBacklinksRouteChildren: ProjectProjectIdBacklinksRouteChildren =
+  {
+    ProjectProjectIdBacklinksIndexRoute: ProjectProjectIdBacklinksIndexRoute,
+  }
+
+const ProjectProjectIdBacklinksRouteWithChildren =
+  ProjectProjectIdBacklinksRoute._addFileChildren(
+    ProjectProjectIdBacklinksRouteChildren,
+  )
+
 interface ProjectProjectIdSiteAuditRouteChildren {
   ProjectProjectIdSiteAuditReportsRoute: typeof ProjectProjectIdSiteAuditReportsRoute
   ProjectProjectIdSiteAuditStatistikenRoute: typeof ProjectProjectIdSiteAuditStatistikenRoute
@@ -637,7 +669,7 @@ const ProjectProjectIdSiteAuditRouteWithChildren =
 
 interface ProjectProjectIdRouteChildren {
   ProjectProjectIdBacklinkCheckRoute: typeof ProjectProjectIdBacklinkCheckRoute
-  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
+  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRouteWithChildren
   ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
   ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
   ProjectProjectIdContentRoute: typeof ProjectProjectIdContentRoute
@@ -659,7 +691,7 @@ interface ProjectProjectIdRouteChildren {
 
 const ProjectProjectIdRouteChildren: ProjectProjectIdRouteChildren = {
   ProjectProjectIdBacklinkCheckRoute: ProjectProjectIdBacklinkCheckRoute,
-  ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRoute,
+  ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRouteWithChildren,
   ProjectProjectIdBrandRadarRoute: ProjectProjectIdBrandRadarRoute,
   ProjectProjectIdCompetitorsRoute: ProjectProjectIdCompetitorsRoute,
   ProjectProjectIdContentRoute: ProjectProjectIdContentRoute,
