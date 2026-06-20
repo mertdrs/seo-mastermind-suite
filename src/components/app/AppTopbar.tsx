@@ -1,5 +1,6 @@
-import { Bell, Calendar, Globe, Sparkles, Download } from "lucide-react";
+import { Bell, Sparkles, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScopeBar } from "./ScopeBar";
 
 export function AppTopbar({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
@@ -10,29 +11,24 @@ export function AppTopbar({ title, subtitle }: { title: string; subtitle?: strin
           {subtitle && <p className="text-xs text-muted-foreground truncate">{subtitle}</p>}
         </div>
         <div className="hidden md:flex items-center gap-1.5">
-          <Button variant="ghost" size="sm" className="text-mono text-xs gap-1.5">
-            <Globe className="size-3.5" /> Germany
-          </Button>
-          <Button variant="ghost" size="sm" className="text-mono text-xs gap-1.5">
-            <Calendar className="size-3.5" /> Last 30 days
-          </Button>
+          <ScopeBar />
           <div className="w-px h-5 bg-border mx-1" />
-          <Button variant="ghost" size="icon" className="size-9">
+          <Button variant="ghost" size="icon" className="size-9" aria-label="Benachrichtigungen">
             <Bell className="size-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="text-xs gap-1.5">
+          <Button variant="ghost" size="sm" className="text-xs gap-1.5" aria-label="Export">
             <Download className="size-3.5" /> Export
           </Button>
           <Button
             size="sm"
             className="text-xs gap-1.5 font-semibold"
             style={{
-              background: "linear-gradient(135deg, var(--aurora-cyan), var(--aurora-violet))",
-              color: "var(--background)",
-              boxShadow: "0 0 20px -4px color-mix(in oklab, var(--aurora-cyan) 60%, transparent)",
+              background: "var(--ai-accent)",
+              color: "var(--brand-foreground)",
             }}
+            aria-label="KI-Zusammenfassung"
           >
-            <Sparkles className="size-3.5" /> AI Summary
+            <Sparkles className="size-3.5" /> KI-Zusammenfassung
           </Button>
         </div>
       </div>
