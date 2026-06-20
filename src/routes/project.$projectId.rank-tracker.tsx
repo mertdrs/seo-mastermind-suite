@@ -18,7 +18,6 @@ import { ChartTooltip, Chip, Panel, Pill, SegmentedControl, Td, Th } from "@/com
 import { MetricCard, TrendDelta } from "@/components/app/V2";
 import { POSITION_BUCKETS, positionBucketColor } from "@/lib/tokens";
 import { formatNumber } from "@/lib/format";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/project/$projectId/rank-tracker")({
   head: () => ({
