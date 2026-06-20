@@ -27,7 +27,7 @@ import {
   Td,
   Th,
 } from "@/components/app/Atoms";
-import { MetricCard, TrackKeywordButton, TrendDelta } from "@/components/app/V2";
+import { MetricCard, TrackKeywordButton } from "@/components/app/V2";
 import { seriesColor } from "@/lib/tokens";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
