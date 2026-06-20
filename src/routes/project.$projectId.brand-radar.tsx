@@ -137,6 +137,7 @@ function Page() {
           <MetricCard label="Sentiment positiv" value={`${positivePct}%`} delta={{ value: 3.1 }} />
         </section>
 
+        {(tab === "overview" || tab === "engines") && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Panel
             className="xl:col-span-2"
@@ -190,7 +191,9 @@ function Page() {
             </ul>
           </Panel>
         </div>
+        )}
 
+        {(tab === "overview" || tab === "queries") && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Panel className="xl:col-span-2" title="Sentiment im Zeitverlauf" subtitle="Wöchentliche Klassifikation der Zitate">
             <div className="h-56 -mx-2">
@@ -242,7 +245,9 @@ function Page() {
             </ul>
           </Panel>
         </div>
+        )}
 
+        {(tab === "overview" || tab === "mentions") && (
         <Panel title="Letzte Erwähnungen" subtitle="Live-Feed der KI-Zitate">
           <FilterBar search={search} onSearch={setSearch} placeholder="Query, Snippet oder Engine durchsuchen…" />
           {filteredMentions.length === 0 ? (
@@ -276,6 +281,7 @@ function Page() {
           </ul>
           )}
         </Panel>
+        )}
       </div>
     </AppShell>
   );
