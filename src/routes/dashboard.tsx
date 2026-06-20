@@ -72,7 +72,36 @@ function DashboardPage() {
           </Panel>
         )}
       </div>
+
+      {projects.length > 0 && <WorkspaceSummary />}
     </AppShell>
+  );
+}
+
+function WorkspaceSummary() {
+  const projects = useProjects();
+  const totalProjects = projects.length;
+  const totalBacklinks = projects.reduce((s, p) => s + p.backlinks, 0);
+  const totalRankings = projects.reduce((s, p) => s + p.rankings, 0);
+  const monitoring = projects.filter((p) => p.healthEnabled).length;
+  const crawling = projects.filter((p) => p.status === "crawling").length;
+  return (
+    <section className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+      <SumTile label="Projekte" value={String(totalProjects)} hint={`${monitoring} mit Monitoring`} />
+      <SumTile label="Backlinks" value={formatNumber(totalBacklinks)} hint="Summe aller Projekte" />
+      <SumTile label="Rankings" value={formatNumber(totalRankings)} hint="getrackte Keywords" />
+      <SumTile label="Aktive Crawls" value={String(crawling)} hint="laufen gerade" />
+    </section>
+  );
+}
+
+function SumTile({ label, value, hint }: { label: string; value: string; hint: string }) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-4">
+      <p className="text-[10px] uppercase tracking-[0.14em] text-mono" style={{ color: "var(--status-neutral)" }}>{label}</p>
+      <p className="text-display text-2xl font-semibold tabular-nums mt-1">{value}</p>
+      <p className="text-[11px] text-ink-subtle">{hint}</p>
+    </div>
   );
 }
 
