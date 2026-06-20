@@ -12,9 +12,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ArrowDownRight, ArrowUpRight, Bell, Plus, Smartphone, Monitor } from "lucide-react";
+import { Bell, Plus, Smartphone, Monitor } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, Chip, Panel, Pill, SegmentedControl, Td, Th } from "@/components/app/Atoms";
+import { MetricCard, TrendDelta } from "@/components/app/V2";
+import { POSITION_BUCKETS, positionBucketColor } from "@/lib/tokens";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -73,11 +75,11 @@ function generate() {
     };
   });
   const distribution = [
-    { range: "1-3", value: rows.filter((r) => r.current <= 3).length, color: "var(--signal)" },
-    { range: "4-10", value: rows.filter((r) => r.current > 3 && r.current <= 10).length, color: "var(--violet)" },
-    { range: "11-20", value: rows.filter((r) => r.current > 10 && r.current <= 20).length, color: "var(--chart-5)" },
-    { range: "21-50", value: rows.filter((r) => r.current > 20 && r.current <= 50).length, color: "var(--amber)" },
-    { range: "50+", value: rows.filter((r) => r.current > 50).length, color: "var(--rose)" },
+    { range: "1-3", value: rows.filter((r) => r.current <= 3).length, color: POSITION_BUCKETS[0].color },
+    { range: "4-10", value: rows.filter((r) => r.current > 3 && r.current <= 10).length, color: POSITION_BUCKETS[1].color },
+    { range: "11-20", value: rows.filter((r) => r.current > 10 && r.current <= 20).length, color: POSITION_BUCKETS[2].color },
+    { range: "21-50", value: rows.filter((r) => r.current > 20 && r.current <= 50).length, color: POSITION_BUCKETS[3].color },
+    { range: "50+", value: rows.filter((r) => r.current > 50).length, color: POSITION_BUCKETS[4].color },
   ];
   return { rows, visibility, distribution };
 }
@@ -131,10 +133,20 @@ function Page() {
         </section>
 
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Kpi label="Visibility" value={`${(filteredRows.length ? d.visibility[d.visibility.length - 1]!.visibility : 0).toFixed(1)}%`} delta={+3.2} />
-          <Kpi label="Average Position" value={avg} delta={-1.4} inverse />
-          <Kpi label="Top 3" value={String(top3)} delta={+2} />
-          <Kpi label="Movers (≥4)" value={String(movers.length)} delta={+5} />
+          <MetricCard
+            label="Visibility"
+            value={`${(filteredRows.length ? d.visibility[d.visibility.length - 1]!.visibility : 0).toFixed(1)}%`}
+            metricKey="visibility"
+            delta={{ value: 3.2 }}
+          />
+          <MetricCard label="Ø Position" value={avg} metricKey="averagePosition" delta={{ value: -1.4, format: "absolute" }} />
+          <MetricCard label="Top 3" value={String(top3)} metricKey="top3" delta={{ value: 2, format: "absolute" }} />
+          <MetricCard
+            label="Movers (≥4)"
+            value={String(movers.length)}
+            metricKey="movers"
+            delta={{ value: 5, format: "absolute" }}
+          />
         </section>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
@@ -158,7 +170,7 @@ function Page() {
             </div>
           </Panel>
 
-          <Panel title="Position Distribution" subtitle="Where your tracked terms rank today">
+          <Panel title="Position Distribution" subtitle="Wo deine getrackten Keywords heute ranken — niedriger = besser">
             <div className="h-44 -mx-2">
               <ResponsiveContainer>
                 <BarChart data={d.distribution}>
@@ -206,7 +218,11 @@ function Page() {
                   <Td className="font-medium">{r.kw}</Td>
                   <Td><span className="text-[10px] font-mono uppercase tracking-wider text-ink-muted">#{r.tag}</span></Td>
                   <Td>
-                    {r.device === "mobile" ? <Smartphone className="size-3.5 text-ink-muted" /> : <Monitor className="size-3.5 text-ink-muted" />}
+                    {r.device === "mobile" ? (
+                      <Smartphone className="size-3.5 text-ink-muted" aria-label="Mobile" />
+                    ) : (
+                      <Monitor className="size-3.5 text-ink-muted" aria-label="Desktop" />
+                    )}
                   </Td>
                   <Td className="text-ink-subtle text-xs font-mono">{r.url}</Td>
                   <Td align="right" className="font-mono tabular-nums">{formatNumber(r.volume)}</Td>
@@ -215,7 +231,10 @@ function Page() {
                   <Td align="right">
                     <PositionPill pos={r.current} />
                   </Td>
-                  <Td align="right"><Delta value={r.change} /></Td>
+                  <Td align="right">
+                    {/* change > 0 = Position verbessert sich (previous-current); Verbesserung soll grün sein */}
+                    <TrendDelta value={r.change} format="absolute" metricKey="top3" />
+                  </Td>
                 </tr>
               ))}
             </tbody>
@@ -226,41 +245,11 @@ function Page() {
   );
 }
 
-function Kpi({ label, value, delta, inverse }: { label: string; value: string; delta: number; inverse?: boolean }) {
-  const good = inverse ? delta < 0 : delta > 0;
-  return (
-    <div className="glass ring-aurora rounded-2xl p-4">
-      <p className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</p>
-      <div className="flex items-baseline gap-2 mt-1">
-        <span className="text-display text-2xl font-semibold tabular-nums">{value}</span>
-        <span className="text-[11px] font-mono" style={{ color: good ? "var(--signal)" : "var(--rose)" }}>
-          {delta > 0 ? "+" : ""}
-          {delta}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 function PositionPill({ pos }: { pos: number }) {
-  const c = pos <= 3 ? "var(--signal)" : pos <= 10 ? "var(--violet)" : pos <= 20 ? "var(--chart-5)" : "var(--ink-subtle)";
+  const c = positionBucketColor(pos);
   return (
     <span className="text-mono text-xs font-semibold rounded-md px-2 py-0.5 tabular-nums" style={{ background: `color-mix(in oklab, ${c} 15%, transparent)`, color: c }}>
       {pos}
-    </span>
-  );
-}
-
-function Delta({ value }: { value: number }) {
-  if (value === 0) return <span className="text-ink-subtle text-xs">—</span>;
-  const up = value > 0;
-  return (
-    <span
-      className={cn("inline-flex items-center gap-0.5 text-[11px] font-mono tabular-nums")}
-      style={{ color: up ? "var(--signal)" : "var(--rose)" }}
-    >
-      {up ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
-      {Math.abs(value)}
     </span>
   );
 }
