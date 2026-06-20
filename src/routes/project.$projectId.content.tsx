@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { ExternalLink, Heart, Link2, MessageSquare, Search, Share2 } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
-import { ChartTooltip, Chip, IconButton, Panel, Pill, SegmentedControl, Td, Th } from "@/components/app/Atoms";
+import { ChartTooltip, Chip, IconButton, Panel, SegmentedControl } from "@/components/app/Atoms";
 import { formatNumber } from "@/lib/format";
 
 export const Route = createFileRoute("/project/$projectId/content")({
