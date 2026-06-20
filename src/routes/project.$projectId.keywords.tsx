@@ -392,42 +392,6 @@ function Page() {
   );
 }
 
-function MetricCard({
-  label,
-  value,
-  delta,
-  hint,
-  suffix,
-  tone,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  delta?: number;
-  hint?: string;
-  suffix?: string;
-  tone?: "ok" | "warn" | "bad";
-  highlight?: boolean;
-}) {
-  const toneColor =
-    tone === "ok" ? "var(--signal)" : tone === "warn" ? "var(--amber)" : tone === "bad" ? "var(--rose)" : undefined;
-  return (
-    <div className={cn("glass ring-aurora rounded-2xl p-4 flex flex-col gap-2", highlight && "ring-1 ring-[color:var(--aurora-cyan)]/30")}>
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</span>
-        {delta !== undefined && <DeltaPill value={delta} />}
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-display text-2xl font-semibold tabular-nums" style={toneColor ? { color: toneColor } : undefined}>
-          {value}
-        </span>
-        {suffix && <span className="text-xs text-ink-subtle font-mono">{suffix}</span>}
-      </div>
-      {hint && <span className="text-[11px] text-ink-subtle">{hint}</span>}
-    </div>
-  );
-}
-
 function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number; cpc: number; intent: string }[] }) {
   return (
     <table className="w-full text-sm">
@@ -438,6 +402,7 @@ function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number
           <Th align="right">Volume</Th>
           <Th align="right">KD</Th>
           <Th align="right">CPC</Th>
+          <Th></Th>
         </tr>
       </thead>
       <tbody>
@@ -448,6 +413,9 @@ function KwTable({ rows }: { rows: { keyword: string; volume: number; kd: number
             <Td align="right" className="font-mono tabular-nums">{formatNumber(r.volume)}</Td>
             <Td align="right"><KdBar value={r.kd} /></Td>
             <Td align="right" className="font-mono tabular-nums">{formatCurrency(r.cpc)}</Td>
+            <Td align="right">
+              <TrackKeywordButton keyword={r.keyword} source="keywordsExplorer" />
+            </Td>
           </tr>
         ))}
       </tbody>
