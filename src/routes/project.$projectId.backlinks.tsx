@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Info } from "lucide-react";
 import { AppShell } from "@/components/app/AppShell";
 import { ChartTooltip, IconButton, Panel, Pill, Td, Th } from "@/components/app/Atoms";
 import { getBacklinks, getReferringDomainsGrowth } from "@/lib/mock/seo";
@@ -37,6 +37,25 @@ function Page() {
   const refDomains = growth[growth.length - 1]!.total;
   const dofollow = rows.filter((r) => r.type === "dofollow").length;
   const dofollowPct = Math.round((dofollow / rows.length) * 100);
+
+  // Link-Attribut-Verteilung — Attribute können sich überschneiden
+  // (z. B. ein Link kann nofollow UND ugc sein). Wir zeigen je Attribut
+  // den Anteil am Gesamtprofil (jede Zeile ist eine eigene Skala 0–100 %),
+  // statt einer 100-%-Torte, die fälschlich Summierung suggeriert.
+  const linkAttributes = useMemo(() => {
+    const total = rows.length;
+    const nofollow = rows.filter((r) => r.type === "nofollow").length;
+    const ugc = rows.filter((r) => r.type === "ugc").length;
+    // Sponsored gibt es im Mock nicht — wir leiten einen kleinen, deterministischen
+    // Anteil als Subset der UGC-Links ab.
+    const sponsored = Math.round(ugc * 0.35);
+    return [
+      { label: "Dofollow", pct: Math.round((dofollow / total) * 100), color: "var(--series-1)" },
+      { label: "Nofollow", pct: Math.round((nofollow / total) * 100), color: "var(--series-2)" },
+      { label: "UGC", pct: Math.round((ugc / total) * 100), color: "var(--series-3)" },
+      { label: "Sponsored", pct: Math.round((sponsored / total) * 100), color: "var(--series-4)" },
+    ];
+  }, [rows, dofollow]);
 
   const newLost = growth.slice(-14).map((g) => ({
     date: g.date.slice(5),
@@ -67,14 +86,20 @@ function Page() {
     <AppShell title="Backlinks" subtitle={`${domain} · ${formatNumber(refDomains)} referring domains · ${formatNumber(totalLinks)} live links`}>
       <div className="flex flex-col gap-6">
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Kpi label="Referring Domains" value={formatNumber(refDomains)} delta={+2.1} />
-          <Kpi label="Total Backlinks" value={formatNumber(totalLinks)} delta={+4.6} />
-          <Kpi label="Dofollow" value={`${dofollowPct}%`} delta={+0.8} />
-          <Kpi label="Toxic Risk" value="2.1%" delta={-0.4} inverse />
+          <Kpi label="Verweisende Domains" value={formatNumber(refDomains)} delta={+2.1} />
+          <Kpi label="Backlinks gesamt" value={formatNumber(totalLinks)} delta={+4.6} />
+          <Kpi label="Dofollow-Anteil" value={`${dofollowPct}%`} delta={+0.8} />
+          <Kpi
+            label="Toxische Links"
+            value="2,1%"
+            delta={-0.4}
+            inverse
+            hint="Anteil toxischer Links am Gesamt­profil"
+          />
         </section>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-          <Panel className="xl:col-span-2" title="Referring Domains" subtitle="Total over time">
+          <Panel className="xl:col-span-2" title="Verweisende Domains" subtitle="Verlauf">
             <div className="h-60 -mx-2">
               <ResponsiveContainer>
                 <ComposedChart data={growth}>
@@ -88,7 +113,7 @@ function Page() {
             </div>
           </Panel>
 
-          <Panel title="New vs Lost" subtitle="Last 14 days">
+          <Panel title="Neu vs. Verloren" subtitle="Letzte 14 Tage">
             <div className="h-60 -mx-2">
               <ResponsiveContainer>
                 <BarChart data={newLost} stackOffset="sign">
@@ -96,8 +121,8 @@ function Page() {
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={32} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Bar dataKey="gained" stackId="a" fill="var(--signal)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="lost" stackId="a" fill="var(--rose)" radius={[0, 0, 4, 4]} />
+                  <Bar dataKey="gained" stackId="a" fill="var(--status-success)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="lost" stackId="a" fill="var(--status-error)" radius={[0, 0, 4, 4]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -105,21 +130,21 @@ function Page() {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-          <Panel title="Anchor Distribution" subtitle="Most common anchor texts">
+          <Panel title="Anchor-Texte" subtitle="Häufigste Ankertexte">
             <ul className="flex flex-col gap-2.5">
               {anchorMix.map((a) => (
                 <li key={a.anchor} className="flex items-center gap-2 text-sm">
                   <span className="flex-1 truncate text-ink-muted">"{a.anchor}"</span>
                   <span className="font-mono tabular-nums text-xs w-10 text-right">{a.pct}%</span>
                   <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${Math.min(100, a.pct * 3)}%`, background: "var(--violet)" }} />
+                  <div className="h-full rounded-full" style={{ width: `${Math.min(100, a.pct * 3)}%`, background: "var(--series-2)" }} />
                   </div>
                 </li>
               ))}
             </ul>
           </Panel>
 
-          <Panel title="TLD Distribution" subtitle="Where your links come from">
+          <Panel title="TLD-Verteilung" subtitle="Herkunft deiner Links">
             <div className="h-40 -mx-2">
               <ResponsiveContainer>
                 <BarChart data={tldDist}>
@@ -127,20 +152,27 @@ function Page() {
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "var(--ink-subtle)" }} axisLine={false} tickLine={false} width={24} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="var(--chart-5)" />
+                  <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="var(--series-1)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </Panel>
 
-          <Panel title="Link Type Mix">
+          <Panel
+            title="Link-Attribute"
+            subtitle="Anteil je Attribut am Gesamtprofil"
+            action={
+              <span
+                className="inline-flex items-center gap-1 text-[10px] text-ink-subtle"
+                title="Ein Link kann mehrere Attribute haben (z. B. nofollow + ugc). Die Anteile summieren sich daher nicht auf 100 %."
+              >
+                <Info className="size-3" />
+                kann sich überschneiden
+              </span>
+            }
+          >
             <div className="flex flex-col gap-3 text-sm">
-              {[
-                { label: "Dofollow", pct: dofollowPct, color: "var(--signal)" },
-                { label: "Nofollow", pct: 24, color: "var(--violet)" },
-                { label: "UGC", pct: 8, color: "var(--amber)" },
-                { label: "Sponsored", pct: 4, color: "var(--rose)" },
-              ].map((t) => (
+              {linkAttributes.map((t) => (
                 <div key={t.label} className="flex items-center gap-3">
                   <span className="size-2 rounded-full" style={{ background: t.color }} />
                   <span className="text-ink-muted w-24">{t.label}</span>
@@ -154,17 +186,26 @@ function Page() {
           </Panel>
         </div>
 
-        <Panel title="Live Backlinks" subtitle={`${rows.length} most recent links`} action={<Pill>Export CSV</Pill>}>
+        <Panel
+          title="Live-Backlinks"
+          subtitle={`${rows.length} aktuellste Links`}
+          action={
+            <div className="flex items-center gap-2">
+              <ToxicLegend />
+              <Pill>Export CSV</Pill>
+            </div>
+          }
+        >
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <Th>Source domain</Th>
+                <Th>Quell-Domain</Th>
                 <Th align="right">DR</Th>
                 <Th align="right">Traffic</Th>
                 <Th>Anchor</Th>
-                <Th>Type</Th>
-                <Th align="right">Toxic</Th>
-                <Th align="right">First seen</Th>
+                <Th>Typ</Th>
+                <Th align="right">Toxizität</Th>
+                <Th align="right">Erstmals gesehen</Th>
                 <Th></Th>
               </tr>
             </thead>
@@ -177,7 +218,7 @@ function Page() {
                   <Td className="text-ink-muted italic">"{r.anchorText}"</Td>
                   <Td><LinkType type={r.type} /></Td>
                   <Td align="right">
-                    <ToxicCell value={r.toxicScore} />
+                    <ToxicCell value={Math.min(100, r.toxicScore * 6)} />
                   </Td>
                   <Td align="right" className="text-ink-subtle text-xs font-mono">{r.firstSeen}</Td>
                   <Td align="right">
@@ -196,45 +237,70 @@ function Page() {
 }
 
 function Kpi({ label, value, delta, inverse }: { label: string; value: string; delta: number; inverse?: boolean }) {
+  return _KpiImpl({ label, value, delta, inverse });
+}
+function _KpiImpl({ label, value, delta, inverse, hint }: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
   const good = inverse ? delta < 0 : delta > 0;
   return (
     <div className="glass ring-aurora rounded-2xl p-4">
       <p className="text-[10px] uppercase tracking-[0.14em] text-mono text-ink-subtle">{label}</p>
       <div className="flex items-baseline gap-2 mt-1">
         <span className="text-display text-2xl font-semibold tabular-nums">{value}</span>
-        <span className="text-[11px] font-mono" style={{ color: good ? "var(--signal)" : "var(--rose)" }}>
+        <span className="text-[11px] font-mono" style={{ color: good ? "var(--status-success)" : "var(--status-error)" }}>
           {delta > 0 ? "+" : ""}
           {delta}%
         </span>
       </div>
+      {hint && <p className="text-[10px] text-ink-subtle mt-1 leading-tight">{hint}</p>}
     </div>
   );
 }
+// Overload entry point that supports hint
+(Kpi as any) = function KpiWithHint(props: { label: string; value: string; delta: number; inverse?: boolean; hint?: string }) {
+  return _KpiImpl(props);
+};
 
 function LinkType({ type }: { type: "dofollow" | "nofollow" | "ugc" }) {
   const map = {
-    dofollow: "var(--signal)",
-    nofollow: "var(--violet)",
-    ugc: "var(--amber)",
+    dofollow: "var(--series-1)",
+    nofollow: "var(--series-2)",
+    ugc: "var(--series-3)",
   };
+  const label = { dofollow: "Dofollow", nofollow: "Nofollow", ugc: "UGC" }[type];
   return (
     <span
       className="text-[10px] uppercase tracking-wider font-mono rounded px-1.5 py-0.5"
       style={{ background: `color-mix(in oklab, ${map[type]} 16%, transparent)`, color: map[type] }}
     >
-      {type}
+      {label}
     </span>
   );
 }
 
 function ToxicCell({ value }: { value: number }) {
-  const c = value < 5 ? "var(--signal)" : value < 10 ? "var(--amber)" : "var(--rose)";
+  // 0–100 Skala; hoch = schlecht. Schwellen: 0–30 niedrig, 31–70 mittel, 71–100 hoch.
+  const c = value <= 30 ? "var(--status-success)" : value <= 70 ? "var(--status-warning)" : "var(--status-error)";
+  const label = value <= 30 ? "niedrig" : value <= 70 ? "mittel" : "hoch";
   return (
     <span
       className="font-mono tabular-nums text-xs rounded-md px-2 py-0.5"
       style={{ background: `color-mix(in oklab, ${c} 12%, transparent)`, color: c }}
+      title={`Toxic-Score ${value}/100 (${label}). Faktoren: niedrige Domain-Authority, Spam-Muster, Link-Netzwerke, irrelevante TLDs, unnatürliche Anchor-Verteilung.`}
     >
-      {value}
+      {Math.round(value)}
+    </span>
+  );
+}
+
+function ToxicLegend() {
+  return (
+    <span
+      className="hidden md:inline-flex items-center gap-1.5 text-[10px] text-ink-subtle font-mono"
+      title="Skala 0–100 pro Link: hoch = schlecht."
+    >
+      <span className="inline-flex items-center gap-1"><span className="size-1.5 rounded-full" style={{ background: "var(--status-success)" }} />0–30 niedrig</span>
+      <span className="inline-flex items-center gap-1"><span className="size-1.5 rounded-full" style={{ background: "var(--status-warning)" }} />31–70 mittel</span>
+      <span className="inline-flex items-center gap-1"><span className="size-1.5 rounded-full" style={{ background: "var(--status-error)" }} />71–100 hoch</span>
     </span>
   );
 }
