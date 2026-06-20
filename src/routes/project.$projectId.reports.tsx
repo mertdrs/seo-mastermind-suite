@@ -32,12 +32,12 @@ export const Route = createFileRoute("/project/$projectId/reports")({
 });
 
 const TEMPLATES = [
-  { id: "exec", title: "Executive Summary", desc: "One-page snapshot for stakeholders", icon: FileBarChart, color: "var(--signal)" },
-  { id: "monthly", title: "Monthly SEO", desc: "Traffic, keywords, backlinks · automated", icon: Calendar, color: "var(--violet)" },
-  { id: "audit", title: "Site Audit Brief", desc: "Tech issues prioritised by impact", icon: Activity, color: "var(--chart-5)" },
-  { id: "comp", title: "Competitive Pulse", desc: "Share of voice vs 3 rivals", icon: Compass, color: "var(--amber)" },
-  { id: "ai", title: "AI Visibility", desc: "Citations across LLMs", icon: Sparkles, color: "var(--rose)" },
-  { id: "blank", title: "Blank Canvas", desc: "Build from scratch", icon: LayoutTemplate, color: "var(--ink-subtle)" },
+  { id: "exec", title: "Executive Summary", desc: "Einseitiger Snapshot für Stakeholder", icon: FileBarChart, color: "var(--series-1)" },
+  { id: "monthly", title: "Monthly SEO", desc: "Traffic, Keywords, Backlinks · automatisiert", icon: Calendar, color: "var(--series-2)" },
+  { id: "audit", title: "Site Audit Brief", desc: "Tech-Issues priorisiert nach Impact", icon: Activity, color: "var(--series-3)" },
+  { id: "comp", title: "Competitive Pulse", desc: "Share of Voice vs. 3 Wettbewerber", icon: Compass, color: "var(--series-4)" },
+  { id: "ai", title: "AI Visibility", desc: "Zitationen über LLMs", icon: Sparkles, color: "var(--ai-accent)" },
+  { id: "blank", title: "Blank Canvas", desc: "Von Null bauen", icon: LayoutTemplate, color: "var(--status-neutral)" },
 ];
 
 const SCHEDULED = [
@@ -219,9 +219,9 @@ function Page() {
 
 function StatusBadge({ status }: { status: "active" | "draft" | "paused" }) {
   const map = {
-    active: { c: "var(--signal)", label: "Active" },
-    draft: { c: "var(--violet)", label: "Draft" },
-    paused: { c: "var(--ink-subtle)", label: "Paused" },
+    active: { c: "var(--status-success)", label: "Aktiv" },
+    draft: { c: "var(--status-info)", label: "Entwurf" },
+    paused: { c: "var(--status-neutral)", label: "Pausiert" },
   };
   const v = map[status];
   return (
@@ -243,7 +243,7 @@ function CanvasBlock({ title, subtitle, badge }: { title: string; subtitle: stri
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">{title}</span>
           {badge && (
-            <span className="text-[9px] font-mono uppercase tracking-wider rounded px-1.5 py-0.5" style={{ background: "color-mix(in oklab, var(--violet) 16%, transparent)", color: "var(--violet)" }}>
+            <span className="text-[9px] font-mono uppercase tracking-wider rounded px-1.5 py-0.5" style={{ background: "var(--ai-accent-bg)", color: "var(--ai-accent)" }}>
               {badge}
             </span>
           )}
@@ -251,7 +251,7 @@ function CanvasBlock({ title, subtitle, badge }: { title: string; subtitle: stri
         <p className="text-xs text-ink-subtle">{subtitle}</p>
       </div>
       <div className={cn("h-1 w-12 rounded-full bg-muted overflow-hidden")}>
-        <div className="h-full rounded-full" style={{ width: "75%", background: "linear-gradient(90deg, var(--signal), var(--violet))" }} />
+        <div className="h-full rounded-full" style={{ width: "75%", background: "linear-gradient(90deg, var(--series-1), var(--series-2))" }} />
       </div>
     </div>
   );
