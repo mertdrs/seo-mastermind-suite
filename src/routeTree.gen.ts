@@ -34,10 +34,17 @@ import { Route as ProjectProjectIdBrandRadarRouteImport } from './routes/project
 import { Route as ProjectProjectIdBacklinksRouteImport } from './routes/project.$projectId.backlinks'
 import { Route as ProjectProjectIdBacklinkCheckRouteImport } from './routes/project.$projectId.backlink-check'
 import { Route as ProjectProjectIdSiteAuditIndexRouteImport } from './routes/project.$projectId.site-audit.index'
+import { Route as ProjectProjectIdBacklinksIndexRouteImport } from './routes/project.$projectId.backlinks.index'
 import { Route as ProjectProjectIdSiteAuditUnterseitenRouteImport } from './routes/project.$projectId.site-audit.unterseiten'
 import { Route as ProjectProjectIdSiteAuditUeberblickRouteImport } from './routes/project.$projectId.site-audit.ueberblick'
 import { Route as ProjectProjectIdSiteAuditStatistikenRouteImport } from './routes/project.$projectId.site-audit.statistiken'
 import { Route as ProjectProjectIdSiteAuditReportsRouteImport } from './routes/project.$projectId.site-audit.reports'
+import { Route as ProjectProjectIdBacklinksVerweisendeDomainsRouteImport } from './routes/project.$projectId.backlinks.verweisende-domains'
+import { Route as ProjectProjectIdBacklinksVerlorenRouteImport } from './routes/project.$projectId.backlinks.verloren'
+import { Route as ProjectProjectIdBacklinksNeuRouteImport } from './routes/project.$projectId.backlinks.neu'
+import { Route as ProjectProjectIdBacklinksDisavowRouteImport } from './routes/project.$projectId.backlinks.disavow'
+import { Route as ProjectProjectIdBacklinksDefekteRouteImport } from './routes/project.$projectId.backlinks.defekte'
+import { Route as ProjectProjectIdBacklinksAnchorsRouteImport } from './routes/project.$projectId.backlinks.anchors'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -180,6 +187,12 @@ const ProjectProjectIdSiteAuditIndexRoute =
     path: '/',
     getParentRoute: () => ProjectProjectIdSiteAuditRoute,
   } as any)
+const ProjectProjectIdBacklinksIndexRoute =
+  ProjectProjectIdBacklinksIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
 const ProjectProjectIdSiteAuditUnterseitenRoute =
   ProjectProjectIdSiteAuditUnterseitenRouteImport.update({
     id: '/unterseiten',
@@ -204,6 +217,42 @@ const ProjectProjectIdSiteAuditReportsRoute =
     path: '/reports',
     getParentRoute: () => ProjectProjectIdSiteAuditRoute,
   } as any)
+const ProjectProjectIdBacklinksVerweisendeDomainsRoute =
+  ProjectProjectIdBacklinksVerweisendeDomainsRouteImport.update({
+    id: '/verweisende-domains',
+    path: '/verweisende-domains',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
+const ProjectProjectIdBacklinksVerlorenRoute =
+  ProjectProjectIdBacklinksVerlorenRouteImport.update({
+    id: '/verloren',
+    path: '/verloren',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
+const ProjectProjectIdBacklinksNeuRoute =
+  ProjectProjectIdBacklinksNeuRouteImport.update({
+    id: '/neu',
+    path: '/neu',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
+const ProjectProjectIdBacklinksDisavowRoute =
+  ProjectProjectIdBacklinksDisavowRouteImport.update({
+    id: '/disavow',
+    path: '/disavow',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
+const ProjectProjectIdBacklinksDefekteRoute =
+  ProjectProjectIdBacklinksDefekteRouteImport.update({
+    id: '/defekte',
+    path: '/defekte',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
+const ProjectProjectIdBacklinksAnchorsRoute =
+  ProjectProjectIdBacklinksAnchorsRouteImport.update({
+    id: '/anchors',
+    path: '/anchors',
+    getParentRoute: () => ProjectProjectIdBacklinksRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -212,7 +261,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRouteWithChildren
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -230,10 +279,17 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/backlinks/anchors': typeof ProjectProjectIdBacklinksAnchorsRoute
+  '/project/$projectId/backlinks/defekte': typeof ProjectProjectIdBacklinksDefekteRoute
+  '/project/$projectId/backlinks/disavow': typeof ProjectProjectIdBacklinksDisavowRoute
+  '/project/$projectId/backlinks/neu': typeof ProjectProjectIdBacklinksNeuRoute
+  '/project/$projectId/backlinks/verloren': typeof ProjectProjectIdBacklinksVerlorenRoute
+  '/project/$projectId/backlinks/verweisende-domains': typeof ProjectProjectIdBacklinksVerweisendeDomainsRoute
   '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks/': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesByTo {
@@ -243,7 +299,6 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -260,10 +315,17 @@ export interface FileRoutesByTo {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/backlinks/anchors': typeof ProjectProjectIdBacklinksAnchorsRoute
+  '/project/$projectId/backlinks/defekte': typeof ProjectProjectIdBacklinksDefekteRoute
+  '/project/$projectId/backlinks/disavow': typeof ProjectProjectIdBacklinksDisavowRoute
+  '/project/$projectId/backlinks/neu': typeof ProjectProjectIdBacklinksNeuRoute
+  '/project/$projectId/backlinks/verloren': typeof ProjectProjectIdBacklinksVerlorenRoute
+  '/project/$projectId/backlinks/verweisende-domains': typeof ProjectProjectIdBacklinksVerweisendeDomainsRoute
   '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRoutesById {
@@ -274,7 +336,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/project/$projectId': typeof ProjectProjectIdRouteWithChildren
   '/project/$projectId/backlink-check': typeof ProjectProjectIdBacklinkCheckRoute
-  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRoute
+  '/project/$projectId/backlinks': typeof ProjectProjectIdBacklinksRouteWithChildren
   '/project/$projectId/brand-radar': typeof ProjectProjectIdBrandRadarRoute
   '/project/$projectId/competitors': typeof ProjectProjectIdCompetitorsRoute
   '/project/$projectId/content': typeof ProjectProjectIdContentRoute
@@ -292,10 +354,17 @@ export interface FileRoutesById {
   '/project/$projectId/tools': typeof ProjectProjectIdToolsRoute
   '/project/$projectId/wdf-idf': typeof ProjectProjectIdWdfIdfRoute
   '/project/$projectId/web-analytics': typeof ProjectProjectIdWebAnalyticsRoute
+  '/project/$projectId/backlinks/anchors': typeof ProjectProjectIdBacklinksAnchorsRoute
+  '/project/$projectId/backlinks/defekte': typeof ProjectProjectIdBacklinksDefekteRoute
+  '/project/$projectId/backlinks/disavow': typeof ProjectProjectIdBacklinksDisavowRoute
+  '/project/$projectId/backlinks/neu': typeof ProjectProjectIdBacklinksNeuRoute
+  '/project/$projectId/backlinks/verloren': typeof ProjectProjectIdBacklinksVerlorenRoute
+  '/project/$projectId/backlinks/verweisende-domains': typeof ProjectProjectIdBacklinksVerweisendeDomainsRoute
   '/project/$projectId/site-audit/reports': typeof ProjectProjectIdSiteAuditReportsRoute
   '/project/$projectId/site-audit/statistiken': typeof ProjectProjectIdSiteAuditStatistikenRoute
   '/project/$projectId/site-audit/ueberblick': typeof ProjectProjectIdSiteAuditUeberblickRoute
   '/project/$projectId/site-audit/unterseiten': typeof ProjectProjectIdSiteAuditUnterseitenRoute
+  '/project/$projectId/backlinks/': typeof ProjectProjectIdBacklinksIndexRoute
   '/project/$projectId/site-audit/': typeof ProjectProjectIdSiteAuditIndexRoute
 }
 export interface FileRouteTypes {
@@ -325,10 +394,17 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/backlinks/anchors'
+    | '/project/$projectId/backlinks/defekte'
+    | '/project/$projectId/backlinks/disavow'
+    | '/project/$projectId/backlinks/neu'
+    | '/project/$projectId/backlinks/verloren'
+    | '/project/$projectId/backlinks/verweisende-domains'
     | '/project/$projectId/site-audit/reports'
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks/'
     | '/project/$projectId/site-audit/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -338,7 +414,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/project/$projectId'
     | '/project/$projectId/backlink-check'
-    | '/project/$projectId/backlinks'
     | '/project/$projectId/brand-radar'
     | '/project/$projectId/competitors'
     | '/project/$projectId/content'
@@ -355,10 +430,17 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/backlinks/anchors'
+    | '/project/$projectId/backlinks/defekte'
+    | '/project/$projectId/backlinks/disavow'
+    | '/project/$projectId/backlinks/neu'
+    | '/project/$projectId/backlinks/verloren'
+    | '/project/$projectId/backlinks/verweisende-domains'
     | '/project/$projectId/site-audit/reports'
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks'
     | '/project/$projectId/site-audit'
   id:
     | '__root__'
@@ -386,10 +468,17 @@ export interface FileRouteTypes {
     | '/project/$projectId/tools'
     | '/project/$projectId/wdf-idf'
     | '/project/$projectId/web-analytics'
+    | '/project/$projectId/backlinks/anchors'
+    | '/project/$projectId/backlinks/defekte'
+    | '/project/$projectId/backlinks/disavow'
+    | '/project/$projectId/backlinks/neu'
+    | '/project/$projectId/backlinks/verloren'
+    | '/project/$projectId/backlinks/verweisende-domains'
     | '/project/$projectId/site-audit/reports'
     | '/project/$projectId/site-audit/statistiken'
     | '/project/$projectId/site-audit/ueberblick'
     | '/project/$projectId/site-audit/unterseiten'
+    | '/project/$projectId/backlinks/'
     | '/project/$projectId/site-audit/'
   fileRoutesById: FileRoutesById
 }
@@ -578,6 +667,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdSiteAuditIndexRouteImport
       parentRoute: typeof ProjectProjectIdSiteAuditRoute
     }
+    '/project/$projectId/backlinks/': {
+      id: '/project/$projectId/backlinks/'
+      path: '/'
+      fullPath: '/project/$projectId/backlinks/'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksIndexRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
     '/project/$projectId/site-audit/unterseiten': {
       id: '/project/$projectId/site-audit/unterseiten'
       path: '/unterseiten'
@@ -606,8 +702,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdSiteAuditReportsRouteImport
       parentRoute: typeof ProjectProjectIdSiteAuditRoute
     }
+    '/project/$projectId/backlinks/verweisende-domains': {
+      id: '/project/$projectId/backlinks/verweisende-domains'
+      path: '/verweisende-domains'
+      fullPath: '/project/$projectId/backlinks/verweisende-domains'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksVerweisendeDomainsRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
+    '/project/$projectId/backlinks/verloren': {
+      id: '/project/$projectId/backlinks/verloren'
+      path: '/verloren'
+      fullPath: '/project/$projectId/backlinks/verloren'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksVerlorenRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
+    '/project/$projectId/backlinks/neu': {
+      id: '/project/$projectId/backlinks/neu'
+      path: '/neu'
+      fullPath: '/project/$projectId/backlinks/neu'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksNeuRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
+    '/project/$projectId/backlinks/disavow': {
+      id: '/project/$projectId/backlinks/disavow'
+      path: '/disavow'
+      fullPath: '/project/$projectId/backlinks/disavow'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksDisavowRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
+    '/project/$projectId/backlinks/defekte': {
+      id: '/project/$projectId/backlinks/defekte'
+      path: '/defekte'
+      fullPath: '/project/$projectId/backlinks/defekte'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksDefekteRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
+    '/project/$projectId/backlinks/anchors': {
+      id: '/project/$projectId/backlinks/anchors'
+      path: '/anchors'
+      fullPath: '/project/$projectId/backlinks/anchors'
+      preLoaderRoute: typeof ProjectProjectIdBacklinksAnchorsRouteImport
+      parentRoute: typeof ProjectProjectIdBacklinksRoute
+    }
   }
 }
+
+interface ProjectProjectIdBacklinksRouteChildren {
+  ProjectProjectIdBacklinksAnchorsRoute: typeof ProjectProjectIdBacklinksAnchorsRoute
+  ProjectProjectIdBacklinksDefekteRoute: typeof ProjectProjectIdBacklinksDefekteRoute
+  ProjectProjectIdBacklinksDisavowRoute: typeof ProjectProjectIdBacklinksDisavowRoute
+  ProjectProjectIdBacklinksNeuRoute: typeof ProjectProjectIdBacklinksNeuRoute
+  ProjectProjectIdBacklinksVerlorenRoute: typeof ProjectProjectIdBacklinksVerlorenRoute
+  ProjectProjectIdBacklinksVerweisendeDomainsRoute: typeof ProjectProjectIdBacklinksVerweisendeDomainsRoute
+  ProjectProjectIdBacklinksIndexRoute: typeof ProjectProjectIdBacklinksIndexRoute
+}
+
+const ProjectProjectIdBacklinksRouteChildren: ProjectProjectIdBacklinksRouteChildren =
+  {
+    ProjectProjectIdBacklinksAnchorsRoute:
+      ProjectProjectIdBacklinksAnchorsRoute,
+    ProjectProjectIdBacklinksDefekteRoute:
+      ProjectProjectIdBacklinksDefekteRoute,
+    ProjectProjectIdBacklinksDisavowRoute:
+      ProjectProjectIdBacklinksDisavowRoute,
+    ProjectProjectIdBacklinksNeuRoute: ProjectProjectIdBacklinksNeuRoute,
+    ProjectProjectIdBacklinksVerlorenRoute:
+      ProjectProjectIdBacklinksVerlorenRoute,
+    ProjectProjectIdBacklinksVerweisendeDomainsRoute:
+      ProjectProjectIdBacklinksVerweisendeDomainsRoute,
+    ProjectProjectIdBacklinksIndexRoute: ProjectProjectIdBacklinksIndexRoute,
+  }
+
+const ProjectProjectIdBacklinksRouteWithChildren =
+  ProjectProjectIdBacklinksRoute._addFileChildren(
+    ProjectProjectIdBacklinksRouteChildren,
+  )
 
 interface ProjectProjectIdSiteAuditRouteChildren {
   ProjectProjectIdSiteAuditReportsRoute: typeof ProjectProjectIdSiteAuditReportsRoute
@@ -637,7 +806,7 @@ const ProjectProjectIdSiteAuditRouteWithChildren =
 
 interface ProjectProjectIdRouteChildren {
   ProjectProjectIdBacklinkCheckRoute: typeof ProjectProjectIdBacklinkCheckRoute
-  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRoute
+  ProjectProjectIdBacklinksRoute: typeof ProjectProjectIdBacklinksRouteWithChildren
   ProjectProjectIdBrandRadarRoute: typeof ProjectProjectIdBrandRadarRoute
   ProjectProjectIdCompetitorsRoute: typeof ProjectProjectIdCompetitorsRoute
   ProjectProjectIdContentRoute: typeof ProjectProjectIdContentRoute
@@ -659,7 +828,7 @@ interface ProjectProjectIdRouteChildren {
 
 const ProjectProjectIdRouteChildren: ProjectProjectIdRouteChildren = {
   ProjectProjectIdBacklinkCheckRoute: ProjectProjectIdBacklinkCheckRoute,
-  ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRoute,
+  ProjectProjectIdBacklinksRoute: ProjectProjectIdBacklinksRouteWithChildren,
   ProjectProjectIdBrandRadarRoute: ProjectProjectIdBrandRadarRoute,
   ProjectProjectIdCompetitorsRoute: ProjectProjectIdCompetitorsRoute,
   ProjectProjectIdContentRoute: ProjectProjectIdContentRoute,
